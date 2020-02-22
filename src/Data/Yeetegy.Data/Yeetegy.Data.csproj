@@ -1,0 +1,80 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20191224074400_InitialCreate.cs" />
+    <Compile Remove="Migrations\20191224074400_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200220161545_Initual.cs" />
+    <Compile Remove="Migrations\20200220161545_Initual.Designer.cs" />
+    <Compile Remove="Migrations\20200220161957_FixRequired.cs" />
+    <Compile Remove="Migrations\20200220161957_FixRequired.Designer.cs" />
+    <Compile Remove="Migrations\20200220205037_MissedSomething.cs" />
+    <Compile Remove="Migrations\20200220205037_MissedSomething.Designer.cs" />
+    <Compile Remove="Migrations\20200220223245_Yeetegy.cs" />
+    <Compile Remove="Migrations\20200220223245_Yeetegy.Designer.cs" />
+    <Compile Remove="Migrations\20200220230901_AddNavigation.cs" />
+    <Compile Remove="Migrations\20200220230901_AddNavigation.Designer.cs" />
+    <Compile Remove="Migrations\20200221114613_in.cs" />
+    <Compile Remove="Migrations\20200221114613_in.Designer.cs" />
+    <Compile Remove="Migrations\20200221115140_ino.cs" />
+    <Compile Remove="Migrations\20200221115140_ino.Designer.cs" />
+    <Compile Remove="Migrations\20200221223048_testwohoo.cs" />
+    <Compile Remove="Migrations\20200221223048_testwohoo.Designer.cs" />
+    <Compile Remove="Migrations\20200222124828_Initual2.cs" />
+    <Compile Remove="Migrations\20200222124828_Initual2.Designer.cs" />
+    <Compile Remove="Migrations\20200222130345_CategoryAdded.cs" />
+    <Compile Remove="Migrations\20200222130345_CategoryAdded.Designer.cs" />
+    <Compile Remove="Migrations\20200222132359_MaxLenghtFixes.cs" />
+    <Compile Remove="Migrations\20200222132359_MaxLenghtFixes.Designer.cs" />
+    <Compile Remove="Migrations\20200222133635_FixedWrongCategoryCol.cs" />
+    <Compile Remove="Migrations\20200222133635_FixedWrongCategoryCol.Designer.cs" />
+    <Compile Remove="Migrations\20200222133746_FixedWrongCategoryCol.cs" />
+    <Compile Remove="Migrations\20200222133746_FixedWrongCategoryCol.Designer.cs" />
+    <Compile Remove="Migrations\20200222134728_Initual.cs" />
+    <Compile Remove="Migrations\20200222134728_Initual.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.1" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.113" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Yeetegy.Common\Yeetegy.Common.csproj" />
+    <ProjectReference Include="..\Yeetegy.Data.Common\Yeetegy.Data.Common.csproj" />
+    <ProjectReference Include="..\Yeetegy.Data.Models\Yeetegy.Data.Models.csproj" />
+  </ItemGroup>
+
+</Project>

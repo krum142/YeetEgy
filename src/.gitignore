@@ -357,4 +357,3 @@ MigrationBackup/
 appsettings.Production.json
 *.min.css
 *.min.js
-src/Web/Yeetegy.Web/appsettings.json

@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.10.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="1.1.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.113" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\Yeetegy.Data.Common\Yeetegy.Data.Common.csproj" />
+    <ProjectReference Include="..\..\Data\Yeetegy.Data.Models\Yeetegy.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Web\Yeetegy.Web.ViewModels\Yeetegy.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\Yeetegy.Services.Mapping\Yeetegy.Services.Mapping.csproj" />
+  </ItemGroup>
+
+</Project>
