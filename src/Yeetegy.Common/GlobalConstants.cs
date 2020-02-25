@@ -5,5 +5,8 @@
         public const string SystemName = "Yeetegy";
 
         public const string AdministratorRoleName = "Administrator";
+
+        public const string AdminRoleName = "Admin";
+
     }
 }

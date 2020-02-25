@@ -1,4 +1,8 @@
-﻿namespace Yeetegy.Services.Data
+﻿using System.Collections.Generic;
+using System.Linq;
+using Yeetegy.Web.ViewModels;
+
+namespace Yeetegy.Services.Data
 {
     using System;
     using System.Threading.Tasks;
@@ -41,6 +45,19 @@
                 await this.postRepository.AddAsync(newPost);
                 await this.postRepository.SaveChangesAsync();
             }
+        }
+
+        public PostsViewModel Get10Posts()
+        {
+            var posts = postRepository.AllAsNoTracking().OrderByDescending(x => x.CreatedOn).Select(p => new PostsViewModel()
+            {
+                ImgUrl = p.ImgUrl,
+                CategoryId = p.CategoryId,
+                Dislikes = p.Dislikes,
+                Likes = p.Likes,
+            }).FirstOrDefault();
+
+            return posts;
         }
 
         private async Task<string> SaveCloudinary(IFormFile image, string cloudSettings)

@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,10 +23,17 @@ namespace Yeetegy.Web.Controllers
             this.configuration = configuration;
         }
 
+        public IActionResult GetPost()
+        {
+           var posts = postsService.Get10Posts();
+
+           return this.Json(JsonSerializer.Serialize(posts));
+        }
+
         [Authorize]
         public async Task<IActionResult> Add()
         {
-            await categoryService.CreateAsync("2best category");
+            await categoryService.CreateAsync("my test category");
 
             var category = categoryService.GetAll();
 

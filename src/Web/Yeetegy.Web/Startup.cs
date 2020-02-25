@@ -1,4 +1,5 @@
-﻿using Yeetegy.Services.Data.Interfaces;
+﻿using Microsoft.AspNetCore.Identity;
+using Yeetegy.Services.Data.Interfaces;
 
 namespace Yeetegy.Web
 {
@@ -74,6 +75,18 @@ namespace Yeetegy.Web
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                //dbContext.Roles.Add(new ApplicationRole()
+                //{
+                //    Name = "User",
+                //    NormalizedName = "USER",
+                //});
+
+                //dbContext.Roles.Add(new ApplicationRole()
+                //{
+                //    Name = "Admin",
+                //    NormalizedName = "ADMIN",
+                //});
 
                 if (env.IsDevelopment())
                 {
