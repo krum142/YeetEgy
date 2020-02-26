@@ -47,15 +47,18 @@ namespace Yeetegy.Services.Data
             }
         }
 
-        public PostsViewModel Get10Posts()
+        public IEnumerable<PostsViewModel> GetFivePosts(int skip)
         {
-            var posts = postRepository.AllAsNoTracking().OrderByDescending(x => x.CreatedOn).Select(p => new PostsViewModel()
-            {
-                ImgUrl = p.ImgUrl,
-                CategoryId = p.CategoryId,
-                Dislikes = p.Dislikes,
-                Likes = p.Likes,
-            }).FirstOrDefault();
+            var posts = this.postRepository.All().Skip(skip).Take(5).OrderByDescending(x => x.CreatedOn).Select(p =>
+                new PostsViewModel()
+                {
+                    Id = p.Id,
+                    ImgUrl = p.ImgUrl,
+                    Tittle = p.Tittle,
+                    CategoryId = p.CategoryId,
+                    Dislikes = p.Dislikes,
+                    Likes = p.Likes,
+                }).ToList();
 
             return posts;
         }

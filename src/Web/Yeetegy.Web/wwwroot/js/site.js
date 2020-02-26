@@ -6,7 +6,7 @@
 var mybutton = document.getElementById("myBtn");
 
 // When the user scrolls down 20px from the top of the document, show the button
-window.onscroll = function () { scrollFunction(), MyTest() };
+window.onscroll = function () { scrollFunction() };
 
 function scrollFunction() {
     if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
@@ -24,32 +24,64 @@ function topFunction() {
 
 var myh2 = document.getElementById("test123");
 
+var lastJsonIsNull = false;
+
+
 $(document).ready(function () {
     var pageindex = 2;
     var NoMoredata = false;
     var inProgress = false;
     var jsonn;
-    var newContent;
-    $(window).on("scroll", function () {
-        var docHeight = $(document).height();
-        var winScrolled = $(window).height() + $(window).scrollTop();
-        if ((docHeight - winScrolled) < 500) {
-            //console.log("module scrolled to bottom");
-            inProgress = true;
-            alert("new funct");
-            fetch('/Posts/GetPost',
-                {
-                    method: "GET"
-                }).then(response => {
-                    if (response.status === 200) {
-                        response.json().then(j => {
-                            jsonn = JSON.parse(j),
-                                document.getElementById("srcP").src = jsonn.ImgUrl;
-                        });
-                    }
-                });
-        }
+    var posthtml2;
+    $(window).on("scroll",
+        function () {
+            var posthtml =
+                '<div class="col-lg-8 col-md-8 mb-8" style="margin-bottom: 40px">\n' +
+                '<div class="card h-100">\n' +
+                '<div class="card-header font-italic">\n' +
+                '<h5>TittleToChange</h5>\n' +
+                '</div>\n' +
+                '<img id="1" src="ImgToChange" class="card-img-top">\n' +
+                '<div class="card-footer">\n' +
+                '<button type="button" class="btn btn-dark far fa-thumbs-up" style="width: 100px">Likes</button>\n' +
+                '<button type="button" class="btn btn-dark far fa-thumbs-down" style="width: 100px">Dislikes</button>\n' +
+                '<button type="button" class="btn btn-dark far fa-comment" style="width: 100px"></button>\n' +
+                '</div></div></div>\n';
+
+            var docHeight = $(document).height();
+            var winScrolled = $(window).height() + $(window).scrollTop();
+            if ((docHeight - winScrolled) < 200) { // scroll time 
+                //console.log("module scrolled to bottom");
+                inProgress = true;
+                //alert("new funct");
+                if (lastJsonIsNull === false) {
+                    fetch('/Posts/GetPost',
+                        {
+                            method: "GET"
+                        }).then(response => {
+                        if (response.status === 200) {
+                            response.json().then(j => {
+                                jsonn = JSON.parse(j);
+                                if (jsonn.length === 0) {
+                                    lastJsonIsNull = true;
+                                }
+                                for (var i = 0; i < 5; i++) {
+                                    posthtml2 = posthtml,
+                                        posthtml2 = posthtml2.replace("Dislikes", jsonn[i].Dislikes),
+                                        posthtml2 = posthtml2.replace("Likes", jsonn[i].Likes),
+                                        posthtml2 = posthtml2.replace("ImgToChange", jsonn[i].ImgUrl),
+                                        posthtml2 = posthtml2.replace("TittleToChange", jsonn[i].Tittle),
+                                        document.getElementById("PostContainer").innerHTML += posthtml2;
+                                    //document.getElementById(counter).src = jsonn.ImgUrl;
+                                }
+                            });
+                        }
+                    });
+                }
+                
+            }
+
+        });
+});
 
 
-    });
-})

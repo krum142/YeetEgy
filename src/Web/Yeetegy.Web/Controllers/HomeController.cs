@@ -10,6 +10,8 @@
     {
         public IActionResult Index()
         {
+            this.Response.Cookies.Append("IdCookie", "0");
+
             return View();
         }
 
