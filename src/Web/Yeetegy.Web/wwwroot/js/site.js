@@ -24,8 +24,6 @@ function topFunction() {
 
 var myh2 = document.getElementById("test123");
 
-var lastJsonIsNull = false;
-
 
 $(document).ready(function () {
     var pageindex = 2;
@@ -51,34 +49,34 @@ $(document).ready(function () {
             var docHeight = $(document).height();
             var winScrolled = $(window).height() + $(window).scrollTop();
             if ((docHeight - winScrolled) < 200) { // scroll time 
-                //console.log("module scrolled to bottom");
-                inProgress = true;
-                //alert("new funct");
-                if (lastJsonIsNull === false) {
+                if (NoMoredata === false && inProgress === false) {
+                    inProgress = true;
                     fetch('/Posts/GetPost',
                         {
                             method: "GET"
                         }).then(response => {
-                        if (response.status === 200) {
-                            response.json().then(j => {
-                                jsonn = JSON.parse(j);
-                                if (jsonn.length === 0) {
-                                    lastJsonIsNull = true;
-                                }
-                                for (var i = 0; i < 5; i++) {
-                                    posthtml2 = posthtml,
-                                        posthtml2 = posthtml2.replace("Dislikes", jsonn[i].Dislikes),
-                                        posthtml2 = posthtml2.replace("Likes", jsonn[i].Likes),
-                                        posthtml2 = posthtml2.replace("ImgToChange", jsonn[i].ImgUrl),
-                                        posthtml2 = posthtml2.replace("TittleToChange", jsonn[i].Tittle),
-                                        document.getElementById("PostContainer").innerHTML += posthtml2;
-                                    //document.getElementById(counter).src = jsonn.ImgUrl;
-                                }
-                            });
-                        }
-                    });
+                            if (response.status === 200) {
+                                response.json().then(j => {
+                                    jsonn = JSON.parse(j);
+                                    if (jsonn.length === 0) {
+                                        NoMoredata = true;
+                                    } else {
+                                        for (let i = 0; i < 5; i++) {
+                                            posthtml2 = posthtml,
+                                                posthtml2 = posthtml2.replace("Dislikes", jsonn[i].Dislikes),
+                                                posthtml2 = posthtml2.replace("Likes", jsonn[i].Likes),
+                                                posthtml2 = posthtml2.replace("ImgToChange", jsonn[i].ImgUrl),
+                                                posthtml2 = posthtml2.replace("TittleToChange", jsonn[i].Tittle),
+                                                document.getElementById("PostContainer").innerHTML += posthtml2;
+                                            inProgress = false;
+                                        }
+                                    }
+
+                                });
+                            }
+                        });
                 }
-                
+
             }
 
         });

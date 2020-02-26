@@ -49,7 +49,7 @@ namespace Yeetegy.Services.Data
 
         public IEnumerable<PostsViewModel> GetFivePosts(int skip)
         {
-            var posts = this.postRepository.All().Skip(skip).Take(5).OrderByDescending(x => x.CreatedOn).Select(p =>
+            var posts = this.postRepository.All().OrderByDescending(x => x.CreatedOn).Skip(skip).Take(5).Select(p =>
                 new PostsViewModel()
                 {
                     Id = p.Id,
