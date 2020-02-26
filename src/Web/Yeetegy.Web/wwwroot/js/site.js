@@ -68,11 +68,11 @@ $(document).ready(function () {
                                                 posthtml2 = posthtml2.replace("ImgToChange", jsonn[i].ImgUrl),
                                                 posthtml2 = posthtml2.replace("TittleToChange", jsonn[i].Tittle),
                                                 document.getElementById("PostContainer").innerHTML += posthtml2;
-                                            inProgress = false;
                                         }
                                     }
 
                                 });
+                                inProgress = false;
                             }
                         });
                 }
