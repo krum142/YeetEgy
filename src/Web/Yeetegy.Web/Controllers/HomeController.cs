@@ -1,4 +1,6 @@
-﻿namespace Yeetegy.Web.Controllers
+﻿using Yeetegy.Services.Data.Interfaces;
+
+namespace Yeetegy.Web.Controllers
 {
     using System.Diagnostics;
 
@@ -8,11 +10,19 @@
 
     public class HomeController : BaseController
     {
+        private readonly ICategoryService categoryService;
+
+        public HomeController(ICategoryService categoryService)
+        {
+            this.categoryService = categoryService;
+        }
+
         public IActionResult Index()
         {
             this.Response.Cookies.Append("IdCookie", "0");
+            var categorys = categoryService.GetAll();
 
-            return View();
+            return View(categorys);
         }
 
         public IActionResult Privacy()

@@ -42,12 +42,30 @@ namespace Yeetegy.Web.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCategory(AddCategoryViewModel model)
         {
-            if (ModelState.IsValid /*&& AllowedMimeFiles.Contains(model.File.ContentType)*/)
+            if (ModelState.IsValid && AllowedMimeFiles.Contains(model.File.ContentType))
             {
-               await this.categoryService.CreateAsync(model.Category);
+               await this.categoryService.CreateAsync(model.Category,model.File);
             }
 
             return Redirect("/");
+        }
+
+        public IActionResult DeleteCategory()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteCategory(string category)
+        {
+            var isThereAnyCategory = categoryService.IsThereAny(category);
+
+            if (isThereAnyCategory)
+            {
+                await categoryService.DeleteAsync(category);
+            }
+
+            return this.View();
         }
     }
 }

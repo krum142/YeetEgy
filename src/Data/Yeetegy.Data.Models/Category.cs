@@ -17,7 +17,7 @@ namespace Yeetegy.Data.Models
         [MaxLength(30)]
         public string Name { get; set; }
 
-        public byte[] Image { get; set; }
+        public string ImageUrl { get; set; }
 
         public ICollection<Post> Posts { get; set; }
     }

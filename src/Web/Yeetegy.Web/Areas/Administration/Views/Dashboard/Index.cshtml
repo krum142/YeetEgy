@@ -6,7 +6,7 @@
 
 <h1>@ViewData["Title"]</h1>
 @*Settings: @Model.SettingsCount*@
-@if (User.IsInRole(GlobalConstants.AdminRoleName))
+@if (User.IsInRole(GlobalConstants.AdministratorRoleName))
 {
     <div class="modal-dialog">
         <div class="modal-content">
@@ -16,7 +16,7 @@
                         <div class="list-group">
                             <h2>Options</h2>
                             <a href="/Administration/Dashboard/CreateCategory" class="list-group-item text-white" style="background: #043927">Create Category</a>
-                            <a href="#" class="list-group-item text-white" style="background: #043927">Delete Category</a>
+                            <a href="/Administration/Dashboard/DeleteCategory" class="list-group-item text-white" style="background: #043927">Delete Category</a>
                             <a href="#" class="list-group-item text-white" style="background: #043927">Ban User</a>
                         </div>
 

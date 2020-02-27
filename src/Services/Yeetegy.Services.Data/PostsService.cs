@@ -12,7 +12,6 @@ namespace Yeetegy.Services.Data
     using Microsoft.AspNetCore.Http;
     using Yeetegy.Data.Common.Repositories;
     using Yeetegy.Data.Models;
-    using CommonServices;
     using Interfaces;
     using Web.ViewModels.PostViewModels;
 
@@ -20,18 +19,18 @@ namespace Yeetegy.Services.Data
     {
         private readonly IDeletableEntityRepository<Post> postRepository;
         private readonly ICategoryService categoryService;
-        private readonly IConfiguration configuration;
+        private readonly ICloudinaryService cloudinary;
 
-        public PostsService(IDeletableEntityRepository<Post> postRepository, ICategoryService categoryService, IConfiguration configuration)
+        public PostsService(IDeletableEntityRepository<Post> postRepository, ICategoryService categoryService, ICloudinaryService cloudinary)
         {
             this.postRepository = postRepository;
             this.categoryService = categoryService;
-            this.configuration = configuration;
+            this.cloudinary = cloudinary;
         }
 
         public async Task CreatePostAsync(AddPostsViewModel post, string userId)
         {
-            var urlTest = SaveCloudinary(post.File);
+            var urlTest = cloudinary.SaveCloudinary(post.File);
 
             var url = urlTest.Result;
 
@@ -64,20 +63,6 @@ namespace Yeetegy.Services.Data
                 }).ToList();
 
             return posts;
-        }
-
-        private async Task<string> SaveCloudinary(IFormFile image)
-        {
-            var settings = this.configuration["CloudSettings"].Split("$");
-            var cloudName = settings[0];
-            var apikey = settings[1];
-            var apiSec = settings[2];
-            var fileName = Guid.NewGuid().ToString();
-
-            var account = new Account(cloudName, apikey, apiSec);
-            var cloud = new Cloudinary(account);
-
-            return await ApplicationCloudinary.UploadImage(cloud, image, fileName);
         }
     }
 }

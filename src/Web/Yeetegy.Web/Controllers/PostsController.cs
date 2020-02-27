@@ -62,7 +62,7 @@ namespace Yeetegy.Web.Controllers
             var checkCategory = categoryService.IsThereAny(post.Category);
             var fileContentType = AllowedMimeFiles.Contains(post.File.ContentType);
 
-            if (fileContentType && checkCategory && ModelState.IsValid)
+            if (fileContentType && checkCategory && ModelState.IsValid && post.File != null && post.Tittle != null)
             {
                 var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -71,7 +71,7 @@ namespace Yeetegy.Web.Controllers
                 return Redirect("/");
             }
 
-            return this.Content("A wrong file type Please Krum Implement me!!!");
+            return this.Content("A wrong file type Implement me!!!");
         }
 
     }

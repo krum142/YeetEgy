@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
+@model IEnumerable<CategoryViewModel>
 
 @*<div class="text-center">
         <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
@@ -13,9 +13,12 @@
 
         <div class="list-group">
             <h2>Categorys</h2>
-            @for (int i = 0; i < 10; i++)
+            @foreach(var categorys in Model)
             {
-                <a href="#" class="list-group-item text-white" style="background: #043927">Category @i</a>
+                <div class="chip list-group-item-action">
+                    <img src="@categorys.ImageUrl" alt="Person" width="96" height="96">
+                     <p class="text-white">@categorys.Name</p>
+                </div>
 
             }
         </div>
@@ -26,40 +29,38 @@
     <div class="col-lg-9" style="margin-top: 90px">
 
         <div class="row" id="PostContainer">
-            
-                <div class="col-lg-8 col-md-8 mb-8" style="margin-bottom: 40px">
-                    <div class="card h-100">
-                        <div class="card-header font-italic">
-                            <h5>Some quick example text to build on the card title and make up the bulk of the card's content.</h5>
-                        </div>
-                        <img id="srcP" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F3.bp.blogspot.com%2F--7gtJQo5mHE%2FUGMKHZapqmI%2FAAAAAAAAWGU%2F5X26Pgj_St4%2Fs1600%2Ffunny-cat-pictures-017-005.jpg&f=1&nofb=1https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F3.bp.blogspot.com%2F--7gtJQo5mHE%2FUGMKHZapqmI%2FAAAAAAAAWGU%2F5X26Pgj_St4%2Fs1600%2Ffunny-cat-pictures-017-005.jpg&amp;f=1&amp;nofb=1" class="card-img-top" alt="...">
-                        <div class="card-footer">
-                            <button type="button" class="btn btn-dark far fa-thumbs-up" style="width: 100px">4000</button>
-                            <button type="button" class="btn btn-dark far fa-thumbs-down" style="width: 100px">2000</button>
-                            <button type="button" class="btn btn-dark far fa-comment" style="width: 100px"></button>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-lg-8 col-md-8 mb-8" style="margin-bottom: 40px">
-                    <div class="card h-100">
-                        <div class="card-header font-italic">
-                            <h5>Some quick example text to build on the card title and make up the bulk of the card's content.</h5>
-                        </div>
-                        <img src="https://res.cloudinary.com/cloudnameiscool/image/upload/v1582325201/b76224eb-76fe-4ed4-8ede-bcc5a087054f.gif" class="card-img-top" alt="...">
-                        <div class="card-footer">
-                            <button type="button" class="btn btn-dark far fa-thumbs-up" style="width: 100px">9252</button>
-                            <button type="button" class="btn btn-dark far fa-thumbs-down" style="width: 100px">125</button>
-                            <button type="button" class="btn btn-dark far fa-comment" style="width: 100px"></button>
-                        </div>
+            <div class="col-lg-8 col-md-8 mb-8" style="margin-bottom: 40px">
+                <div class="card h-100">
+                    <div class="card-header font-italic">
+                        <h5>Some quick example text to build on the card title and make up the bulk of the card's content.</h5>
+                    </div>
+                    <img id="srcP" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F3.bp.blogspot.com%2F--7gtJQo5mHE%2FUGMKHZapqmI%2FAAAAAAAAWGU%2F5X26Pgj_St4%2Fs1600%2Ffunny-cat-pictures-017-005.jpg&f=1&nofb=1https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F3.bp.blogspot.com%2F--7gtJQo5mHE%2FUGMKHZapqmI%2FAAAAAAAAWGU%2F5X26Pgj_St4%2Fs1600%2Ffunny-cat-pictures-017-005.jpg&amp;f=1&amp;nofb=1" class="card-img-top" alt="...">
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-dark far fa-thumbs-up" style="width: 100px">4000</button>
+                        <button type="button" class="btn btn-dark far fa-thumbs-down" style="width: 100px">2000</button>
+                        <button type="button" class="btn btn-dark far fa-comment" style="width: 100px"></button>
                     </div>
                 </div>
-            
+            </div>
+
+            <div class="col-lg-8 col-md-8 mb-8" style="margin-bottom: 40px">
+                <div class="card h-100">
+                    <div class="card-header font-italic">
+                        <h5>Some quick example text to build on the card title and make up the bulk of the card's content.</h5>
+                    </div>
+                    <img src="https://res.cloudinary.com/cloudnameiscool/image/upload/v1582325201/b76224eb-76fe-4ed4-8ede-bcc5a087054f.gif" class="card-img-top" alt="...">
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-dark far fa-thumbs-up" style="width: 100px">9252</button>
+                        <button type="button" class="btn btn-dark far fa-thumbs-down" style="width: 100px">125</button>
+                        <button type="button" class="btn btn-dark far fa-comment" style="width: 100px"></button>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <!-- /.row -->
     </div>
     <!-- /.col-lg-9 -->
 </div>
 <!-- /.row -->
-
-
