@@ -1,7 +1,28 @@
-﻿@model Yeetegy.Web.ViewModels.Administration.Dashboard.IndexViewModel
+﻿@using Yeetegy.Common
+@model Yeetegy.Web.ViewModels.Administration.Dashboard.IndexViewModel
 @{
     ViewData["Title"] = "Admin dashboard";
 }
 
 <h1>@ViewData["Title"]</h1>
-Settings: @Model.SettingsCount
+@*Settings: @Model.SettingsCount*@
+@if (User.IsInRole(GlobalConstants.AdminRoleName))
+{
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-controller="Dashboard" asp-action="Index" enctype="multipart/form-data" id="BlobUploadForm" method="post" class="form-label-left" role="form">
+                <div class="modal-footer">
+                    <div class="col">
+                        <div class="list-group">
+                            <h2>Options</h2>
+                            <a href="/Administration/Dashboard/CreateCategory" class="list-group-item text-white" style="background: #043927">Create Category</a>
+                            <a href="#" class="list-group-item text-white" style="background: #043927">Delete Category</a>
+                            <a href="#" class="list-group-item text-white" style="background: #043927">Ban User</a>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}

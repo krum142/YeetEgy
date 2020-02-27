@@ -11,5 +11,7 @@ namespace Yeetegy.Services.Data.Interfaces
         IEnumerable<string> GetAll();
 
         string GetId(string name);
+
+        bool IsThereAny(string categoryName);
     }
 }

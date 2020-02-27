@@ -35,6 +35,11 @@ namespace Yeetegy.Services.Data
             return categories;
         }
 
+        public bool IsThereAny(string categoryName)
+        {
+            return this.categoryRepository.AllAsNoTracking().Any(x => x.Name == categoryName);
+        }
+
         public string GetId(string name)
         {
             var category = this.categoryRepository

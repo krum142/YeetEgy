@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -16,14 +18,19 @@ namespace Yeetegy.Web.Controllers
     {
         private readonly IPostsService postsService;
         private readonly ICategoryService categoryService;
-        private readonly IConfiguration configuration;
-        private int count;
+        private readonly IList<string> AllowedMimeFiles = new List<string>()
+        {
+            "image/apng",
+            "image/bmp",
+            "image/gif",
+            "image/jpeg",
+            "image/png"
+        };
 
-        public PostsController(IPostsService postsService, ICategoryService categoryService, IConfiguration configuration)
+        public PostsController(IPostsService postsService, ICategoryService categoryService)
         {
             this.postsService = postsService;
             this.categoryService = categoryService;
-            this.configuration = configuration;
         }
 
         public IActionResult GetPost()
@@ -44,8 +51,6 @@ namespace Yeetegy.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Add()
         {
-            await categoryService.CreateAsync("my test category");
-
             var category = categoryService.GetAll();
 
             return View(category);
@@ -54,11 +59,19 @@ namespace Yeetegy.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddPostsViewModel post)
         {
-            var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var checkCategory = categoryService.IsThereAny(post.Category);
+            var fileContentType = AllowedMimeFiles.Contains(post.File.ContentType);
 
-            await postsService.CreatePostAsync(post, user, configuration["CloudSettings"]);
+            if (fileContentType && checkCategory && ModelState.IsValid)
+            {
+                var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            return Redirect("/");
+                await postsService.CreatePostAsync(post, user);
+
+                return Redirect("/");
+            }
+
+            return this.Content("A wrong file type Please Krum Implement me!!!");
         }
 
     }

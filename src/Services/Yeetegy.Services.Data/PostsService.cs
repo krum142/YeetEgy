@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Services.Data
@@ -19,16 +20,18 @@ namespace Yeetegy.Services.Data
     {
         private readonly IDeletableEntityRepository<Post> postRepository;
         private readonly ICategoryService categoryService;
+        private readonly IConfiguration configuration;
 
-        public PostsService(IDeletableEntityRepository<Post> postRepository, ICategoryService categoryService)
+        public PostsService(IDeletableEntityRepository<Post> postRepository, ICategoryService categoryService, IConfiguration configuration)
         {
             this.postRepository = postRepository;
             this.categoryService = categoryService;
+            this.configuration = configuration;
         }
 
-        public async Task CreatePostAsync(AddPostsViewModel post, string userId, string cloudSettings)
+        public async Task CreatePostAsync(AddPostsViewModel post, string userId)
         {
-            var urlTest = SaveCloudinary(post.File, cloudSettings);
+            var urlTest = SaveCloudinary(post.File);
 
             var url = urlTest.Result;
 
@@ -63,9 +66,9 @@ namespace Yeetegy.Services.Data
             return posts;
         }
 
-        private async Task<string> SaveCloudinary(IFormFile image, string cloudSettings)
+        private async Task<string> SaveCloudinary(IFormFile image)
         {
-            var settings = cloudSettings.Split("$");
+            var settings = this.configuration["CloudSettings"].Split("$");
             var cloudName = settings[0];
             var apikey = settings[1];
             var apiSec = settings[2];

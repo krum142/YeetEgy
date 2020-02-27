@@ -1,0 +1,47 @@
+﻿@using Yeetegy.Common
+
+@{
+    ViewData["Title"] = "CreateCategory";
+}
+
+<h1>CreateCategory</h1>
+
+@if (User.IsInRole(GlobalConstants.AdminRoleName))
+{
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-controller="Dashboard" asp-action="CreateCategory" enctype="multipart/form-data" id="BlobUploadForm" method="post" class="form-label-left" role="form">
+                <div class="modal-footer">
+                    <div class="form-group row">
+                        <h3>Category Name</h3>
+                        <input type="text" class="form-control" id="category" required="" maxlength="30" aria-label="With textarea" placeholder="Category Name" name="category" style="margin-bottom: 15px">
+                        <h3>Category Picture</h3>
+                        <div class="input-group" style="margin-top: 15px">
+                            <label class="input-group-btn">
+                                <span class="btn YeetegyBackground text-white">
+                                    Browse… <input type="file" req style="display: none;" name="file" id="FileInput">
+                                </span>
+                            </label>
+                            <input type="text" class="form-control" readonly="" id="BrowseInput">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <button type="submit" value="Upload Small File" class="btn btn-warning" id="UploadSmallFile">Create Category</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).on('change', ':file', function () {
+            var input = $(this)
+            var label = $('#BrowseInput').val(input.val().replace(/\\/g, '/').replace(/.*\//, ''));
+        });
+    </script>
+}
