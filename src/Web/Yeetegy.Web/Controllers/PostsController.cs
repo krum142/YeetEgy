@@ -1,15 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using RestSharp;
 using Yeetegy.Services.Data.Interfaces;
-using Yeetegy.Web.ViewModels;
 using Yeetegy.Web.ViewModels.PostViewModels;
 
 namespace Yeetegy.Web.Controllers

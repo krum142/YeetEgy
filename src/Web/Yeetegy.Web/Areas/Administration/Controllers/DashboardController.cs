@@ -6,7 +6,6 @@ using Yeetegy.Services.Data.Interfaces;
 
 namespace Yeetegy.Web.Areas.Administration.Controllers
 {
-    using Yeetegy.Services.Data;
     using Yeetegy.Web.ViewModels.Administration.Dashboard;
 
     using Microsoft.AspNetCore.Mvc;

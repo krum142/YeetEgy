@@ -7,7 +7,6 @@ namespace Yeetegy.Web.Controllers
 
     using Yeetegy.Data.Common.Repositories;
     using Data.Models;
-    using Yeetegy.Services.Data;
     using ViewModels.Settings;
 
     using Microsoft.AspNetCore.Mvc;

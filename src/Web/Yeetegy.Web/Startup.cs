@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Yeetegy.Services.Data.Interfaces;
+﻿using Yeetegy.Services.Data.Interfaces;
 
 namespace Yeetegy.Web
 {

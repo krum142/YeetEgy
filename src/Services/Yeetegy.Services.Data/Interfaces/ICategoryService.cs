@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Yeetegy.Data.Models;
 using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Services.Data.Interfaces

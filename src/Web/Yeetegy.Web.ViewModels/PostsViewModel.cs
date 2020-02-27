@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Yeetegy.Web.ViewModels
+﻿namespace Yeetegy.Web.ViewModels
 {
     public class PostsViewModel
     {
