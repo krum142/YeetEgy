@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Yeetegy.Common;
 using Yeetegy.Services.Data.Interfaces;
 
 namespace Yeetegy.Web.Areas.Administration.Controllers
@@ -9,6 +11,7 @@ namespace Yeetegy.Web.Areas.Administration.Controllers
 
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class DashboardController : AdministrationController
     {
         private readonly ISettingsService settingsService;

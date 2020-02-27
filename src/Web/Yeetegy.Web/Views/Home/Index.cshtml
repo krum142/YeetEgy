@@ -2,7 +2,6 @@
     ViewData["Title"] = "Home Page";
 }
 @model IEnumerable<CategoryViewModel>
-
 @*<div class="text-center">
         <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
         <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
@@ -13,13 +12,14 @@
 
         <div class="list-group">
             <h2>Categorys</h2>
-            @foreach(var categorys in Model)
+            @foreach (var categorys in Model)
             {
-                <div class="chip list-group-item-action">
-                    <img src="@categorys.ImageUrl" alt="Person" width="96" height="96">
-                     <p class="text-white">@categorys.Name</p>
-                </div>
-
+                <a href="https://www.google.com/" alt="@categorys.Name">
+                    <div class="chip list-group-item-action">
+                        <img src="@categorys.ImageUrl" alt="Person" width="96" height="96">
+                        <p  class="text-white">@categorys.Name</p>
+                    </div>
+                </a>
             }
         </div>
 

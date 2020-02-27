@@ -1,9 +1,8 @@
 ﻿
-@model IEnumerable<string>
 @{
     ViewData["Title"] = "Home Page";
 }
-
+@model IEnumerable<CategoryViewModel>;
 
 <div class="modal-dialog">
     <div class="modal-content">
@@ -21,7 +20,7 @@
                                 <option>Choose a category...</option>
                                 @foreach (var category in Model)
                                 {
-                                    <option>@category</option>
+                                    <option>@category.Name</option>
                                 }
                             </select>
                         </div>

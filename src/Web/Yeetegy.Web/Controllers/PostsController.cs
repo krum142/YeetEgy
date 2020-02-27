@@ -59,18 +59,21 @@ namespace Yeetegy.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddPostsViewModel post)
         {
-            var checkCategory = categoryService.IsThereAny(post.Category);
-            var fileContentType = AllowedMimeFiles.Contains(post.File.ContentType);
-
-            if (fileContentType && checkCategory && ModelState.IsValid && post.File != null && post.Tittle != null)
+            if (post.File != null && post.Tittle != null)
             {
-                var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var checkCategory = categoryService.IsThereAny(post.Category);
+                var fileContentType = AllowedMimeFiles.Contains(post.File.ContentType);
 
-                await postsService.CreatePostAsync(post, user);
+                if (fileContentType && checkCategory && ModelState.IsValid)
+                {
+                    var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                return Redirect("/");
+                    await postsService.CreatePostAsync(post, user);
+
+                    return Redirect("/");
+                }
             }
-
+            
             return this.Content("A wrong file type Implement me!!!");
         }
 

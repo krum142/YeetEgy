@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Configuration;
 using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Services.Data
 {
-    using System;
     using System.Threading.Tasks;
-
-    using CloudinaryDotNet;
-    using Microsoft.AspNetCore.Http;
     using Yeetegy.Data.Common.Repositories;
     using Yeetegy.Data.Models;
     using Interfaces;
