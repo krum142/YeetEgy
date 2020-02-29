@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Services.Data.Interfaces
@@ -10,6 +11,8 @@ namespace Yeetegy.Services.Data.Interfaces
         Task CreateAsync(string name, IFormFile image);
 
         IEnumerable<CategoryViewModel> GetAll();
+
+        IEnumerable<SelectListItem> GetAllListItems();
 
         string GetId(string name);
 

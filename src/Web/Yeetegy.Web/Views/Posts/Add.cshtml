@@ -2,34 +2,37 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-@model IEnumerable<CategoryViewModel>;
+@model Yeetegy.Web.ViewModels.PostViewModels.AddPostsViewModel
 
 <div class="modal-dialog">
     <div class="modal-content">
         <form asp-controller="Posts" asp-action="Add" enctype="multipart/form-data" id="BlobUploadForm" method="post" class="form-label-left" role="form">
             <div class="modal-footer">
                 <div class="form-group">
-                    <textarea class="form-control" id="tittle" required="" maxlength="200" aria-label="With textarea" placeholder="Enter your tittle here" name="tittle" style="margin-bottom: 15px"></textarea>
+                    <label asp-for="Tittle"></label>
+                    <div><span class="badge badge-pill badge-danger" asp-validation-for="Tittle" disabled></span></div>
+
+                    <textarea asp-for="Tittle" class="form-control" placeholder="Enter your tittle here" style="margin-bottom: 15px"></textarea>
+
                     <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.redditmedia.com%2FIjV0oxTxuXpn_ENl8DT3SYyxineG5txy5YjWBfFJ_3I.jpg%3Fw%3D650%26s%3D1cbabef6d3ba6497e04232f4409d6ec8&f=1&nofb=1" class="card-img-top" alt="...">
-                    <div class="input-group" style="margin-top:15px">
+                    <div class="input-group" style="margin-top: 15px">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <label class="input-group-text text-white YeetegyBackground" for="inputGroupSelect01">Category</label>
+                                <label class="input-group-text text-white YeetegyBackground" asp-for="Category">Category</label>
                             </div>
-                            <select class="custom-select" id="category" name="category" required>
-                                <option>Choose a category...</option>
-                                @foreach (var category in Model)
-                                {
-                                    <option>@category.Name</option>
-                                }
+                            <select asp-for="Category" asp-items="Model.Categorys" class="custom-select" id="category" name="category">
                             </select>
                         </div>
-                        <label class="input-group-btn">
+                        <div class="container" style="margin-left: -15px">
+                            <span class="badge badge-pill badge-danger" asp-validation-for="File"></span>
+                        </div>
+                        <label>
                             <span class="btn YeetegyBackground text-white">
-                                Browse… <input type="file" req style="display: none;" name="file" id="FileInput">
+                                Browse… <input asp-for="File" req style="display: none;" id="FileInput">
                             </span>
                         </label>
                         <input type="text" class="form-control" readonly="" id="BrowseInput">
+
                     </div>
                 </div>
 
@@ -44,6 +47,7 @@
 </div>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
         $(document).on('change', ':file', function () {
             var input = $(this)

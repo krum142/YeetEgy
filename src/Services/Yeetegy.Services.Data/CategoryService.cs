@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Yeetegy.Data.Common.Repositories;
 using Yeetegy.Data.Models;
 using Yeetegy.Services.Data.Interfaces;
@@ -44,6 +45,18 @@ namespace Yeetegy.Services.Data
                     Name = c.Name,
                     ImageUrl = c.ImageUrl,
             }).ToList();
+
+            return categories;
+        }
+
+        public IEnumerable<SelectListItem> GetAllListItems()
+        {
+            var categories = this.categoryRepository
+                .AllAsNoTracking()
+                .Select(c => new SelectListItem()
+                {
+                    Text = c.Name,
+                }).ToList();
 
             return categories;
         }

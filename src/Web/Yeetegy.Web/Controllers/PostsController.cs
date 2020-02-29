@@ -14,7 +14,7 @@ namespace Yeetegy.Web.Controllers
     {
         private readonly IPostsService postsService;
         private readonly ICategoryService categoryService;
-        private readonly IList<string> AllowedMimeFiles = new List<string>()
+        private readonly IList<string> allowedMimeFiles = new List<string>()
         {
             "image/apng",
             "image/bmp",
@@ -47,9 +47,13 @@ namespace Yeetegy.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Add()
         {
-            var category = categoryService.GetAll();
 
-            return View(category);
+            var model = new AddPostsViewModel()
+            {
+                Categorys = this.categoryService.GetAllListItems(),
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -57,21 +61,22 @@ namespace Yeetegy.Web.Controllers
         {
             if (post.File != null && post.Tittle != null)
             {
-                var checkCategory = categoryService.IsThereAny(post.Category);
-                var fileContentType = AllowedMimeFiles.Contains(post.File.ContentType);
+                var checkCategory = this.categoryService.IsThereAny(post.Category);
+                var fileContentType = this.allowedMimeFiles.Contains(post.File.ContentType);
 
-                if (fileContentType && checkCategory && ModelState.IsValid)
+                if (fileContentType && checkCategory && this.ModelState.IsValid && post.File.Length <= 8000000)
                 {
                     var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                    await postsService.CreatePostAsync(post, user);
+                    await this.postsService.CreatePostAsync(post, user);
 
-                    return Redirect("/");
+                    return this.Redirect("/");
                 }
             }
-            
-            return this.Content("A wrong file type Implement me!!!");
-        }
 
+            post.Categorys = this.categoryService.GetAllListItems();
+
+            return this.View(post);
+        }
     }
 }
