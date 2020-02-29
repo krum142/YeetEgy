@@ -2,16 +2,18 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Yeetegy.Web.Infrastructure.ValidationAtributes;
 
 namespace Yeetegy.Web.ViewModels.PostViewModels
 {
     public class AddPostsViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Picture is Required!")]
+        [FileValidation]
         public IFormFile File { get; set; }
 
-        [Required]
-        [MaxLength(200)]
+        [Required(ErrorMessage = "Tittle Is Required!")]
+        [MaxLength(200,ErrorMessage = "Tittle cannot be above 200 symbols!")]
         public string Tittle { get; set; }
 
         [Required]

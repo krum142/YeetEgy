@@ -53,7 +53,7 @@ namespace Yeetegy.Web.Controllers
                 Categorys = this.categoryService.GetAllListItems(),
             };
 
-            return View(model);
+            return this.View(model);
         }
 
         [HttpPost]
@@ -62,9 +62,8 @@ namespace Yeetegy.Web.Controllers
             if (post.File != null && post.Tittle != null)
             {
                 var checkCategory = this.categoryService.IsThereAny(post.Category);
-                var fileContentType = this.allowedMimeFiles.Contains(post.File.ContentType);
 
-                if (fileContentType && checkCategory && this.ModelState.IsValid && post.File.Length <= 8000000)
+                if (checkCategory && this.ModelState.IsValid)
                 {
                     var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
 

@@ -71,7 +71,6 @@ namespace Yeetegy.Services.Data
 
                 await this.categoryRepository.SaveChangesAsync();
             }
-
         }
 
         public bool IsThereAny(string categoryName)

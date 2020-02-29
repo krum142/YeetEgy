@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Yeetegy.Data.Models\Yeetegy.Data.Models.csproj" />
     <ProjectReference Include="..\..\Services\Yeetegy.Services.Mapping\Yeetegy.Services.Mapping.csproj" />
+    <ProjectReference Include="..\Yeetegy.Web.Infrastructure\Yeetegy.Web.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

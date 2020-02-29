@@ -44,7 +44,7 @@ namespace Yeetegy.Web.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCategory(AddCategoryViewModel model)
         {
-            if (model.File != null && model.Category != null)
+            if (model.Category != null)
             {
                 if (this.ModelState.IsValid && this.allowedMimeFiles.Contains(model.File.ContentType))
                 {
@@ -53,7 +53,6 @@ namespace Yeetegy.Web.Areas.Administration.Controllers
                 }
 
             }
-
             return this.View(model);
         }
 
