@@ -22,10 +22,19 @@ namespace Yeetegy.Web.Areas.Identity.Pages.Account
 
         public void OnGet()
         {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                this.Response.Redirect("/");
+            }
         }
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return this.Redirect("/");
+            }
+
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
