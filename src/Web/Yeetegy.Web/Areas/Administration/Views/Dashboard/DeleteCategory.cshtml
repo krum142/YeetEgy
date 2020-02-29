@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "DeleteCategory";
 }
-
+@model IEnumerable<SelectListItem>
 <h1>DeleteAsyncCategory</h1>
 
 @if (User.IsInRole(GlobalConstants.AdministratorRoleName))
@@ -14,7 +14,9 @@
                 <div class="modal-footer">
                     <div class="form-group row">
                         <h3>Category Name</h3>
-                        <input type="text" class="form-control" id="category" required="" maxlength="30" aria-label="With textarea" placeholder="Category Name" name="category" style="margin-bottom: 15px">
+                    </div>
+                    <div class="input-group mb-3">
+                        <select asp-items="Model" class="custom-select" name="category"></select>
                     </div>
                     <div class="form-group">
                         <div class="input-group">

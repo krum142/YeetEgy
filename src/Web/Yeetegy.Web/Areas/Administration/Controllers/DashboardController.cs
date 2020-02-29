@@ -32,7 +32,7 @@ namespace Yeetegy.Web.Areas.Administration.Controllers
 
         public IActionResult Index()
         {
-            var viewModel = new IndexViewModel { SettingsCount = settingsService.GetCount(), };
+            var viewModel = new IndexViewModel { SettingsCount = this.settingsService.GetCount(), };
             return this.View(viewModel);
         }
 
@@ -59,17 +59,18 @@ namespace Yeetegy.Web.Areas.Administration.Controllers
 
         public IActionResult DeleteCategory()
         {
-            return this.View();
+            var model = this.categoryService.GetAllListItems();
+            return this.View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteCategory(string category)
         {
-            var isThereAnyCategory = categoryService.IsThereAny(category);
+            var isThereAnyCategory = this.categoryService.IsThereAny(category);
 
             if (isThereAnyCategory)
             {
-                await categoryService.DeleteAsync(category);
+                await this.categoryService.DeleteAsync(category);
             }
 
             return this.View();
