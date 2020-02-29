@@ -15,7 +15,7 @@ namespace Yeetegy.Web.Areas.Administration.Controllers
     {
         private readonly ISettingsService settingsService;
         private readonly ICategoryService categoryService;
-        private readonly IList<string> AllowedMimeFiles = new List<string>()
+        private readonly IList<string> allowedMimeFiles = new List<string>()
         {
             "image/apng",
             "image/bmp",
@@ -44,12 +44,17 @@ namespace Yeetegy.Web.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCategory(AddCategoryViewModel model)
         {
-            if (ModelState.IsValid && AllowedMimeFiles.Contains(model.File.ContentType))
+            if (model.File != null && model.Category != null)
             {
-               await this.categoryService.CreateAsync(model.Category,model.File);
+                if (this.ModelState.IsValid && this.allowedMimeFiles.Contains(model.File.ContentType))
+                {
+                    await this.categoryService.CreateAsync(model.Category, model.File);
+                    return this.Redirect("/");
+                }
+
             }
 
-            return Redirect("/");
+            return this.View(model);
         }
 
         public IActionResult DeleteCategory()

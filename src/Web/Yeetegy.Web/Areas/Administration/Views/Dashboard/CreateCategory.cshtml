@@ -3,23 +3,30 @@
 @{
     ViewData["Title"] = "CreateCategory";
 }
-
+@model Yeetegy.Web.ViewModels.Administration.Dashboard.AddCategoryViewModel
 <h1>CreateCategory</h1>
 
 @if (User.IsInRole(GlobalConstants.AdministratorRoleName))
 {
     <div class="modal-dialog">
         <div class="modal-content">
-            <form asp-controller="Dashboard" asp-action="CreateCategory" enctype="multipart/form-data" id="BlobUploadForm" method="post" class="form-label-left" role="form">
+            <form asp-controller="Dashboard" asp-action="CreateCategory" enctype="multipart/form-data" id="BlobUploadForm" method="post" role="form">
                 <div class="modal-footer">
                     <div class="form-group row">
-                        <h3>Category Name</h3>
-                        <input type="text" class="form-control" id="category" required="" maxlength="30" aria-label="With textarea" placeholder="Category Name" name="category" style="margin-bottom: 15px">
-                        <h3>Category Picture</h3>
-                        <div class="input-group" style="margin-top: 15px">
-                            <label class="input-group-btn">
+                        <div class="container" style="margin-left: -15px">
+                            <span class="badge badge-pill badge-danger" asp-validation-for="Category"></span>
+                        </div>
+                        <label asp-for="Category"></label>
+                        <input asp-for="Category" class="form-control" maxlength="30" aria-label="With textarea" placeholder="Category Name" style="margin-bottom: 15px">
+
+                        <div class="container" style="margin-left: -15px">
+                            <span class="badge badge-pill badge-danger" asp-validation-for="File"></span>
+                        </div>
+                        <label asp-for="File" value="Category Picture"></label>
+                        <div class="input-group">
+                            <label class="">
                                 <span class="btn YeetegyBackground text-white">
-                                    Browse… <input type="file" req style="display: none;" name="file" id="FileInput">
+                                    Browse… <input asp-for="File" style="display: none;">
                                 </span>
                             </label>
                             <input type="text" class="form-control" readonly="" id="BrowseInput">
@@ -38,6 +45,7 @@
 
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
         $(document).on('change', ':file', function () {
             var input = $(this)
