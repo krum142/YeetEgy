@@ -1,2 +1,2 @@
 # Yeetegy
-ASocialMediaWebApp
+A SocialMedia Web App
