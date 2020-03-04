@@ -30,22 +30,24 @@ $(document).ready(function () {
     var NoMoredata = false;
     var inProgress = false;
     var jsonn;
-    var posthtml2;
+    var posthtml;
+
+    var template =
+        '<div class="col-lg-8 col-md-8 mb-8" style="margin-bottom: 40px">\n' +
+            '<div class="card h-100">\n' +
+            '<div class="card-header font-italic">\n' +
+            '<h5>TittleToChange</h5>\n' +
+            '</div>\n' +
+            '<img id="1" src="ImgToChange" class="card-img-top">\n' +
+            '<div class="card-footer">\n' +
+            '<button type="button" class="btn btn-dark far fa-thumbs-up" style="width: 100px">Likes</button>\n' +
+            '<button type="button" class="btn btn-dark far fa-thumbs-down" style="width: 100px">Dislikes</button>\n' +
+            '<button type="button" class="btn btn-dark far fa-comment" style="width: 100px"></button>\n' +
+        '</div></div></div>\n';
+
+    alert(location.pathname);
     $(window).on("scroll",
         function () {
-            var posthtml =
-                '<div class="col-lg-8 col-md-8 mb-8" style="margin-bottom: 40px">\n' +
-                '<div class="card h-100">\n' +
-                '<div class="card-header font-italic">\n' +
-                '<h5>TittleToChange</h5>\n' +
-                '</div>\n' +
-                '<img id="1" src="ImgToChange" class="card-img-top">\n' +
-                '<div class="card-footer">\n' +
-                '<button type="button" class="btn btn-dark far fa-thumbs-up" style="width: 100px">Likes</button>\n' +
-                '<button type="button" class="btn btn-dark far fa-thumbs-down" style="width: 100px">Dislikes</button>\n' +
-                '<button type="button" class="btn btn-dark far fa-comment" style="width: 100px"></button>\n' +
-                '</div></div></div>\n';
-
             var docHeight = $(document).height();
             var winScrolled = $(window).height() + $(window).scrollTop();
             if ((docHeight - winScrolled) < 200) { // scroll time 
@@ -53,7 +55,10 @@ $(document).ready(function () {
                     inProgress = true;
                     fetch('/Posts/GetPost',
                         {
-                            method: "GET"
+                            method: "GET",
+                            headers: {
+                                "X-Category": location.pathname
+                            }
                         }).then(response => {
                             if (response.status === 200) {
                                 response.json().then(j => {
@@ -62,12 +67,12 @@ $(document).ready(function () {
                                         NoMoredata = true;
                                     } else {
                                         for (let i = 0; i < 5; i++) {
-                                            posthtml2 = posthtml,
-                                                posthtml2 = posthtml2.replace("Dislikes", jsonn[i].Dislikes),
-                                                posthtml2 = posthtml2.replace("Likes", jsonn[i].Likes),
-                                                posthtml2 = posthtml2.replace("ImgToChange", jsonn[i].ImgUrl),
-                                                posthtml2 = posthtml2.replace("TittleToChange", jsonn[i].Tittle),
-                                                document.getElementById("PostContainer").innerHTML += posthtml2;
+                                            posthtml = template,
+                                                posthtml = posthtml.replace("Dislikes", jsonn[i].Dislikes),
+                                                posthtml = posthtml.replace("Likes", jsonn[i].Likes),
+                                                posthtml = posthtml.replace("ImgToChange", jsonn[i].ImgUrl),
+                                                posthtml = posthtml.replace("TittleToChange", jsonn[i].Tittle),
+                                                document.getElementById("PostContainer").innerHTML += posthtml;
                                         }
                                     }
 

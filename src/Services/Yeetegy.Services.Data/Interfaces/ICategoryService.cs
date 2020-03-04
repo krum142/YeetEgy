@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Yeetegy.Data.Models;
 using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Services.Data.Interfaces
@@ -10,11 +11,13 @@ namespace Yeetegy.Services.Data.Interfaces
     {
         Task CreateAsync(string name, IFormFile image);
 
-        IEnumerable<CategoryViewModel> GetAll();
+        CategorysViewModel GetAll();
 
         IEnumerable<SelectListItem> GetAllListItems();
 
-        string GetId(string name);
+        string GetId(string categoryName);
+
+        string GetImg(string name);
 
         bool IsThereAny(string categoryName);
 

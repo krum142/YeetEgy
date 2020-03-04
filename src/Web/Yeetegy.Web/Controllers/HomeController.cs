@@ -17,12 +17,26 @@ namespace Yeetegy.Web.Controllers
             this.categoryService = categoryService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string category)
         {
+            var categories = this.categoryService.GetAll();
             this.Response.Cookies.Append("IdCookie", "0");
-            var categorys = categoryService.GetAll();
 
-            return View(categorys);
+            if (category == null)
+            {
+                return this.View(categories); // you gotta return some 404
+            }
+
+            if (this.categoryService.IsThereAny(category))
+            {
+                var currentCat = categoryService.GetImg(category);
+                categories.CurrentName = category;
+                categories.CurrentUrl = currentCat;
+                return this.View(categories);
+            }
+
+            return this.View(categories);
+
         }
 
         public IActionResult Privacy()
@@ -34,7 +48,7 @@ namespace Yeetegy.Web.Controllers
         public IActionResult Error()
         {
             return View(
-                new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
         }
     }
 }

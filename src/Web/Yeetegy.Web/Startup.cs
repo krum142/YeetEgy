@@ -118,10 +118,12 @@ namespace Yeetegy.Web
 
             app.UseEndpoints(
                 endpoints =>
-                    {
-                        endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                        endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                        endpoints.MapRazorPages();
+                {
+                    endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                        endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{category?}");
+                        endpoints.MapControllerRoute("Categorys", "/{category?}",
+                            new { Controller = "Home", action = "Index" });
+                    endpoints.MapRazorPages();
                     });
         }
     }

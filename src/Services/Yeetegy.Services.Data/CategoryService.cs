@@ -36,17 +36,21 @@ namespace Yeetegy.Services.Data
 
         }
 
-        public IEnumerable<CategoryViewModel> GetAll()
+        public CategorysViewModel GetAll()
         {
             var categories = this.categoryRepository
                 .AllAsNoTracking()
                 .Select(c => new CategoryViewModel
-            {
+                {
                     Name = c.Name,
                     ImageUrl = c.ImageUrl,
-            }).ToList();
+                }).ToList();
 
-            return categories;
+            var model = new CategorysViewModel()
+            {
+                CategoryViewModels = categories,
+            };
+            return model;
         }
 
         public IEnumerable<SelectListItem> GetAllListItems()
@@ -78,15 +82,25 @@ namespace Yeetegy.Services.Data
             return this.categoryRepository.AllAsNoTracking().Any(x => x.Name == categoryName);
         }
 
-        public string GetId(string name)
+        public string GetId(string categoryName)
         {
-            var category = this.categoryRepository
-                .AllAsNoTracking()
-                .Where(c => c.Name == name)
+            var categoryId = categoryRepository.AllAsNoTracking()
+                .Where(c => c.Name == categoryName)
                 .Select(c => c.Id)
                 .FirstOrDefault();
 
-            return category;
+            return categoryId;
+        }
+
+        public string GetImg(string categoryName)
+        {
+            var categoryImg = this.categoryRepository
+                .AllAsNoTracking()
+                .Where(c => c.Name == categoryName)
+                .Select(c => c.ImageUrl)
+                .FirstOrDefault();
+
+            return categoryImg;
         }
     }
 }

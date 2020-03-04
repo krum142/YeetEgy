@@ -14,14 +14,6 @@ namespace Yeetegy.Web.Controllers
     {
         private readonly IPostsService postsService;
         private readonly ICategoryService categoryService;
-        private readonly IList<string> allowedMimeFiles = new List<string>()
-        {
-            "image/apng",
-            "image/bmp",
-            "image/gif",
-            "image/jpeg",
-            "image/png"
-        };
 
         public PostsController(IPostsService postsService, ICategoryService categoryService)
         {
