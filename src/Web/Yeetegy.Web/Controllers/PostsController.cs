@@ -22,11 +22,12 @@ namespace Yeetegy.Web.Controllers
         }
 
         public IActionResult GetPost()
-        {
+        { 
+            var cookie = this.Request.Cookies.FirstOrDefault(c => c.Key == "IdCookie"); // potential ddos attack
 
-            var cookie = this.Request.Cookies.FirstOrDefault(c => c.Key == "IdCookie");
+            var header = this.Request.Headers.FirstOrDefault(x => x.Key == "x-category").Value.ToString().Trim();
 
-            var posts = postsService.GetFivePosts(int.Parse(cookie.Value));
+            var posts = this.postsService.GetFivePosts(int.Parse(cookie.Value), header);
 
             if (posts.Any())
             {
@@ -37,9 +38,8 @@ namespace Yeetegy.Web.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Add()
+        public IActionResult Add()
         {
-
             var model = new AddPostsViewModel()
             {
                 Categorys = this.categoryService.GetAllListItems(),

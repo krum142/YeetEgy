@@ -34,18 +34,18 @@ $(document).ready(function () {
 
     var template =
         '<div class="col-lg-8 col-md-8 mb-8" style="margin-bottom: 40px">\n' +
-            '<div class="card h-100">\n' +
-            '<div class="card-header font-italic">\n' +
-            '<h5>TittleToChange</h5>\n' +
-            '</div>\n' +
-            '<img id="1" src="ImgToChange" class="card-img-top">\n' +
-            '<div class="card-footer">\n' +
-            '<button type="button" class="btn btn-dark far fa-thumbs-up" style="width: 100px">Likes</button>\n' +
-            '<button type="button" class="btn btn-dark far fa-thumbs-down" style="width: 100px">Dislikes</button>\n' +
-            '<button type="button" class="btn btn-dark far fa-comment" style="width: 100px"></button>\n' +
+        '<div class="card h-100">\n' +
+        '<div class="card-header font-italic">\n' +
+        '<h5>TittleToChange</h5>\n' +
+        '</div>\n' +
+        '<img id="1" src="ImgToChange" class="card-img-top">\n' +
+        '<div class="card-footer">\n' +
+        '<button type="button" class="btn btn-dark far fa-thumbs-up" style="width: 100px">Likes</button>\n' +
+        '<button type="button" class="btn btn-dark far fa-thumbs-down" style="width: 100px">Dislikes</button>\n' +
+        '<button type="button" class="btn btn-dark far fa-comment" style="width: 100px"></button>\n' +
         '</div></div></div>\n';
 
-    alert(location.pathname);
+    //alert(location.pathname);
     $(window).on("scroll",
         function () {
             var docHeight = $(document).height();
@@ -57,7 +57,7 @@ $(document).ready(function () {
                         {
                             method: "GET",
                             headers: {
-                                "X-Category": location.pathname
+                                "X-Category": location.pathname.split("/").pop()
                             }
                         }).then(response => {
                             if (response.status === 200) {

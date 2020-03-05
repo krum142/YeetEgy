@@ -29,7 +29,7 @@ namespace Yeetegy.Web.Controllers
 
             if (this.categoryService.IsThereAny(category))
             {
-                var currentCat = categoryService.GetImg(category);
+                var currentCat = this.categoryService.GetImg(category);
                 categories.CurrentName = category;
                 categories.CurrentUrl = currentCat;
                 return this.View(categories);

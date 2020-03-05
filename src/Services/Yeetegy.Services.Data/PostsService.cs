@@ -25,7 +25,7 @@ namespace Yeetegy.Services.Data
 
         public async Task CreatePostAsync(AddPostsViewModel post, string userId)
         {
-            var urlTest = cloudinary.SaveCloudinary(post.File);
+            var urlTest = this.cloudinary.SaveCloudinary(post.File);
 
             var url = urlTest.Result;
 
@@ -36,7 +36,7 @@ namespace Yeetegy.Services.Data
                     ApplicationUserId = userId,
                     Tittle = post.Tittle,
                     ImgUrl = url,
-                    CategoryId = categoryService.GetId(post.Category),
+                    CategoryId = this.categoryService.GetId(post.Category),
                 };
 
                 await this.postRepository.AddAsync(newPost);
@@ -44,9 +44,26 @@ namespace Yeetegy.Services.Data
             }
         }
 
-        public IEnumerable<PostsViewModel> GetFivePosts(int skip)
+        public IEnumerable<PostsViewModel> GetFivePosts(int skip, string category)
         {
-            var posts = this.postRepository.All().OrderByDescending(x => x.CreatedOn).Skip(skip).Take(5).Select(p =>
+            if (this.categoryService.IsThereAny(category))
+            {
+                var p = this.postRepository.AllAsNoTracking().Where(x => x.Category.Name == category).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(5).Select(p =>
+                    new PostsViewModel()
+                    {
+                        Id = p.Id,
+                        ImgUrl = p.ImgUrl,
+                        Tittle = p.Tittle,
+                        CategoryId = p.CategoryId,
+                        Dislikes = p.Dislikes,
+                        Likes = p.Likes,
+                    }).ToList();
+
+                return p;
+            }
+
+            var posts = this.postRepository.AllAsNoTracking()
+                .OrderByDescending(x => x.CreatedOn).Skip(skip).Take(5).Select(p =>
                 new PostsViewModel()
                 {
                     Id = p.Id,
