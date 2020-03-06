@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Yeetegy.Services.Data.Interfaces;
+using Yeetegy.Web.ViewModels;
 using Yeetegy.Web.ViewModels.PostViewModels;
 
 namespace Yeetegy.Web.Controllers
@@ -22,19 +23,36 @@ namespace Yeetegy.Web.Controllers
         }
 
         public IActionResult GetPost()
-        { 
+        {
             var cookie = this.Request.Cookies.FirstOrDefault(c => c.Key == "IdCookie"); // potential ddos attack
 
             var header = this.Request.Headers.FirstOrDefault(x => x.Key == "x-category").Value.ToString().Trim();
-
-            var posts = this.postsService.GetFivePosts(int.Parse(cookie.Value), header);
-
-            if (posts.Any())
+            // you can use a swtich here could be faster
+            if (string.IsNullOrWhiteSpace(header) || header.ToLower() == "newest")
             {
-                this.Response.Cookies.Append("IdCookie", (int.Parse(cookie.Value) + 5).ToString());
+                var posts = this.postsService.GetFivePostsLatest(int.Parse(cookie.Value));
+
+                if (posts.Any())
+                {
+                    this.Response.Cookies.Append("IdCookie", (int.Parse(cookie.Value) + 5).ToString());
+                }
+
+                return this.Json(JsonConvert.SerializeObject(posts));
             }
 
-            return this.Json(JsonConvert.SerializeObject(posts));
+            if (this.categoryService.IsThereAny(header))
+            {
+                var posts = this.postsService.GetFivePostsCategory(int.Parse(cookie.Value),header);
+
+                if (posts.Any())
+                {
+                    this.Response.Cookies.Append("IdCookie", (int.Parse(cookie.Value) + 5).ToString());
+                }
+
+                return this.Json(JsonConvert.SerializeObject(posts));
+            }
+
+            return this.Json(JsonConvert.SerializeObject(new List<PostsViewModel>()));
         }
 
         [Authorize]

@@ -9,6 +9,8 @@ namespace Yeetegy.Services.Data.Interfaces
     {
         Task CreatePostAsync(AddPostsViewModel post, string userId);
 
-        IEnumerable<PostsViewModel> GetFivePosts(int skip,string category);
+        IEnumerable<PostsViewModel> GetFivePostsLatest(int skip);
+
+        IEnumerable<PostsViewModel> GetFivePostsCategory(int skip, string category);
     }
 }

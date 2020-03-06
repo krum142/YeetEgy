@@ -12,12 +12,18 @@
 
         <div class="list-group">
             <h2>Categorys</h2>
+            <a href="/Newest" alt="/Newest">
+                <div class="chip list-group-item-action">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ytimg.com%2Fvi%2FZqddpqbh6f0%2Fmaxresdefault.jpg&f=1&nofb=1" alt="Newest" width="96" height="96">
+                    <p class="text-white">Newest</p>
+                </div>
+            </a>
             @foreach (var categorys in Model.CategoryViewModels)
             {
                 <a href="/@categorys.Name" alt="@categorys.Name">
                     <div class="chip list-group-item-action">
                         <img src="@categorys.ImageUrl" alt="Person" width="96" height="96">
-                        <p  class="text-white">@categorys.Name</p>
+                        <p class="text-white">@categorys.Name</p>
                     </div>
                 </a>
             }
@@ -64,3 +70,10 @@
     <!-- /.col-lg-9 -->
 </div>
 <!-- /.row -->
+
+
+@section Scripts {
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+}

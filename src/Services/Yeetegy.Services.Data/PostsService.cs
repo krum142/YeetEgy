@@ -44,26 +44,9 @@ namespace Yeetegy.Services.Data
             }
         }
 
-        public IEnumerable<PostsViewModel> GetFivePosts(int skip, string category)
+        public IEnumerable<PostsViewModel> GetFivePostsCategory(int skip, string category)
         {
-            if (this.categoryService.IsThereAny(category))
-            {
-                var p = this.postRepository.AllAsNoTracking().Where(x => x.Category.Name == category).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(5).Select(p =>
-                    new PostsViewModel()
-                    {
-                        Id = p.Id,
-                        ImgUrl = p.ImgUrl,
-                        Tittle = p.Tittle,
-                        CategoryId = p.CategoryId,
-                        Dislikes = p.Dislikes,
-                        Likes = p.Likes,
-                    }).ToList();
-
-                return p;
-            }
-
-            var posts = this.postRepository.AllAsNoTracking()
-                .OrderByDescending(x => x.CreatedOn).Skip(skip).Take(5).Select(p =>
+            return this.postRepository.AllAsNoTracking().Where(x => x.Category.Name == category).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(5).Select(p =>
                 new PostsViewModel()
                 {
                     Id = p.Id,
@@ -74,7 +57,23 @@ namespace Yeetegy.Services.Data
                     Likes = p.Likes,
                 }).ToList();
 
-            return posts;
+        }
+
+
+        public IEnumerable<PostsViewModel> GetFivePostsLatest(int skip)
+        {
+
+            return this.postRepository.AllAsNoTracking()
+                .OrderByDescending(x => x.CreatedOn).Skip(skip).Take(5).Select(p =>
+                new PostsViewModel()
+                {
+                    Id = p.Id,
+                    ImgUrl = p.ImgUrl,
+                    Tittle = p.Tittle,
+                    CategoryId = p.CategoryId,
+                    Dislikes = p.Dislikes,
+                    Likes = p.Likes,
+                }).ToList();
         }
     }
 }
