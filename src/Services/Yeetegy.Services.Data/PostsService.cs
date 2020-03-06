@@ -56,9 +56,7 @@ namespace Yeetegy.Services.Data
                     Dislikes = p.Dislikes,
                     Likes = p.Likes,
                 }).ToList();
-
         }
-
 
         public IEnumerable<PostsViewModel> GetFivePostsLatest(int skip)
         {

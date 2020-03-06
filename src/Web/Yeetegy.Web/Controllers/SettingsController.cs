@@ -1,16 +1,14 @@
-﻿using Yeetegy.Services.Data.Interfaces;
+﻿using System;
+using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Mvc;
+using Yeetegy.Data.Common.Repositories;
+using Yeetegy.Data.Models;
+using Yeetegy.Services.Data.Interfaces;
+using Yeetegy.Web.ViewModels.Settings;
 
 namespace Yeetegy.Web.Controllers
 {
-    using System;
-    using System.Threading.Tasks;
-
-    using Yeetegy.Data.Common.Repositories;
-    using Data.Models;
-    using ViewModels.Settings;
-
-    using Microsoft.AspNetCore.Mvc;
-
     public class SettingsController : BaseController
     {
         private readonly ISettingsService settingsService;
@@ -25,9 +23,9 @@ namespace Yeetegy.Web.Controllers
 
         public IActionResult Index()
         {
-            var settings = settingsService.GetAll<SettingViewModel>();
+            var settings = this.settingsService.GetAll<SettingViewModel>();
             var model = new SettingsListViewModel { Settings = settings };
-            return View(model);
+            return this.View(model);
         }
 
         public async Task<IActionResult> InsertSetting()
@@ -38,7 +36,7 @@ namespace Yeetegy.Web.Controllers
             await repository.AddAsync(setting);
             await repository.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return this.RedirectToAction(nameof(Index));
         }
     }
 }

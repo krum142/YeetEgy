@@ -1,28 +1,26 @@
-﻿using Yeetegy.Services.Data.Interfaces;
+﻿using System.Reflection;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Yeetegy.Data;
+using Yeetegy.Data.Common;
+using Yeetegy.Data.Common.Repositories;
+using Yeetegy.Data.Models;
+using Yeetegy.Data.Repositories;
+using Yeetegy.Data.Seeding;
+using Yeetegy.Services.Data;
+using Yeetegy.Services.Data.Interfaces;
+using Yeetegy.Services.Mapping;
+using Yeetegy.Services.Messaging;
+using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Web
 {
-    using System.Reflection;
-
-    using Data;
-    using Yeetegy.Data.Common;
-    using Yeetegy.Data.Common.Repositories;
-    using Data.Models;
-    using Data.Repositories;
-    using Data.Seeding;
-    using Yeetegy.Services.Data;
-    using Services.Mapping;
-    using Services.Messaging;
-    using ViewModels;
-
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-
     public class Startup
     {
         private readonly IConfiguration configuration;
@@ -51,7 +49,7 @@ namespace Yeetegy.Web
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddSingleton(configuration);
+            services.AddSingleton(this.configuration);
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
@@ -107,6 +105,8 @@ namespace Yeetegy.Web
                 app.UseHsts();
             }
 
+            app.UseStatusCodePagesWithRedirects("/Home/HttpError?statusCode={0}");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -120,11 +120,10 @@ namespace Yeetegy.Web
                 endpoints =>
                 {
                     endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                        endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{category?}");
-                        endpoints.MapControllerRoute("Categorys", "/{category?}",
-                            new { Controller = "Home", action = "Index" });
+                    endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{category?}");
+                    endpoints.MapControllerRoute("categories", "/{category?}", new { Controller = "Home", action = "Index" });
                     endpoints.MapRazorPages();
-                    });
+                });
         }
     }
 }

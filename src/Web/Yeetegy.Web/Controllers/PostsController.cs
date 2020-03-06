@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -75,7 +76,7 @@ namespace Yeetegy.Web.Controllers
 
                 if (checkCategory && this.ModelState.IsValid)
                 {
-                    var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var user = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                     await this.postsService.CreatePostAsync(post, user);
 

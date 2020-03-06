@@ -1,7 +1,7 @@
-﻿namespace Yeetegy.Web.Controllers
-{
-    using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
+namespace Yeetegy.Web.Controllers
+{
     public class BaseController : Controller
     {
     }

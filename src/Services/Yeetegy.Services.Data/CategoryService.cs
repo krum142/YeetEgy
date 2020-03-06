@@ -84,7 +84,7 @@ namespace Yeetegy.Services.Data
 
         public string GetId(string categoryName)
         {
-            var categoryId = categoryRepository.AllAsNoTracking()
+            var categoryId = this.categoryRepository.AllAsNoTracking()
                 .Where(c => c.Name == categoryName)
                 .Select(c => c.Id)
                 .FirstOrDefault();

@@ -3,12 +3,6 @@
 
 // Write your JavaScript code.
 //Get the button
-var mybutton = document.getElementById("myBtn");
-
-
-var myh2 = document.getElementById("test123");
-
-
 var pageindex = 2;
 var noMoredata = false;
 var inProgress = false;

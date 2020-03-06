@@ -1,13 +1,11 @@
-﻿using Yeetegy.Services.Data.Interfaces;
+﻿using System.Diagnostics;
+
+using Microsoft.AspNetCore.Mvc;
+using Yeetegy.Services.Data.Interfaces;
+using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Web.Controllers
 {
-    using System.Diagnostics;
-
-    using ViewModels;
-
-    using Microsoft.AspNetCore.Mvc;
-
     public class HomeController : BaseController
     {
         private readonly ICategoryService categoryService;
@@ -35,8 +33,12 @@ namespace Yeetegy.Web.Controllers
                 return this.View(categories);
             }
 
-            return this.View(categories);
+            return this.Redirect("/Home/HttpError?statusCode=404");
+        }
 
+        public IActionResult HttpError(int statusCode)
+        {
+            return this.View(statusCode);
         }
 
         public IActionResult Privacy()
