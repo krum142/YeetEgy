@@ -23,9 +23,9 @@ var template =
         '</div>\n' +
         '<img id="1" src="ImgToChange" class="card-img-top">\n' +
         '<div class="card-footer">\n' +
-        '<button type="button" class="btn btn-dark far fa-thumbs-up" style="width: 100px">Likes</button>\n' +
-        '<button type="button" class="btn btn-dark far fa-thumbs-down" style="width: 100px">Dislikes</button>\n' +
-        '<button type="button" class="btn btn-dark far fa-comment" style="width: 100px"></button>\n' +
+        '<button type="button" class="btn btn-dark fa fa-thumbs-up" style="width: 100px">Likes</button>\n' +
+        '<button type="button" class="btn btn-dark fa fa-thumbs-down" style="width: 100px">Dislikes</button>\n' +
+        '<button type="button" class="btn btn-dark fa fa-comment" style="width: 100px"></button>\n' +
         '</div></div></div>\n';
 
 function getPosts() {
@@ -66,6 +66,5 @@ function getPosts() {
 
 $(document).ready(function () {
     //alert(location.pathname);
-    getP
     $(window).on("scroll",getPosts);
 });
