@@ -1,28 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Yeetegy.Common;
 using Yeetegy.Services.Data.Interfaces;
+using Yeetegy.Web.ViewModels.Administration.Dashboard;
 
 namespace Yeetegy.Web.Areas.Administration.Controllers
 {
-    using Yeetegy.Web.ViewModels.Administration.Dashboard;
-
-    using Microsoft.AspNetCore.Mvc;
-
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class DashboardController : AdministrationController
     {
         private readonly ISettingsService settingsService;
         private readonly ICategoryService categoryService;
-        private readonly IList<string> allowedMimeFiles = new List<string>()
-        {
-            "image/apng",
-            "image/bmp",
-            "image/gif",
-            "image/jpeg",
-            "image/png"
-        };
 
         public DashboardController(ISettingsService settingsService, ICategoryService categoryService)
         {
@@ -46,7 +36,7 @@ namespace Yeetegy.Web.Areas.Administration.Controllers
         {
             if (model.Category != null)
             {
-                if (this.ModelState.IsValid && this.allowedMimeFiles.Contains(model.File.ContentType))
+                if (this.ModelState.IsValid)
                 {
                     await this.categoryService.CreateAsync(model.Category, model.File);
                     return this.Redirect("/");

@@ -29,8 +29,8 @@ namespace Yeetegy.Web.Controllers
 
         public async Task<IActionResult> GetPost()
         {
-            var cookie = this.Request.Cookies.FirstOrDefault(c => c.Key == "IdCookie"); // potential ddos attack
             var loadPostsCount = GlobalConstants.LoadPostCountAjax;
+            var cookie = this.Request.Headers.FirstOrDefault(c => c.Key == "IdCookie"); // potential ddos attack
             var header = this.Request.Headers.FirstOrDefault(x => x.Key == "x-category").Value.ToString().Trim();
 
             header = string.IsNullOrWhiteSpace(header) ? "Newest" : header;
