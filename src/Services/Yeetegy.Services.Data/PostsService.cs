@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Yeetegy.Services.Mapping;
 using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Services.Data
@@ -36,7 +37,7 @@ namespace Yeetegy.Services.Data
                     ApplicationUserId = userId,
                     Tittle = post.Tittle,
                     ImgUrl = url,
-                    CategoryId = this.categoryService.GetId(post.Category),
+                    CategoryId = await this.categoryService.GetIdAsync(post.Category),
                 };
 
                 await this.postRepository.AddAsync(newPost);
@@ -44,34 +45,35 @@ namespace Yeetegy.Services.Data
             }
         }
 
-        public IEnumerable<PostsViewModel> GetFivePostsCategory(int skip, string category)
+        public IEnumerable<T> GetPosts<T>(int skip, int take, string category = null)
         {
-            return this.postRepository.AllAsNoTracking().Where(x => x.Category.Name == category).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(5).Select(p =>
-                new PostsViewModel()
-                {
-                    Id = p.Id,
-                    ImgUrl = p.ImgUrl,
-                    Tittle = p.Tittle,
-                    CategoryId = p.CategoryId,
-                    Dislikes = p.Dislikes,
-                    Likes = p.Likes,
-                }).ToList();
+            var query = this.postRepository.AllAsNoTracking();
+
+            if (category != null)
+            {
+                query = query.Where(x => x.Category.Name == category);
+            }
+
+            return query.OrderByDescending(x => x.CreatedOn).Skip(skip).Take(take).To<T>().ToList();
         }
 
-        public IEnumerable<PostsViewModel> GetFivePostsLatest(int skip)
+        public IEnumerable<T> GetPostsPopular<T>(int skip, int take)
         {
+            var query = this.postRepository.AllAsNoTracking();
 
-            return this.postRepository.AllAsNoTracking()
-                .OrderByDescending(x => x.CreatedOn).Skip(skip).Take(5).Select(p =>
-                new PostsViewModel()
-                {
-                    Id = p.Id,
-                    ImgUrl = p.ImgUrl,
-                    Tittle = p.Tittle,
-                    CategoryId = p.CategoryId,
-                    Dislikes = p.Dislikes,
-                    Likes = p.Likes,
-                }).ToList();
+            query = query.OrderByDescending(x => x.Likes).ThenByDescending(x => x.CreatedOn);
+
+            return query.Skip(skip).Take(take).To<T>().ToList();
         }
+
+        public IEnumerable<T> GetPostsTrending<T>(int skip, int take)
+        {
+            var query = this.postRepository.AllAsNoTracking();
+
+            query = query.OrderByDescending(x => x.Comments.Count).ThenByDescending(x => x.CreatedOn);
+
+            return query.Skip(skip).Take(take).To<T>().ToList();
+        }
+
     }
 }

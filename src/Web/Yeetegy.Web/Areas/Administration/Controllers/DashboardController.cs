@@ -65,7 +65,7 @@ namespace Yeetegy.Web.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteCategory(string category)
         {
-            var isThereAnyCategory = this.categoryService.IsThereAny(category);
+            var isThereAnyCategory = await this.categoryService.IsThereAnyAsync(category);
 
             if (isThereAnyCategory)
             {

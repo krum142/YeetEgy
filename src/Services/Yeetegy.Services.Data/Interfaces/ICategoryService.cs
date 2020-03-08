@@ -11,15 +11,15 @@ namespace Yeetegy.Services.Data.Interfaces
     {
         Task CreateAsync(string name, IFormFile image);
 
-        CategorysViewModel GetAll();
+        IEnumerable<T> GetAll<T>();
 
         IEnumerable<SelectListItem> GetAllListItems();
 
-        string GetId(string categoryName);
+        Task<string> GetIdAsync(string categoryName);
 
-        string GetImg(string name);
+        Task<string> GetImgAsync(string categoryName); // delete it if you think its worthless
 
-        bool IsThereAny(string categoryName);
+        Task<bool> IsThereAnyAsync(string categoryName);
 
         Task DeleteAsync(string name);
     }

@@ -1,6 +1,9 @@
-﻿namespace Yeetegy.Web.ViewModels
+﻿using Yeetegy.Data.Models;
+using Yeetegy.Services.Mapping;
+
+namespace Yeetegy.Web.ViewModels
 {
-    public class CategoryViewModel
+    public class CategoryViewModel : IMapFrom<Category>
     {
         public string Name { get; set; }
 

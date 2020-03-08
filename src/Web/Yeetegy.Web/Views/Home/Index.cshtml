@@ -1,7 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model CategorysViewModel
+@using Yeetegy.Common
+@model IEnumerable<CategoryViewModel>
 @*<div class="text-center">
         <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
         <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
@@ -12,13 +13,19 @@
 
         <div class="list-group">
             <h2>Categorys</h2>
-            <a href="/Newest" alt="/Newest">
-                <div class="chip list-group-item-action">
-                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ytimg.com%2Fvi%2FZqddpqbh6f0%2Fmaxresdefault.jpg&f=1&nofb=1" alt="Newest" width="96" height="96">
-                    <p class="text-white">Newest</p>
-                </div>
-            </a>
-            @foreach (var categorys in Model.CategoryViewModels)
+
+
+            @foreach (var globalCategorys in GlobalConstants.ConstantCategories)
+            {
+                <a href="/@globalCategorys.Key" alt="@globalCategorys.Key">
+                    <div class="chip list-group-item-action">
+                        <img src="@globalCategorys.Value" alt="Person" width="96" height="96">
+                        <p class="text-white">@globalCategorys.Key</p>
+                    </div>
+                </a>
+            }
+
+            @foreach (var categorys in Model)
             {
                 <a href="/@categorys.Name" alt="@categorys.Name">
                     <div class="chip list-group-item-action">
@@ -39,9 +46,9 @@
             <div class="col-lg-8 col-md-8" style="margin-bottom: 40px">
                 <div class="card h-100">
                     <div class="card-header font-italic">
-                        <h5>@Model.CurrentName</h5>
+                        <h5>@this.ViewData["CategoryName"]</h5>
                     </div>
-                    <img id="srcP" src="@Model.CurrentUrl" class="card-img-top" alt="...">
+                    <img id="srcP" src="@this.ViewData["CategoryUrl"]" class="card-img-top" alt="...">
                     <div class="card-footer">
                         <button type="button" class="btn btn-dark fa fa-thumbs-up" style="width: 100px">4000</button>
                         <button type="button" class="btn btn-dark fa fa-thumbs-down" style="width: 100px">2000</button>

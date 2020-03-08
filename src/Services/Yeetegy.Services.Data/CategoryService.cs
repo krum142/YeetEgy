@@ -3,9 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Yeetegy.Data.Common.Repositories;
 using Yeetegy.Data.Models;
 using Yeetegy.Services.Data.Interfaces;
+using Yeetegy.Services.Mapping;
 using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Services.Data
@@ -36,21 +38,13 @@ namespace Yeetegy.Services.Data
 
         }
 
-        public CategorysViewModel GetAll()
+        public IEnumerable<T> GetAll<T>()
         {
             var categories = this.categoryRepository
                 .AllAsNoTracking()
-                .Select(c => new CategoryViewModel
-                {
-                    Name = c.Name,
-                    ImageUrl = c.ImageUrl,
-                }).ToList();
+                .To<T>().ToList();
 
-            var model = new CategorysViewModel()
-            {
-                CategoryViewModels = categories,
-            };
-            return model;
+            return categories;
         }
 
         public IEnumerable<SelectListItem> GetAllListItems()
@@ -77,28 +71,28 @@ namespace Yeetegy.Services.Data
             }
         }
 
-        public bool IsThereAny(string categoryName)
+        public async Task<bool> IsThereAnyAsync(string categoryName)
         {
-            return this.categoryRepository.AllAsNoTracking().Any(x => x.Name == categoryName);
+            return await this.categoryRepository.AllAsNoTracking().AnyAsync(x => x.Name == categoryName);
         }
 
-        public string GetId(string categoryName)
+        public async Task<string> GetIdAsync(string categoryName)
         {
-            var categoryId = this.categoryRepository.AllAsNoTracking()
+            var categoryId = await this.categoryRepository.AllAsNoTracking()
                 .Where(c => c.Name == categoryName)
                 .Select(c => c.Id)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             return categoryId;
         }
 
-        public string GetImg(string categoryName)
+        public async Task<string> GetImgAsync(string categoryName)
         {
-            var categoryImg = this.categoryRepository
+            var categoryImg = await this.categoryRepository
                 .AllAsNoTracking()
                 .Where(c => c.Name == categoryName)
                 .Select(c => c.ImageUrl)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             return categoryImg;
         }
