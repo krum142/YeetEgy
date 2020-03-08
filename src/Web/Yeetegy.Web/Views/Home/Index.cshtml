@@ -15,22 +15,22 @@
             <h2>Categorys</h2>
 
 
-            @foreach (var globalCategorys in GlobalConstants.ConstantCategories)
+            @foreach (var globalCategories in GlobalConstants.ConstantCategories)
             {
-                <a href="/@globalCategorys.Key" alt="@globalCategorys.Key">
+                <a href="/@globalCategories.Key" alt="@globalCategories.Key">
                     <div class="chip list-group-item-action">
-                        <img src="@globalCategorys.Value" alt="Person" width="96" height="96">
-                        <p class="text-white">@globalCategorys.Key</p>
+                        <img src="@globalCategories.Value" alt="Person" width="96" height="96">
+                        <p class="text-white">@globalCategories.Key</p>
                     </div>
                 </a>
             }
 
-            @foreach (var categorys in Model)
+            @foreach (var categories in Model)
             {
-                <a href="/@categorys.Name" alt="@categorys.Name">
+                <a href="/@categories.Name" alt="@categories.Name">
                     <div class="chip list-group-item-action">
-                        <img src="@categorys.ImageUrl" alt="Person" width="96" height="96">
-                        <p class="text-white">@categorys.Name</p>
+                        <img src="@categories.ImageUrl" alt="Person" width="96" height="96">
+                        <p class="text-white">@categories.Name</p>
                     </div>
                 </a>
             }
