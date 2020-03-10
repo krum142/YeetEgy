@@ -17,9 +17,9 @@ var template =
         '</div>\n' +
         '<img id="1" src="ImgToChange" class="card-img-top">\n' +
         '<div class="card-footer">\n' +
-        '<button type="button" class="btn btn-dark fa fa-thumbs-up" style="width: 100px">Likes</button>\n' +
-        '<button type="button" class="btn btn-dark fa fa-thumbs-down" style="width: 100px">Dislikes</button>\n' +
-        '<button type="button" class="btn btn-dark fa fa-comment" style="width: 100px"></button>\n' +
+        '<button type="button"  onClick="likeButton()" data-arg1="PostId" class="btn btn-dark fa fa-thumbs-up" style="width: 100px">Likes</button>\n' +
+        '<button type="button"  onClick="likeButton()" data-arg1="PostId" class="btn btn-dark fa fa-thumbs-down" style="width: 100px">Dislikes</button>\n' +
+        '<button type="button" onClick="likeButton()" data-arg1="PostId" class="btn btn-dark fa fa-comment" style="width: 100px"></button>\n' +
         '</div></div></div>\n';
 
 function getPosts() {
@@ -43,8 +43,11 @@ function getPosts() {
                         } else {
                             for (let i = 0; i < 5; i++) {
                                 posthtml = template,
+                                    posthtml = posthtml.replace("PostId", jsonn[i].Id),
                                     posthtml = posthtml.replace("Dislikes", jsonn[i].Dislikes),
+                                    posthtml = posthtml.replace("PostId", jsonn[i].Id),
                                     posthtml = posthtml.replace("Likes", jsonn[i].Likes),
+                                    posthtml = posthtml.replace("PostId", jsonn[i].Id),
                                     posthtml = posthtml.replace("ImgToChange", jsonn[i].ImgUrl),
                                     posthtml = posthtml.replace("TittleToChange", jsonn[i].Tittle),
                                     document.getElementById("PostContainer").innerHTML += posthtml;

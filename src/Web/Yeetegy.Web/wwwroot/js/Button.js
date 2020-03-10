@@ -1,4 +1,6 @@
 // When the user scrolls down 20px from the top of the document, show the button
+var mybutton = document.getElementById("myBtn");
+
 window.onscroll = function () { scrollFunction() };
 
 function scrollFunction() {
@@ -13,4 +15,12 @@ function scrollFunction() {
 function topFunction() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+}
+
+
+function likeButton() {
+    var nameOfFunction = this[event.target.name];
+    var arg1 = event.target.getAttribute('data-arg1');
+   
+    alert(arg1);
 }
