@@ -3,12 +3,11 @@
 
 // Write your JavaScript code.
 //Get the button
-var pageindex = 2;
+var myPageIndex = 0;
 var noMoredata = false;
 var inProgress = false;
 var jsonn;
 var posthtml;
-
 var template =
     '<div class="col-lg-8 col-md-8 mb-8" style="margin-bottom: 40px">\n' +
         '<div class="card h-100">\n' +
@@ -28,7 +27,7 @@ function getPosts() {
     if ((docHeight - winScrolled) < 200) { // scroll time 
         if (noMoredata === false && inProgress === false) {
             inProgress = true;
-            fetch('/Posts/GetPost',
+            fetch('/Posts/GetPost?page=' + myPageIndex,
                 {
                     method: "GET",
                     headers: {
@@ -55,6 +54,7 @@ function getPosts() {
                         }
                     });
                     inProgress = false;
+                    myPageIndex += 5;
                 }
             });
         }
@@ -63,5 +63,5 @@ function getPosts() {
 
 $(document).ready(function () {
     //alert(location.pathname);
-    $(window).on("scroll",getPosts);
+    $(window).on("scroll", getPosts);
 });

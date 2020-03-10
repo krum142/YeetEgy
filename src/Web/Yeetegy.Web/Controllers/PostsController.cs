@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 using Yeetegy.Common;
 using Yeetegy.Services.Data.Interfaces;
@@ -27,10 +24,9 @@ namespace Yeetegy.Web.Controllers
             this.categoryService = categoryService;
         }
 
-        public async Task<IActionResult> GetPost()
+        public async Task<IActionResult> GetPost(int page)
         {
             var loadPostsCount = GlobalConstants.LoadPostCountAjax;
-            var cookie = this.Request.Cookies.FirstOrDefault(c => c.Key == "IdCookie"); // potential ddos attack
             var header = this.Request.Headers.FirstOrDefault(x => x.Key == "x-category").Value.ToString().Trim();
 
             header = string.IsNullOrWhiteSpace(header) ? "Newest" : header;
@@ -39,28 +35,16 @@ namespace Yeetegy.Web.Controllers
             {
                 var posts = header switch
                 {
-                    "Newest" => this.postsService.GetPosts<PostsViewModel>(int.Parse(cookie.Value), loadPostsCount),
-                    "Popular" => this.postsService.GetPostsPopular<PostsViewModel>(int.Parse(cookie.Value), loadPostsCount),
-                    "Discussed" => this.postsService.GetPostsTrending<PostsViewModel>(int.Parse(cookie.Value), loadPostsCount),
+                    "Newest" => this.postsService.GetPosts<PostsViewModel>(page, loadPostsCount),
+                    "Popular" => this.postsService.GetPostsPopular<PostsViewModel>(page, loadPostsCount),
+                    "Discussed" => this.postsService.GetPostsTrending<PostsViewModel>(page, loadPostsCount),
                 };
-
-                if (posts.Any())
-                {
-                    this.Response.Cookies.Append("IdCookie", (int.Parse(cookie.Value) + 5).ToString());
-                }
-
                 return this.Json(JsonConvert.SerializeObject(posts));
             }
 
             if (await this.categoryService.IsThereAnyAsync(header))
             {
-                var posts = this.postsService.GetPosts<PostsViewModel>(int.Parse(cookie.Value), loadPostsCount, header);
-
-                if (posts.Any())
-                {
-                    this.Response.Cookies.Append("IdCookie", (int.Parse(cookie.Value) + loadPostsCount).ToString());
-                }
-
+                var posts = this.postsService.GetPosts<PostsViewModel>(page, loadPostsCount, header);
                 return this.Json(JsonConvert.SerializeObject(posts));
             }
 
