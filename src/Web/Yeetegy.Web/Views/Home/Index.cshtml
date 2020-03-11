@@ -49,36 +49,26 @@
                         <h5>@this.ViewData["CategoryName"]</h5>
                     </div>
                     <img id="srcP" src="@this.ViewData["CategoryUrl"]" class="card-img-top" alt="...">
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-dark fa fa-thumbs-up" style="width: 100px">4000</button>
-                        <button type="button" class="btn btn-dark fa fa-thumbs-down" style="width: 100px">2000</button>
-                        <button type="button" class="btn btn-dark fa fa-comment" style="width: 100px"></button>
-                    </div>
                 </div>
             </div>
 
-            <div class="col-lg-8 col-md-8" style="margin-bottom: 40px">
-                <div class="card h-100">
-                    <div class="card-header font-italic">
-                        <h5>Some quick example text to build on the card title and make up the bulk of the card's content.</h5>
-                    </div>
-                    <img src="https://res.cloudinary.com/cloudnameiscool/image/upload/v1582325201/b76224eb-76fe-4ed4-8ede-bcc5a087054f.gif" class="card-img-top" alt="...">
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-dark fa fa-thumbs-up" style="width: 100px">9252</button>
-                        <button type="button" class="btn btn-dark fa fa-thumbs-down" style="width: 100px">125</button>
-                        <button type="button" class="btn btn-dark fa fa-comment" style="width: 100px"></button>
-                    </div>
-                </div>
-            </div>
-
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
+        <!-- /.col-lg-9 -->
     </div>
-    <!-- /.col-lg-9 -->
 </div>
 <!-- /.row -->
 
 
 @section Scripts {
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+
+        $(document).ready(function () {
+            DomOperation.call();
+            $(window).on("scroll", getPosts);
+        });
+
+
+    </script>
 }

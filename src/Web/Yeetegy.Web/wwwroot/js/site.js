@@ -3,37 +3,25 @@
 
 // Write your JavaScript code.
 //Get the button
+
+
 var myPageIndex = 0;
 var noMoredata = false;
 var inProgress = false;
 var jsonn;
 var posthtml;
-var template =
-    '<div class="col-lg-8 col-md-8 mb-8" style="margin-bottom: 40px">\n' +
-        '<div class="card h-100">\n' +
-        '<div class="card-header font-italic">\n' +
-        '<h5>TittleToChange</h5>\n' +
-        '</div>\n' +
-        '<img id="1" src="ImgToChange" class="card-img-top">\n' +
-        '<div class="card-footer">\n' +
-        '<button type="button"  onClick="likeButton()" data-arg1="PostId" class="btn btn-dark fa fa-thumbs-up" style="width: 100px">Likes</button>\n' +
-        '<button type="button"  onClick="likeButton()" data-arg1="PostId" class="btn btn-dark fa fa-thumbs-down" style="width: 100px">Dislikes</button>\n' +
-        '<button type="button" onClick="likeButton()" data-arg1="PostId" class="btn btn-dark fa fa-comment" style="width: 100px"></button>\n' +
-        '</div></div></div>\n';
 
-function getPosts() {
-    var docHeight = $(document).height();
-    var winScrolled = $(window).height() + $(window).scrollTop();
-    if ((docHeight - winScrolled) < 200) { // scroll time 
-        if (noMoredata === false && inProgress === false) {
-            inProgress = true;
-            fetch('/Posts/GetPost?page=' + myPageIndex,
-                {
-                    method: "GET",
-                    headers: {
-                        "X-Category": location.pathname.split("/").pop()
-                    }
-                }).then(response => {
+
+function DomOperation() {
+    if (noMoredata === false && inProgress === false) {
+        inProgress = true;
+        fetch('/Posts/GetPost?page=' + myPageIndex,
+            {
+                method: "GET",
+                headers: {
+                    "X-Category": location.pathname.split("/").pop()
+                }
+            }).then(response => {
                 if (response.status === 200) {
                     response.json().then(j => {
                         jsonn = JSON.parse(j);
@@ -41,15 +29,18 @@ function getPosts() {
                             noMoredata = true;
                         } else {
                             for (let i = 0; i < 5; i++) {
-                                posthtml = template,
-                                    posthtml = posthtml.replace("PostId", jsonn[i].Id),
-                                    posthtml = posthtml.replace("Dislikes", jsonn[i].Dislikes),
-                                    posthtml = posthtml.replace("PostId", jsonn[i].Id),
-                                    posthtml = posthtml.replace("Likes", jsonn[i].Likes),
-                                    posthtml = posthtml.replace("PostId", jsonn[i].Id),
-                                    posthtml = posthtml.replace("ImgToChange", jsonn[i].ImgUrl),
-                                    posthtml = posthtml.replace("TittleToChange", jsonn[i].Tittle),
-                                    document.getElementById("PostContainer").innerHTML += posthtml;
+                                document.getElementById("PostContainer").innerHTML +=
+                                    '<div class="col-lg-8 col-md-8 mb-8" style="margin-bottom: 40px">\n' +
+                                    '<div class="card h-100">\n' +
+                                    '<div class="card-header font-italic">\n' +
+                                    '<h5>' + jsonn[i].Tittle + '</h5>\n' +
+                                    '</div>\n' +
+                                    '<img id="1" src="' + jsonn[i].ImgUrl + '" class="card-img-top">\n' +
+                                    '<div class="card-footer">\n' +
+                                    '<button type="button"  onClick="likeButton()" data-arg1="' + jsonn[i].Id + '" class="btn btn-dark fa fa-thumbs-up" style="width: 100px">' + jsonn[i].Likes + '</button>\n' +
+                                    '<button type="button"  onClick="likeButton()" data-arg1="' + jsonn[i].Id + '" class="btn btn-dark fa fa-thumbs-down" style="width: 100px">' + jsonn[i].Dislikes + '</button>\n' +
+                                    '<button type="button" onClick="likeButton()" data-arg1="' + jsonn[i].Id + '" class="btn btn-dark fa fa-comment" style="width: 100px"></button>\n' +
+                                    '</div></div></div>\n';
                             }
                         }
                     });
@@ -57,11 +48,20 @@ function getPosts() {
                     myPageIndex += 5;
                 }
             });
-        }
     }
 }
 
-$(document).ready(function () {
-    //alert(location.pathname);
-    $(window).on("scroll", getPosts);
-});
+function getPosts() {
+    var docHeight = $(document).height();
+    var winScrolled = $(window).height() + $(window).scrollTop();
+    if ((docHeight - winScrolled) < 200) { // scroll time 
+        DomOperation.call();
+    }
+}
+
+////document.onload = getPosts();
+//$(document).ready(function () {
+//    //alert(location.pathname);
+//    $(window).on("scroll", getPosts);
+//});
+
