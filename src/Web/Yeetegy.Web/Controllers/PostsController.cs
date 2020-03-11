@@ -51,6 +51,13 @@ namespace Yeetegy.Web.Controllers
             return this.Json(JsonConvert.SerializeObject(new List<PostsViewModel>()));
         }
 
+        public async Task<IActionResult> Like(string id)
+        {
+            await this.postsService.LikePostAsync(id);
+
+            return Ok();
+        }
+
         [Authorize]
         public IActionResult Add()
         {

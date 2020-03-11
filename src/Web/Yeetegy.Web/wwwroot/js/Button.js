@@ -20,7 +20,14 @@ function topFunction() {
 
 function likeButton() {
     var nameOfFunction = this[event.target.name];
-    var arg1 = event.target.getAttribute('data-arg1');
-   
-    alert(arg1);
+    var id = event.target.getAttribute('data-arg1');
+    //alert(id);
+
+    fetch('/Posts/Like?id=' + id,
+        {
+            method: "POST",
+        });
+
+    id.innerHTML("test");
+
 }

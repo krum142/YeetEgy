@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Yeetegy.Services.Mapping;
 using Yeetegy.Web.ViewModels;
 
@@ -45,6 +46,16 @@ namespace Yeetegy.Services.Data
             }
         }
 
+        public async Task LikePostAsync(string id)
+        {
+           var post = await this.postRepository.All().FirstOrDefaultAsync(x => x.Id == id);
+
+           post.Likes++;
+
+           await this.postRepository.SaveChangesAsync();
+        }
+
+        // you can use enums to make ifs with categorys (down there)
         public IEnumerable<T> GetPosts<T>(int skip, int take, string category = null)
         {
             var query = this.postRepository.AllAsNoTracking();

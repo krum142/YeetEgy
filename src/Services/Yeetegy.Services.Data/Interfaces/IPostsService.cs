@@ -15,5 +15,6 @@ namespace Yeetegy.Services.Data.Interfaces
 
         IEnumerable<T> GetPostsTrending<T>(int skip, int take);
 
+        Task LikePostAsync(string id);
     }
 }
