@@ -1,28 +1,33 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
+using Yeetegy.Data.Common.Repositories;
+using Yeetegy.Data.Models;
+using Yeetegy.Services.Data.Interfaces;
 using Yeetegy.Services.Mapping;
-using Yeetegy.Web.ViewModels;
+using Yeetegy.Web.ViewModels.PostViewModels;
 
 namespace Yeetegy.Services.Data
 {
-    using System.Threading.Tasks;
-    using Yeetegy.Data.Common.Repositories;
-    using Yeetegy.Data.Models;
-    using Interfaces;
-    using Web.ViewModels.PostViewModels;
-
     public class PostsService : IPostsService
     {
         private readonly IDeletableEntityRepository<Post> postRepository;
         private readonly ICategoryService categoryService;
         private readonly ICloudinaryService cloudinary;
+        private readonly IUserService userService;
 
-        public PostsService(IDeletableEntityRepository<Post> postRepository, ICategoryService categoryService, ICloudinaryService cloudinary)
+        public PostsService(
+            IDeletableEntityRepository<Post> postRepository,
+            ICategoryService categoryService,
+            ICloudinaryService cloudinary,
+            IUserService userService)
         {
             this.postRepository = postRepository;
             this.categoryService = categoryService;
             this.cloudinary = cloudinary;
+            this.userService = userService;
         }
 
         public async Task CreatePostAsync(AddPostsViewModel post, string userId)
@@ -46,13 +51,14 @@ namespace Yeetegy.Services.Data
             }
         }
 
-        public async Task LikePostAsync(string id)
+        public async Task LikePostAsync(string postId, string userId)
         {
-           var post = await this.postRepository.All().FirstOrDefaultAsync(x => x.Id == id);
+            var post = await this.postRepository.All().FirstOrDefaultAsync(x => x.Id == postId);
 
-           post.Likes++;
+            await this.userService.AddPostAsync(post,userId);
+            post.Likes++;
 
-           await this.postRepository.SaveChangesAsync();
+            await this.postRepository.SaveChangesAsync();
         }
 
         // you can use enums to make ifs with categorys (down there)

@@ -37,7 +37,7 @@ function DomOperation() {
                                     '</div>\n' +
                                     '<img id="1" src="' + jsonn[i].ImgUrl + '" class="card-img-top">\n' +
                                     '<div class="card-footer">\n' +
-                                    '<button type="button"  onClick="likeButton()" data-arg1="' + jsonn[i].Id + '" class="btn btn-dark fa fa-thumbs-up" style="width: 100px">' + jsonn[i].Likes + '</button>\n' +
+                                '<button type="button"  onClick="likeButton()" id="Like_' + jsonn[i].Id + '" class="btn btn-dark fa fa-thumbs-up" style="width: 100px">' + jsonn[i].Likes + '</button>\n' +
                                     '<button type="button"  onClick="likeButton()" data-arg1="' + jsonn[i].Id + '" class="btn btn-dark fa fa-thumbs-down" style="width: 100px">' + jsonn[i].Dislikes + '</button>\n' +
                                     '<button type="button" onClick="likeButton()" data-arg1="' + jsonn[i].Id + '" class="btn btn-dark fa fa-comment" style="width: 100px"></button>\n' +
                                     '</div></div></div>\n';

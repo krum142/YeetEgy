@@ -26,6 +26,8 @@
 
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<UserLikePost> UserLikePosts { get; set; }
+
         public DbSet<Post> Posts { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
@@ -84,6 +86,8 @@
 
         private static void ConfigureUserIdentityRelations(ModelBuilder builder)
         {
+
+            builder.Entity<UserLikePost>().HasKey(x => new { x.ApplicationUserId, x.PostId });
 
             builder.Entity<ApplicationUser>()
                 .HasMany(e => e.Claims)

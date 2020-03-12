@@ -38,6 +38,7 @@ namespace Yeetegy.Web.Controllers
                     "Newest" => this.postsService.GetPosts<PostsViewModel>(page, loadPostsCount),
                     "Popular" => this.postsService.GetPostsPopular<PostsViewModel>(page, loadPostsCount),
                     "Discussed" => this.postsService.GetPostsTrending<PostsViewModel>(page, loadPostsCount),
+                    _ => this.postsService.GetPosts<PostsViewModel>(page, loadPostsCount),
                 };
                 return this.Json(JsonConvert.SerializeObject(posts));
             }
@@ -53,9 +54,16 @@ namespace Yeetegy.Web.Controllers
 
         public async Task<IActionResult> Like(string id)
         {
-            await this.postsService.LikePostAsync(id);
 
-            return Ok();
+            if (this.User.Identity.IsAuthenticated)
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await this.postsService.LikePostAsync(id,userId);
+
+                return this.Ok();
+            }
+
+            return this.NoContent();
         }
 
         [Authorize]

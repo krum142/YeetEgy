@@ -16,11 +16,14 @@ namespace Yeetegy.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+            this.LikedPosts = new HashSet<UserLikePost>();
             this.Posts = new HashSet<Post>();
             this.Replays = new HashSet<Replay>();
             this.Comments = new HashSet<Comment>();
         }
         // Yeetegy Additional
+
+        public ICollection<UserLikePost> LikedPosts { get; set; }
 
         public ICollection<Post> Posts { get; set; }
 
