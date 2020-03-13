@@ -54,13 +54,19 @@ namespace Yeetegy.Web.Controllers
 
         public async Task<IActionResult> Like(string id)
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (this.User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated && !await this.postsService.IsPostLikedByUser(id, userId))
             {
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 await this.postsService.LikePostAsync(id,userId);
 
                 return this.Ok();
+            }
+
+            if (this.User.Identity.IsAuthenticated && await this.postsService.IsPostLikedByUser(id, userId))
+            {
+                await this.postsService.UnLikeAsync(id, userId);
+                return this.Accepted();
             }
 
             return this.NoContent();

@@ -14,17 +14,20 @@ namespace Yeetegy.Services.Data
     public class PostsService : IPostsService
     {
         private readonly IDeletableEntityRepository<Post> postRepository;
+        private readonly IDeletableEntityRepository<UserLikePost> userLikePostRepository;
         private readonly ICategoryService categoryService;
         private readonly ICloudinaryService cloudinary;
         private readonly IUserService userService;
 
         public PostsService(
             IDeletableEntityRepository<Post> postRepository,
+            IDeletableEntityRepository<UserLikePost> userLikePostRepository,
             ICategoryService categoryService,
             ICloudinaryService cloudinary,
             IUserService userService)
         {
             this.postRepository = postRepository;
+            this.userLikePostRepository = userLikePostRepository;
             this.categoryService = categoryService;
             this.cloudinary = cloudinary;
             this.userService = userService;
@@ -55,10 +58,29 @@ namespace Yeetegy.Services.Data
         {
             var post = await this.postRepository.All().FirstOrDefaultAsync(x => x.Id == postId);
 
-            await this.userService.AddPostAsync(post,userId);
-            post.Likes++;
+            await this.userLikePostRepository.AddAsync(new UserLikePost() { PostId = postId, ApplicationUserId = userId });
 
+            //await this.userService.AddPostAsync(post,userId);
+            post.Likes++;
+            await this.userLikePostRepository.SaveChangesAsync();
             await this.postRepository.SaveChangesAsync();
+        }
+
+        public async Task UnLikeAsync(string postId, string userId)
+        {
+            var post = await this.postRepository.All().FirstOrDefaultAsync(x => x.Id == postId);
+
+            this.userLikePostRepository.HardDelete(new UserLikePost() { PostId = postId, ApplicationUserId = userId });
+
+            post.Likes--;
+            await this.userLikePostRepository.SaveChangesAsync();
+            await this.postRepository.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsPostLikedByUser(string postId, string userId)
+        {
+            return await this.userLikePostRepository.AllAsNoTracking()
+                .AnyAsync(x => x.PostId == postId && x.ApplicationUserId == userId);
         }
 
         // you can use enums to make ifs with categorys (down there)
@@ -78,7 +100,7 @@ namespace Yeetegy.Services.Data
         {
             var query = this.postRepository.AllAsNoTracking();
 
-            query = query.OrderByDescending(x => x.Likes).ThenByDescending(x => x.CreatedOn);
+            query = query.Where(x => x.Likes >= 200).OrderByDescending(x => x.CreatedOn).ThenByDescending(x => x.CreatedOn);
 
             return query.Skip(skip).Take(take).To<T>().ToList();
         }

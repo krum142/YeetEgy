@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
 using Yeetegy.Data.Common.Repositories;
 using Yeetegy.Data.Models;
@@ -9,10 +10,12 @@ namespace Yeetegy.Services.Data
     public class UserService : IUserService
     {
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
+        private readonly IDeletableEntityRepository<UserLikePost> userLikePostRepository;
 
-        public UserService(IDeletableEntityRepository<ApplicationUser> userRepository)
+        public UserService(IDeletableEntityRepository<ApplicationUser> userRepository,IDeletableEntityRepository<UserLikePost> userLikePostRepository)
         {
             this.userRepository = userRepository;
+            this.userLikePostRepository = userLikePostRepository;
         }
 
         public async Task AddPostAsync(Post post, string userId)

@@ -1,6 +1,7 @@
 // When the user scrolls down 20px from the top of the document, show the button
 var mybutton = document.getElementById("myBtn");
 var isClicked = false;
+var notLoggedIn = false;
 window.onscroll = function () { scrollFunction() };
 
 function scrollFunction() {
@@ -29,11 +30,19 @@ function likeButton() {
         }).then(response => {
             if (response.status === 200) {
                 isClicked = true;
-            } else {
+            } else if(response.status === 204){
                 window.location = "/Identity/Account/Login";
             }
     });
 
-    var newLikeCount = parseInt(event.target.innerHTML) + 1;
-    event.target.innerHTML = newLikeCount;
+
+    if (isClicked === true) {
+        var newLikeCount = parseInt(event.target.innerHTML) - 1;
+        event.target.innerHTML = newLikeCount;
+        isClicked = false;
+    } else {
+        var newLikeCount = parseInt(event.target.innerHTML) + 1;
+        event.target.innerHTML = newLikeCount;
+    }
+   
 }

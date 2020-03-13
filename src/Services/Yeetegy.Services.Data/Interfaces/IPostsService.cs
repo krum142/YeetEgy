@@ -16,5 +16,9 @@ namespace Yeetegy.Services.Data.Interfaces
         IEnumerable<T> GetPostsTrending<T>(int skip, int take);
 
         Task LikePostAsync(string postId, string userId);
+
+        Task<bool> IsPostLikedByUser(string postId, string userId);
+
+        Task UnLikeAsync(string postId, string userId);
     }
 }

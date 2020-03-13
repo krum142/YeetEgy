@@ -1,6 +1,8 @@
-﻿namespace Yeetegy.Data.Models
+﻿using Yeetegy.Data.Common.Models;
+
+namespace Yeetegy.Data.Models
 {
-    public class UserLikePost
+    public class UserLikePost : BaseDeletableModel<string>
     {
         public string PostId { get; set; }
 
