@@ -57,7 +57,7 @@ namespace Yeetegy.Web
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-            services.AddTransient<IEmailSender, NullMessageSender>();
+            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(this.configuration["SendGrid"]));
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<IPostsService, PostsService>();
             services.AddTransient<ICategoryService, CategoryService>();
