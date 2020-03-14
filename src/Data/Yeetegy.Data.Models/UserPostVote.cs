@@ -2,7 +2,7 @@
 
 namespace Yeetegy.Data.Models
 {
-    public class UserLikePost : BaseDeletableModel<string>
+    public class UserPostVote : BaseDeletableModel<string>
     {
         public string PostId { get; set; }
 
@@ -11,5 +11,7 @@ namespace Yeetegy.Data.Models
         public string ApplicationUserId { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
+
+        public string Value { get; set; }
     }
 }

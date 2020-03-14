@@ -11,7 +11,7 @@ namespace Yeetegy.Data.Models
         {
             this.Id = Guid.NewGuid().ToString();
             this.Comments = new HashSet<Comment>();
-            this.UserLikes = new HashSet<UserLikePost>();
+            this.UserVotes = new HashSet<UserPostVote>();
         }
 
         [Required]
@@ -36,7 +36,7 @@ namespace Yeetegy.Data.Models
 
         public Category Category { get; set; }
 
-        public ICollection<UserLikePost> UserLikes { get; set; }
+        public ICollection<UserPostVote> UserVotes { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
     }

@@ -15,10 +15,18 @@ namespace Yeetegy.Services.Data.Interfaces
 
         IEnumerable<T> GetPostsTrending<T>(int skip, int take);
 
-        Task LikePostAsync(string postId, string userId);
+        Task<string> GetPostVoteValueAsync(string postId, string userId);
 
-        Task<bool> IsPostLikedByUser(string postId, string userId);
+        Task LikeAsync(string postId, string userId);
 
-        Task UnLikeAsync(string postId, string userId);
+        Task UndoLikeAsync(string postId, string userId);
+
+        Task DislikeAsync(string postId, string userId);
+
+        Task UndoDislikeAsync(string postId, string userId);
+
+        Task LikeToDislikeAsync(string postId, string userId);
+
+        Task DislikeToLikeAsync(string postId, string userId);
     }
 }

@@ -27,12 +27,32 @@ function likeButton() {
     request.send();
     var errorCode = request.responseURL.split('=').pop();
     var code = request.status;
+
     if (errorCode == 401) {
-        alert(errorCode);
+        window.location = "/Identity/Account/Login";
     } else if (code == 200) {
         event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
     } else if(code == 204){
         event.target.innerHTML = parseInt(event.target.innerHTML) - 1;
     }
 
+}
+
+function disLikeButton() {
+    var id = event.target.getAttribute("id");
+    var urll = "/Posts/Dislike?id=" + id.split("_").pop();
+
+    request = new XMLHttpRequest();
+    request.open('GET', urll, /* async = */ false);
+    request.send();
+    var errorCode = request.responseURL.split('=').pop();
+    var code = request.status;
+
+    if (errorCode == 401) {
+        alert(errorCode);
+    } else if (code == 200) {
+        event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
+    } else if (code == 204) {
+        event.target.innerHTML = parseInt(event.target.innerHTML) - 1;
+    }
 }

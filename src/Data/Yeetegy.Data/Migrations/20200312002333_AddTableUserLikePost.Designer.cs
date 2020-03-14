@@ -465,7 +465,7 @@ namespace Yeetegy.Data.Migrations
                     b.ToTable("Settings");
                 });
 
-            modelBuilder.Entity("Yeetegy.Data.Models.UserLikePost", b =>
+            modelBuilder.Entity("Yeetegy.Data.Models.UserPostVotes", b =>
                 {
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
@@ -576,7 +576,7 @@ namespace Yeetegy.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Yeetegy.Data.Models.UserLikePost", b =>
+            modelBuilder.Entity("Yeetegy.Data.Models.UserPostVotes", b =>
                 {
                     b.HasOne("Yeetegy.Data.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("LikedPosts")

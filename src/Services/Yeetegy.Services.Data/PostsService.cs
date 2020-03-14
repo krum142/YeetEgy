@@ -14,20 +14,20 @@ namespace Yeetegy.Services.Data
     public class PostsService : IPostsService
     {
         private readonly IDeletableEntityRepository<Post> postRepository;
-        private readonly IDeletableEntityRepository<UserLikePost> userLikePostRepository;
+        private readonly IDeletableEntityRepository<UserPostVote> postVoteRepository;
         private readonly ICategoryService categoryService;
         private readonly ICloudinaryService cloudinary;
         private readonly IUserService userService;
 
         public PostsService(
             IDeletableEntityRepository<Post> postRepository,
-            IDeletableEntityRepository<UserLikePost> userLikePostRepository,
+            IDeletableEntityRepository<UserPostVote> postVoteRepository,
             ICategoryService categoryService,
             ICloudinaryService cloudinary,
             IUserService userService)
         {
             this.postRepository = postRepository;
-            this.userLikePostRepository = userLikePostRepository;
+            this.postVoteRepository = postVoteRepository;
             this.categoryService = categoryService;
             this.cloudinary = cloudinary;
             this.userService = userService;
@@ -54,32 +54,112 @@ namespace Yeetegy.Services.Data
             }
         }
 
-        public async Task LikePostAsync(string postId, string userId)
+        public async Task LikeAsync(string postId, string userId)
         {
+            await this.postVoteRepository.AddAsync(new UserPostVote()
+            { PostId = postId, ApplicationUserId = userId, Value = "Like" });
+
             var post = await this.postRepository.All().FirstOrDefaultAsync(x => x.Id == postId);
-
-            await this.userLikePostRepository.AddAsync(new UserLikePost() { PostId = postId, ApplicationUserId = userId });
-
-            //await this.userService.AddPostAsync(post,userId);
             post.Likes++;
-            await this.userLikePostRepository.SaveChangesAsync();
+
+            await this.postVoteRepository.SaveChangesAsync();
             await this.postRepository.SaveChangesAsync();
         }
 
-        public async Task UnLikeAsync(string postId, string userId)
+        public async Task UndoLikeAsync(string postId, string userId)
         {
+            var postValue = await this.postVoteRepository
+                .AllAsNoTracking()
+                .FirstOrDefaultAsync(x => x.PostId == postId && x.ApplicationUserId == userId);
+
+            this.postVoteRepository.HardDelete(postValue);
+
             var post = await this.postRepository.All().FirstOrDefaultAsync(x => x.Id == postId);
-
-            this.userLikePostRepository.HardDelete(new UserLikePost() { PostId = postId, ApplicationUserId = userId });
-
             post.Likes--;
-            await this.userLikePostRepository.SaveChangesAsync();
+
+            await this.postVoteRepository.SaveChangesAsync();
             await this.postRepository.SaveChangesAsync();
         }
 
-        public async Task<bool> IsPostLikedByUser(string postId, string userId)
+        public async Task DislikeAsync(string postId, string userId)
         {
-            return await this.userLikePostRepository.AllAsNoTracking()
+            await this.postVoteRepository.AddAsync(new UserPostVote()
+            { PostId = postId, ApplicationUserId = userId, Value = "Dislike" });
+
+            var post = await this.postRepository.All().FirstOrDefaultAsync(x => x.Id == postId);
+            post.Dislikes++;
+
+            await this.postVoteRepository.SaveChangesAsync();
+            await this.postRepository.SaveChangesAsync();
+        }
+
+        public async Task UndoDislikeAsync(string postId, string userId)
+        {
+            var postValue = await this.postVoteRepository
+                .AllAsNoTracking()
+                .FirstOrDefaultAsync(x => x.PostId == postId && x.ApplicationUserId == userId);
+
+            this.postVoteRepository.HardDelete(postValue);
+
+            var post = await this.postRepository.All().FirstOrDefaultAsync(x => x.Id == postId);
+            post.Dislikes--;
+
+            await this.postVoteRepository.SaveChangesAsync();
+            await this.postRepository.SaveChangesAsync();
+        }
+
+        public async Task LikeToDislikeAsync(string postId, string userId)
+        {
+            var postvalue = await this.postVoteRepository
+                .All()
+                .FirstOrDefaultAsync(x => x.PostId == postId && x.ApplicationUserId == userId);
+
+            postvalue.Value = "Dislike";
+
+            var post = await this.postRepository.All().FirstOrDefaultAsync(x => x.Id == postId);
+            post.Likes--;
+            post.Dislikes++;
+
+            await this.postVoteRepository.SaveChangesAsync();
+            await this.postRepository.SaveChangesAsync();
+        }
+
+        public async Task DislikeToLikeAsync(string postId, string userId)
+        {
+            var postvalue = await this.postVoteRepository
+                .All()
+                .FirstOrDefaultAsync(x => x.PostId == postId && x.ApplicationUserId == userId);
+
+            postvalue.Value = "Like";
+
+            var post = await this.postRepository.All().FirstOrDefaultAsync(x => x.Id == postId);
+            post.Likes++;
+            post.Dislikes--;
+
+            await this.postVoteRepository.SaveChangesAsync();
+            await this.postRepository.SaveChangesAsync();
+        }
+
+        public async Task<string> GetPostVoteValueAsync(string postId, string userId)
+        {
+            if (await this.postVoteRepository.AllAsNoTracking()
+                .AnyAsync(x => x.PostId == postId && x.ApplicationUserId == userId))
+            {
+                return await this.postVoteRepository.AllAsNoTracking()
+                    .Where(x => x.PostId == postId && x.ApplicationUserId == userId).Select(x => x.Value).FirstOrDefaultAsync();
+            }
+
+            return null;
+        }
+
+        public async Task<bool> DoesPostExistAsync(string postId)
+        {
+            return await this.postRepository.AllAsNoTracking().AnyAsync(x => x.Id == postId);
+        }
+
+        public async Task<bool> IsPostLikedByUserAsync(string postId, string userId)
+        {
+            return await this.postVoteRepository.AllAsNoTracking()
                 .AnyAsync(x => x.PostId == postId && x.ApplicationUserId == userId);
         }
 

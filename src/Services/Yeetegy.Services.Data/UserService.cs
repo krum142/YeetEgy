@@ -10,9 +10,9 @@ namespace Yeetegy.Services.Data
     public class UserService : IUserService
     {
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
-        private readonly IDeletableEntityRepository<UserLikePost> userLikePostRepository;
+        private readonly IDeletableEntityRepository<UserPostVote> userLikePostRepository;
 
-        public UserService(IDeletableEntityRepository<ApplicationUser> userRepository,IDeletableEntityRepository<UserLikePost> userLikePostRepository)
+        public UserService(IDeletableEntityRepository<ApplicationUser> userRepository,IDeletableEntityRepository<UserPostVote> userLikePostRepository)
         {
             this.userRepository = userRepository;
             this.userLikePostRepository = userLikePostRepository;

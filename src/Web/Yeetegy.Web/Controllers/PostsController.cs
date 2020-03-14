@@ -52,20 +52,61 @@ namespace Yeetegy.Web.Controllers
             return this.Json(new List<PostsViewModel>());
         }
 
+
         public async Task<IActionResult> Like(string id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (this.User.Identity.IsAuthenticated && !await this.postsService.IsPostLikedByUser(id, userId))
+            if (this.User.Identity.IsAuthenticated)
             {
-                await this.postsService.LikePostAsync(id, userId);
+                // has this post been clicked by this user and if yes what is its value
+                var value = await this.postsService.GetPostVoteValueAsync(id, userId);
 
-                return this.Ok();
+                if (value != null)
+                {
+                    if (value == "Like")
+                    {
+                        await this.postsService.UndoLikeAsync(id, userId);
+                    }
+                    else if (value == "Dislike")
+                    {
+                        await this.postsService.DislikeToLikeAsync(id, userId);
+                    }
+
+                    return this.Ok();
+                }
+
+                await this.postsService.LikeAsync(id, userId);
+                return this.NoContent();
             }
 
-            if (this.User.Identity.IsAuthenticated && await this.postsService.IsPostLikedByUser(id, userId))
+            return this.Unauthorized();
+        }
+
+        public async Task<IActionResult> Dislike(string id)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (this.User.Identity.IsAuthenticated)
             {
-                await this.postsService.UnLikeAsync(id, userId);
+                // has this post been clicked by this user and if yes what is its value
+                var value = await this.postsService.GetPostVoteValueAsync(id, userId);
+
+                if (value != null)
+                {
+                    if (value == "Dislike")
+                    {
+                        await this.postsService.UndoDislikeAsync(id, userId);
+                    }
+                    else if (value == "Like")
+                    {
+                        await this.postsService.LikeToDislikeAsync(id, userId);
+                    }
+
+                    return this.Ok();
+                }
+
+                await this.postsService.DislikeAsync(id, userId);
                 return this.NoContent();
             }
 
