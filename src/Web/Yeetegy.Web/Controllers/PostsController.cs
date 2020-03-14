@@ -40,16 +40,16 @@ namespace Yeetegy.Web.Controllers
                     "Discussed" => this.postsService.GetPostsTrending<PostsViewModel>(page, loadPostsCount),
                     _ => this.postsService.GetPosts<PostsViewModel>(page, loadPostsCount),
                 };
-                return this.Json(JsonConvert.SerializeObject(posts));
+                return this.Json(posts);
             }
 
             if (await this.categoryService.IsThereAnyAsync(header))
             {
                 var posts = this.postsService.GetPosts<PostsViewModel>(page, loadPostsCount, header);
-                return this.Json(JsonConvert.SerializeObject(posts));
+                return this.Json(posts);
             }
 
-            return this.Json(JsonConvert.SerializeObject(new List<PostsViewModel>()));
+            return this.Json(new List<PostsViewModel>());
         }
 
         public async Task<IActionResult> Like(string id)
@@ -58,7 +58,7 @@ namespace Yeetegy.Web.Controllers
 
             if (this.User.Identity.IsAuthenticated && !await this.postsService.IsPostLikedByUser(id, userId))
             {
-                await this.postsService.LikePostAsync(id,userId);
+                await this.postsService.LikePostAsync(id, userId);
 
                 return this.Ok();
             }
@@ -66,10 +66,10 @@ namespace Yeetegy.Web.Controllers
             if (this.User.Identity.IsAuthenticated && await this.postsService.IsPostLikedByUser(id, userId))
             {
                 await this.postsService.UnLikeAsync(id, userId);
-                return this.Accepted();
+                return this.NoContent();
             }
 
-            return this.NoContent();
+            return this.Unauthorized();
         }
 
         [Authorize]
