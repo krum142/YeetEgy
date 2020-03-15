@@ -152,17 +152,6 @@ namespace Yeetegy.Services.Data
             return null;
         }
 
-        public async Task<bool> DoesPostExistAsync(string postId)
-        {
-            return await this.postRepository.AllAsNoTracking().AnyAsync(x => x.Id == postId);
-        }
-
-        public async Task<bool> IsPostLikedByUserAsync(string postId, string userId)
-        {
-            return await this.postVoteRepository.AllAsNoTracking()
-                .AnyAsync(x => x.PostId == postId && x.ApplicationUserId == userId);
-        }
-
         // you can use enums to make ifs with categorys (down there)
         public IEnumerable<T> GetPosts<T>(int skip, int take, string category = null)
         {

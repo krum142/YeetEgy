@@ -30,6 +30,10 @@ function likeButton() {
 
     if (errorCode == 401) {
         window.location = "/Identity/Account/Login";
+    } else if(code == 202){
+        event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
+        var x = parseInt(event.target.nextSibling.nextSibling.innerHTML) - 1;
+        event.target.nextSibling.nextSibling.innerHTML = x;
     } else if (code == 200) {
         event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
     } else if(code == 204){
@@ -49,7 +53,11 @@ function disLikeButton() {
     var code = request.status;
 
     if (errorCode == 401) {
-        alert(errorCode);
+        window.location = "/Identity/Account/Login";
+    } else if (code == 202) {
+        event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
+        var x = parseInt(event.target.previousSibling.previousSibling.innerHTML) - 1;
+        event.target.previousSibling.previousSibling.innerHTML = x;
     } else if (code == 200) {
         event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
     } else if (code == 204) {

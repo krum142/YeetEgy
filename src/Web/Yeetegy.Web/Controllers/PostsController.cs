@@ -67,17 +67,19 @@ namespace Yeetegy.Web.Controllers
                     if (value == "Like")
                     {
                         await this.postsService.UndoLikeAsync(id, userId);
+                        return this.NoContent();
                     }
                     else if (value == "Dislike")
                     {
                         await this.postsService.DislikeToLikeAsync(id, userId);
+                        return this.Accepted();
                     }
 
-                    return this.Ok();
                 }
 
                 await this.postsService.LikeAsync(id, userId);
-                return this.NoContent();
+                return this.Ok();
+
             }
 
             return this.Unauthorized();
@@ -97,17 +99,17 @@ namespace Yeetegy.Web.Controllers
                     if (value == "Dislike")
                     {
                         await this.postsService.UndoDislikeAsync(id, userId);
+                        return this.NoContent();
                     }
                     else if (value == "Like")
                     {
                         await this.postsService.LikeToDislikeAsync(id, userId);
+                        return this.Accepted();
                     }
-
-                    return this.Ok();
                 }
 
                 await this.postsService.DislikeAsync(id, userId);
-                return this.NoContent();
+                return this.Ok();
             }
 
             return this.Unauthorized();
