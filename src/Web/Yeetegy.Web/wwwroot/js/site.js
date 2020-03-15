@@ -15,7 +15,7 @@ var posthtml;
 function DomOperation() {
     if (noMoredata === false && inProgress === false) {
         inProgress = true;
-        fetch('/Posts/GetPost?page=' + myPageIndex,
+        fetch('/Posts/GetPosts?page=' + myPageIndex,
             {
                 method: "GET",
                 headers: {

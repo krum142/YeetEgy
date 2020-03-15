@@ -152,6 +152,11 @@ namespace Yeetegy.Services.Data
             return null;
         }
 
+        public async Task<bool> DoesPostExist(string postId)
+        {
+            return await this.postRepository.AllAsNoTracking().AnyAsync(x => x.Id == postId);
+        }
+
         // you can use enums to make ifs with categorys (down there)
         public IEnumerable<T> GetPosts<T>(int skip, int take, string category = null)
         {

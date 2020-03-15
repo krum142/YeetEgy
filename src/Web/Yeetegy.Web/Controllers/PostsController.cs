@@ -24,7 +24,7 @@ namespace Yeetegy.Web.Controllers
             this.categoryService = categoryService;
         }
 
-        public async Task<IActionResult> GetPost(int page)
+        public async Task<IActionResult> GetPosts(int page)
         {
             var loadPostsCount = GlobalConstants.LoadPostCountAjax;
             var header = this.Request.Headers.FirstOrDefault(x => x.Key == "x-category").Value.ToString().Trim();
@@ -52,11 +52,13 @@ namespace Yeetegy.Web.Controllers
             return this.Json(new List<PostsViewModel>());
         }
 
-
         public async Task<IActionResult> Like(string id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+            if (!await this.postsService.DoesPostExist(id))
+            {
+                return this.NotFound();
+            }
             if (this.User.Identity.IsAuthenticated)
             {
                 // has this post been clicked by this user and if yes what is its value
@@ -81,7 +83,6 @@ namespace Yeetegy.Web.Controllers
                 return this.Ok();
 
             }
-
             return this.Unauthorized();
         }
 
@@ -89,6 +90,10 @@ namespace Yeetegy.Web.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            if (!await this.postsService.DoesPostExist(id))
+            {
+                return this.NotFound();
+            }
             if (this.User.Identity.IsAuthenticated)
             {
                 // has this post been clicked by this user and if yes what is its value

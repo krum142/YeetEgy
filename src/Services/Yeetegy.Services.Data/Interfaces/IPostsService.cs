@@ -28,5 +28,7 @@ namespace Yeetegy.Services.Data.Interfaces
         Task LikeToDislikeAsync(string postId, string userId);
 
         Task DislikeToLikeAsync(string postId, string userId);
+
+        Task<bool> DoesPostExist(string postId);
     }
 }

@@ -25,10 +25,13 @@ function likeButton() {
     request = new XMLHttpRequest();
     request.open('GET', urll, /* async = */ false);
     request.send();
-    var errorCode = request.responseURL.split('=').pop();
+    var myRequestUrl = request.responseURL;
+    var errorCode = myRequestUrl.split('=').pop();
     var code = request.status;
 
-    if (errorCode == 401) {
+    if (errorCode == 404) {
+        window.location = myRequestUrl;
+    }else if (errorCode == 401) {
         window.location = "/Identity/Account/Login";
     } else if(code == 202){
         event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
@@ -48,10 +51,13 @@ function disLikeButton() {
     request = new XMLHttpRequest();
     request.open('GET', urll, /* async = */ false);
     request.send();
-    var errorCode = request.responseURL.split('=').pop();
+    var myRequestUrl = request.responseURL;
+    var errorCode = myRequestUrl.split('=').pop();
     var code = request.status;
 
-    if (errorCode == 401) {
+    if (errorCode == 404) {
+        window.location = myRequestUrl;
+    } else if (errorCode == 401) {
         window.location = "/Identity/Account/Login";
     } else if (code == 202) {
         event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
