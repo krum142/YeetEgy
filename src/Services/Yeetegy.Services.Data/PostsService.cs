@@ -187,6 +187,5 @@ namespace Yeetegy.Services.Data
 
             return query.Skip(skip).Take(take).To<T>().ToList();
         }
-
     }
 }

@@ -52,69 +52,59 @@ namespace Yeetegy.Web.Controllers
             return this.Json(new List<PostsViewModel>());
         }
 
-        public async Task<IActionResult> Like(string id)
+        public async Task<IActionResult> Vote(string id, string vote)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!await this.postsService.DoesPostExist(id))
             {
                 return this.NotFound();
             }
+
             if (this.User.Identity.IsAuthenticated)
             {
-                // has this post been clicked by this user and if yes what is its value
-                var value = await this.postsService.GetPostVoteValueAsync(id, userId);
-
-                if (value != null)
+                var lastValue = await this.postsService.GetPostVoteValueAsync(id, userId);
+                if (lastValue != null)
                 {
-                    if (value == "Like")
+                    switch (vote)
                     {
-                        await this.postsService.UndoLikeAsync(id, userId);
-                        return this.NoContent();
-                    }
-                    else if (value == "Dislike")
-                    {
-                        await this.postsService.DislikeToLikeAsync(id, userId);
-                        return this.Accepted();
-                    }
+                        case "Like":
+                            switch (lastValue)
+                            {
+                                case "Like":
+                                    await this.postsService.UndoLikeAsync(id, userId);
+                                    return this.NoContent();
+                                case "Dislike":
+                                    await this.postsService.DislikeToLikeAsync(id, userId);
+                                    return this.Accepted();
+                                default: return this.NotFound();
+                            }
 
-                }
+                        case "Dislike":
+                            switch (lastValue)
+                            {
+                                case "Dislike":
+                                    await this.postsService.UndoDislikeAsync(id, userId);
+                                    return this.NoContent();
+                                case "Like":
+                                    await this.postsService.LikeToDislikeAsync(id, userId);
+                                    return this.Accepted();
+                                default: return this.NotFound();
+                            }
 
-                await this.postsService.LikeAsync(id, userId);
-                return this.Ok();
-
-            }
-            return this.Unauthorized();
-        }
-
-        public async Task<IActionResult> Dislike(string id)
-        {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (!await this.postsService.DoesPostExist(id))
-            {
-                return this.NotFound();
-            }
-            if (this.User.Identity.IsAuthenticated)
-            {
-                // has this post been clicked by this user and if yes what is its value
-                var value = await this.postsService.GetPostVoteValueAsync(id, userId);
-
-                if (value != null)
-                {
-                    if (value == "Dislike")
-                    {
-                        await this.postsService.UndoDislikeAsync(id, userId);
-                        return this.NoContent();
-                    }
-                    else if (value == "Like")
-                    {
-                        await this.postsService.LikeToDislikeAsync(id, userId);
-                        return this.Accepted();
+                        default: return this.NotFound();
                     }
                 }
 
-                await this.postsService.DislikeAsync(id, userId);
-                return this.Ok();
+                switch (vote)
+                {
+                    case "Like":
+                        await this.postsService.LikeAsync(id, userId);
+                        return this.Ok();
+                    case "Dislike":
+                        await this.postsService.DislikeAsync(id, userId);
+                        return this.Ok();
+                    default: return this.NotFound();
+                }
             }
 
             return this.Unauthorized();

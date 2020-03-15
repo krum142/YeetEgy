@@ -18,53 +18,75 @@ function topFunction() {
     document.documentElement.scrollTop = 0;
 }
 
-function likeButton() {
+function voteButton() {
     var id = event.target.getAttribute("id");
-    var urll = "/Posts/Like?id=" + id.split("_").pop();
+    var vote = id.split("_")[0];
+    var urll = "/Posts/Vote?" + "vote=" + vote + "&id=" + id.split("_")[1];
 
     request = new XMLHttpRequest();
     request.open('GET', urll, /* async = */ false);
     request.send();
+
     var myRequestUrl = request.responseURL;
     var errorCode = myRequestUrl.split('=').pop();
     var code = request.status;
 
     if (errorCode == 404) {
         window.location = myRequestUrl;
-    }else if (errorCode == 401) {
+    }
+    else if (errorCode == 401) {
         window.location = "/Identity/Account/Login";
-    } else if(code == 202){
-        event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
-        event.target.nextSibling.nextSibling.innerHTML = parseInt(event.target.nextSibling.nextSibling.innerHTML) - 1;
-    } else if (code == 200) {
-        event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
-    } else if(code == 204){
-        event.target.innerHTML = parseInt(event.target.innerHTML) - 1;
+    }
+    else if (vote === "Like") {
+        if (code == 202) {
+            event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
+            event.target.nextSibling.nextSibling.innerHTML =
+                parseInt(event.target.nextSibling.nextSibling.innerHTML) - 1;
+        }
+        else if (code == 200) {
+            event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
+        }
+        else if (code == 204) {
+            event.target.innerHTML = parseInt(event.target.innerHTML) - 1;
+        }
+    }
+    else if (vote === "Dislike") {
+        if (code == 202) {
+            event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
+            event.target.previousSibling.previousSibling.innerHTML =
+                parseInt(event.target.previousSibling.previousSibling.innerHTML) - 1;
+        }
+        else if (code == 200) {
+            event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
+        }
+        else if (code == 204) {
+            event.target.innerHTML = parseInt(event.target.innerHTML) - 1;
+        }
     }
 
 }
 
-function disLikeButton() {
-    var id = event.target.getAttribute("id");
-    var urll = "/Posts/Dislike?id=" + id.split("_").pop();
+//function disLikeButton() {
+//    var id = event.target.getAttribute("id");
+//    var urll = "/Posts/Dislike?id=" + id.split("_").pop();
 
-    request = new XMLHttpRequest();
-    request.open('GET', urll, /* async = */ false);
-    request.send();
-    var myRequestUrl = request.responseURL;
-    var errorCode = myRequestUrl.split('=').pop();
-    var code = request.status;
+//    request = new XMLHttpRequest();
+//    request.open('GET', urll, /* async = */ false);
+//    request.send();
+//    var myRequestUrl = request.responseURL;
+//    var errorCode = myRequestUrl.split('=').pop();
+//    var code = request.status;
 
-    if (errorCode == 404) {
-        window.location = myRequestUrl;
-    } else if (errorCode == 401) {
-        window.location = "/Identity/Account/Login";
-    } else if (code == 202) {
-        event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
-        event.target.previousSibling.previousSibling.innerHTML = parseInt(event.target.previousSibling.previousSibling.innerHTML) - 1;
-    } else if (code == 200) {
-        event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
-    } else if (code == 204) {
-        event.target.innerHTML = parseInt(event.target.innerHTML) - 1;
-    }
-}
+//    if (errorCode == 404) {
+//        window.location = myRequestUrl;
+//    } else if (errorCode == 401) {
+//        window.location = "/Identity/Account/Login";
+//    } else if (code == 202) {
+//        event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
+//        event.target.previousSibling.previousSibling.innerHTML = parseInt(event.target.previousSibling.previousSibling.innerHTML) - 1;
+//    } else if (code == 200) {
+//        event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
+//    } else if (code == 204) {
+//        event.target.innerHTML = parseInt(event.target.innerHTML) - 1;
+//    }
+//}

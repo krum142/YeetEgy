@@ -33,8 +33,8 @@ namespace Yeetegy.Web.Controllers
             var random = new Random();
             var setting = new Setting { Name = $"Name_{random.Next()}", Value = $"Value_{random.Next()}" };
 
-            await repository.AddAsync(setting);
-            await repository.SaveChangesAsync();
+            await this.repository.AddAsync(setting);
+            await this.repository.SaveChangesAsync();
 
             return this.RedirectToAction(nameof(Index));
         }
