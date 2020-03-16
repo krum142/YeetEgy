@@ -1,8 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Yeetegy.Common
+
+@{
+    ViewData["Title"] = "PostDetails";
 }
-@using Yeetegy.Common
-@model IEnumerable<CategoryViewModel>
+@model PostDetailsViewModel
+
 <div class="row">
 
     <div class="col-lg-3">
@@ -21,7 +23,7 @@
                 </a>
             }
 
-            @foreach (var categories in Model)
+            @foreach (var categories in Model.CategoryViewModel)
             {
                 <a href="/@categories.Name" alt="@categories.Name">
                     <div class="chip list-group-item-action">
@@ -33,7 +35,6 @@
         </div>
 
     </div>
-    <!-- /.col-lg-3 -->
 
     <div class="col-lg-9" style="margin-top: 90px">
 
@@ -42,26 +43,18 @@
             <div class="col-lg-8 col-md-8" style="margin-bottom: 40px">
                 <div class="card h-100">
                     <div class="card-header font-italic">
-                        <h5>@this.ViewData["CategoryName"]</h5>
+                        <h5>@Model.PostViewModel.Tittle</h5>
                     </div>
-                    <img id="srcP" src="@this.ViewData["CategoryUrl"]" class="card-img-top" alt="...">
+                    <img id="srcP" src="@Model.PostViewModel.ImgUrl" class="card-img-top" alt="image">
+                    <div class="card-footer">
+                        <button type="button" onClick="voteButton()" id="Like_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 246px">@Model.PostViewModel.Likes</button>
+                        <button type="button" onClick="voteButton()" id="Dislike_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 246px">@Model.PostViewModel.Dislikes</button>
+                    </div>
                 </div>
-            </div>
 
-            <!-- /.row -->
+                <!-- /.row -->
+            </div>
+            <!-- /.col-lg-9 -->
         </div>
-        <!-- /.col-lg-9 -->
     </div>
 </div>
-<!-- /.row -->
-
-
-@section Scripts {
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        $(document).ready(function () {
-            DomOperation.call();
-            $(window).on("scroll", getPosts);
-        });
-    </script>
-}

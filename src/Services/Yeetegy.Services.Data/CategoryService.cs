@@ -37,23 +37,21 @@ namespace Yeetegy.Services.Data
 
         }
 
-        public IEnumerable<T> GetAll<T>()
+        public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            var categories = this.categoryRepository
+            return await this.categoryRepository
                 .AllAsNoTracking()
-                .To<T>().ToList();
-
-            return categories;
+                .To<T>().ToListAsync();
         }
 
-        public IEnumerable<SelectListItem> GetAllListItems()
+        public async Task<IEnumerable<SelectListItem>> GetAllListItemsAsync()
         {
-            var categories = this.categoryRepository
+            var categories = await this.categoryRepository
                 .AllAsNoTracking()
                 .Select(c => new SelectListItem()
                 {
                     Text = c.Name,
-                }).ToList();
+                }).ToListAsync();
 
             return categories;
         }

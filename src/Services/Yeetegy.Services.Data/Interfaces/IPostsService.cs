@@ -9,11 +9,11 @@ namespace Yeetegy.Services.Data.Interfaces
     {
         Task CreatePostAsync(AddPostsViewModel post, string userId);
 
-        IEnumerable<T> GetPosts<T>(int skip, int take, string category = null);
+        Task<IEnumerable<T>> GetPostsAsync<T>(int skip, int take, string category = null);
 
-        IEnumerable<T> GetPostsPopular<T>(int skip, int take);
+        Task<IEnumerable<T>> GetPostsPopularAsync<T>(int skip, int take);
 
-        IEnumerable<T> GetPostsTrending<T>(int skip, int take);
+        Task<IEnumerable<T>> GetPostsTrendingAsync<T>(int skip, int take);
 
         Task<string> GetPostVoteValueAsync(string postId, string userId);
 
@@ -29,6 +29,8 @@ namespace Yeetegy.Services.Data.Interfaces
 
         Task DislikeToLikeAsync(string postId, string userId);
 
-        Task<bool> DoesPostExist(string postId);
+        Task<bool> DoesPostExistAsync(string postId);
+
+        Task<T> GetPostAsync<T>(string postId);
     }
 }

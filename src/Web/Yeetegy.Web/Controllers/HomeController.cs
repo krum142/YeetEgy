@@ -27,7 +27,7 @@ namespace Yeetegy.Web.Controllers
 
             if (GlobalConstants.ConstantCategories.ContainsKey(category))
             {
-                var categories = this.categoryService.GetAll<CategoryViewModel>();
+                var categories = await this.categoryService.GetAllAsync<CategoryViewModel>();
                 this.ViewData["CategoryName"] = GlobalConstants.ConstantCategories.FirstOrDefault(x => x.Key.ToLower() == category.ToLower()).Key;
                 this.ViewData["CategoryUrl"] = GlobalConstants.ConstantCategories.FirstOrDefault(x => x.Key.ToLower() == category.ToLower()).Value;
                 return this.View(categories);
@@ -35,7 +35,7 @@ namespace Yeetegy.Web.Controllers
 
             if (await this.categoryService.IsThereAnyAsync(category))
             {
-                var categories = this.categoryService.GetAll<CategoryViewModel>();
+                var categories = await this.categoryService.GetAllAsync<CategoryViewModel>();
                 var currentCat = categories.First(x => x.Name == category);
                 this.ViewData["CategoryName"] = currentCat.Name;
                 this.ViewData["CategoryUrl"] = currentCat.ImageUrl;

@@ -1,7 +1,8 @@
-﻿using Yeetegy.Data.Models;
+﻿using System.Collections.Generic;
+using Yeetegy.Data.Models;
 using Yeetegy.Services.Mapping;
 
-namespace Yeetegy.Web.ViewModels
+namespace Yeetegy.Web.ViewModels.PostViewModels
 {
     public class PostsViewModel : IMapFrom<Post>
     {
@@ -16,5 +17,7 @@ namespace Yeetegy.Web.ViewModels
         public int Dislikes { get; set; }
 
         public string CategoryId { get; set; }
+
+        public int CommentsCount { get; set; }
     }
 }

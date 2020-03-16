@@ -35,27 +35,46 @@ namespace Yeetegy.Web.Controllers
             {
                 var posts = header switch
                 {
-                    "Newest" => this.postsService.GetPosts<PostsViewModel>(page, loadPostsCount),
-                    "Popular" => this.postsService.GetPostsPopular<PostsViewModel>(page, loadPostsCount),
-                    "Discussed" => this.postsService.GetPostsTrending<PostsViewModel>(page, loadPostsCount),
-                    _ => this.postsService.GetPosts<PostsViewModel>(page, loadPostsCount),
+                    "Newest" => await this.postsService.GetPostsAsync<PostsViewModel>(page, loadPostsCount),
+                    "Popular" => await this.postsService.GetPostsPopularAsync<PostsViewModel>(page, loadPostsCount),
+                    "Discussed" => await this.postsService.GetPostsTrendingAsync<PostsViewModel>(page, loadPostsCount),
+                    _ => await this.postsService.GetPostsAsync<PostsViewModel>(page, loadPostsCount),
                 };
                 return this.Json(posts);
             }
 
             if (await this.categoryService.IsThereAnyAsync(header))
             {
-                var posts = this.postsService.GetPosts<PostsViewModel>(page, loadPostsCount, header);
+                var posts = await this.postsService.GetPostsAsync<PostsViewModel>(page, loadPostsCount, header);
                 return this.Json(posts);
             }
 
             return this.Json(new List<PostsViewModel>());
         }
 
+        public async Task<IActionResult> PostDetails(string id)
+        {
+            if (await this.postsService.DoesPostExistAsync(id))
+            {
+                var post = await this.postsService.GetPostAsync<PostCommentsViewModel>(id);
+                var category = await this.categoryService.GetAllAsync<CategoryViewModel>();
+
+                var details = new PostDetailsViewModel()
+                {
+                    PostViewModel = post,
+                    CategoryViewModel = category,
+                };
+
+                return this.View(details);
+            }
+
+            return this.NotFound();
+        }
+
         public async Task<IActionResult> Vote(string id, string vote)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!await this.postsService.DoesPostExist(id))
+            if (!await this.postsService.DoesPostExistAsync(id))
             {
                 return this.NotFound();
             }
@@ -111,11 +130,11 @@ namespace Yeetegy.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
             var model = new AddPostsViewModel()
             {
-                Categorys = this.categoryService.GetAllListItems(),
+                Categorys = await this.categoryService.GetAllListItemsAsync(),
             };
 
             return this.View(model);
@@ -138,7 +157,7 @@ namespace Yeetegy.Web.Controllers
                 }
             }
 
-            post.Categorys = this.categoryService.GetAllListItems();
+            post.Categorys = await this.categoryService.GetAllListItemsAsync();
 
             return this.View(post);
         }

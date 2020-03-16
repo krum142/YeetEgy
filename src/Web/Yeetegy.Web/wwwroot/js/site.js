@@ -11,7 +11,6 @@ var inProgress = false;
 var jsonn;
 var posthtml;
 
-
 function DomOperation() {
     if (noMoredata === false && inProgress === false) {
         inProgress = true;
@@ -39,7 +38,7 @@ function DomOperation() {
                                     '<div class="card-footer">\n' +
                                     '<button type="button"  onClick="voteButton()" id="Like_' + jsonn[i].id + '" class="btn btn-dark fa fa-thumbs-up" style="width: 100px">' + jsonn[i].likes + '</button>\n' +
                                     '<button type="button"  onClick="voteButton()" id="Dislike_' + jsonn[i].id + '" class="btn btn-dark fa fa-thumbs-down" style="width: 100px">' + jsonn[i].dislikes + '</button>\n' +
-                                    '<button type="button" onClick="likeButton()" data-arg1="' + jsonn[i].id + '" class="btn btn-dark fa fa-comment" style="width: 100px"></button>\n' +
+                                    '<button type="button" onClick="redirect()" id="' + jsonn[i].id + '" class="btn btn-dark fa fa-comment" style="width: 100px">' + jsonn[i].commentsCount +'</button>\n' +
                                     '</div></div></div>\n';
                             }
                         }

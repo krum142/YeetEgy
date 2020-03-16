@@ -43,12 +43,13 @@ namespace Yeetegy.Web.Areas.Administration.Controllers
                 }
 
             }
+
             return this.View(model);
         }
 
-        public IActionResult DeleteCategory()
+        public async Task<IActionResult> DeleteCategory()
         {
-            var model = this.categoryService.GetAllListItems();
+            var model = await this.categoryService.GetAllListItemsAsync();
             return this.View(model);
         }
 

@@ -152,13 +152,18 @@ namespace Yeetegy.Services.Data
             return null;
         }
 
-        public async Task<bool> DoesPostExist(string postId)
+        public async Task<bool> DoesPostExistAsync(string postId)
         {
             return await this.postRepository.AllAsNoTracking().AnyAsync(x => x.Id == postId);
         }
 
+        public async Task<T> GetPostAsync<T>(string postId)
+        {
+            return await this.postRepository.AllAsNoTracking().Where(x => x.Id == postId).To<T>().FirstOrDefaultAsync();
+        }
+
         // you can use enums to make ifs with categorys (down there)
-        public IEnumerable<T> GetPosts<T>(int skip, int take, string category = null)
+        public async Task<IEnumerable<T>> GetPostsAsync<T>(int skip, int take, string category = null)
         {
             var query = this.postRepository.AllAsNoTracking();
 
@@ -167,25 +172,25 @@ namespace Yeetegy.Services.Data
                 query = query.Where(x => x.Category.Name == category);
             }
 
-            return query.OrderByDescending(x => x.CreatedOn).Skip(skip).Take(take).To<T>().ToList();
+            return await query.OrderByDescending(x => x.CreatedOn).Skip(skip).Take(take).To<T>().ToListAsync();
         }
 
-        public IEnumerable<T> GetPostsPopular<T>(int skip, int take)
+        public async Task<IEnumerable<T>> GetPostsPopularAsync<T>(int skip, int take)
         {
             var query = this.postRepository.AllAsNoTracking();
 
             query = query.Where(x => x.Likes >= 200).OrderByDescending(x => x.CreatedOn).ThenByDescending(x => x.CreatedOn);
 
-            return query.Skip(skip).Take(take).To<T>().ToList();
+            return await query.Skip(skip).Take(take).To<T>().ToListAsync();
         }
 
-        public IEnumerable<T> GetPostsTrending<T>(int skip, int take)
+        public async Task<IEnumerable<T>> GetPostsTrendingAsync<T>(int skip, int take)
         {
             var query = this.postRepository.AllAsNoTracking();
 
             query = query.OrderByDescending(x => x.Comments.Count).ThenByDescending(x => x.CreatedOn);
 
-            return query.Skip(skip).Take(take).To<T>().ToList();
+            return await query.Skip(skip).Take(take).To<T>().ToListAsync();
         }
     }
 }

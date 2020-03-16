@@ -11,9 +11,9 @@ namespace Yeetegy.Services.Data.Interfaces
     {
         Task CreateAsync(string name, IFormFile image);
 
-        IEnumerable<T> GetAll<T>();
+        Task<IEnumerable<T>> GetAllAsync<T>();
 
-        IEnumerable<SelectListItem> GetAllListItems();
+        Task<IEnumerable<SelectListItem>> GetAllListItemsAsync();
 
         Task<string> GetIdAsync(string categoryName);
 
