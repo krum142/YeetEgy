@@ -4,42 +4,38 @@
 @using Yeetegy.Common
 @model IEnumerable<CategoryViewModel>
 <div class="row">
-
     <div class="col-lg-3">
-
-        <div class="list-group" style="margin-top: 60px">
-            <h2>Categorys</h2>
-
-
-            @foreach (var globalCategories in GlobalConstants.ConstantCategories)
-            {
-                <a href="/@globalCategories.Key" alt="@globalCategories.Key">
-                    <div class="chip list-group-item-action">
-                        <img src="@globalCategories.Value" alt="Person" width="96" height="96">
-                        <p class="text-white">@globalCategories.Key</p>
-                    </div>
-                </a>
-            }
-
-            @foreach (var categories in Model)
-            {
-                <a href="/@categories.Name" alt="@categories.Name">
-                    <div class="chip list-group-item-action">
-                        <img src="@categories.ImageUrl" alt="Person" width="96" height="96">
-                        <p class="text-white">@categories.Name</p>
-                    </div>
-                </a>
-            }
+        <div id="catPos" class="position-fixed">
+            <div id="catWid" class="list-group" style="margin-top: 60px; width: 220px">
+                <h2>Categorys</h2>
+                @foreach (var globalCategories in GlobalConstants.ConstantCategories)
+                {
+                    <a href="/@globalCategories.Key" alt="@globalCategories.Key">
+                        <div class="chip list-group-item-action">
+                            <img src="@globalCategories.Value" alt="Person" width="96" height="96">
+                            <p class="text-white">@globalCategories.Key</p>
+                        </div>
+                    </a>
+                }
+                @foreach (var categories in Model)
+                {
+                    <a href="/@categories.Name" alt="@categories.Name">
+                        <div class="chip list-group-item-action">
+                            <img src="@categories.ImageUrl" alt="Person" width="96" height="96">
+                            <p class="text-white">@categories.Name</p>
+                        </div>
+                    </a>
+                }
+            </div>
         </div>
-
     </div>
     <!-- /.col-lg-3 -->
 
-    <div class="col-lg-9" style="margin-top: 90px">
+    <div class="col-lg-9" style="margin-top: 90px;">
 
         <div class="row" id="PostContainer">
 
-            <div class="col-lg-8 col-md-8" style="margin-bottom: 40px">
+            <div class="col-lg-9 col-md-12" style="margin-bottom: 30px">
                 <div class="card h-100">
                     <div class="card-header font-italic">
                         <h5>@this.ViewData["CategoryName"]</h5>
@@ -48,9 +44,8 @@
                 </div>
             </div>
 
-            <!-- /.row -->
+
         </div>
-        <!-- /.col-lg-9 -->
     </div>
 </div>
 <!-- /.row -->
@@ -58,9 +53,16 @@
 
 @section Scripts {
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/General.js" asp-append-version="true"></script>
     <script>
+        $(window).resize(function () {
+            resizeCategory.call();
+            //console.log(Math.max(document.documentElement.clientHeight, window.innerHeight || 0));
+        });
+
         $(document).ready(function () {
             DomOperation.call();
+            resizeCategory.call();
             $(window).on("scroll", getPosts);
         });
     </script>

@@ -29,7 +29,10 @@ function DomOperation() {
                         } else {
                             for (let i = 0; i < 5; i++) {
                                 document.getElementById("PostContainer").innerHTML +=
-                                    '<div class="col-lg-8 col-md-8 mb-8" style="margin-bottom: 40px">\n' +
+                                    '<div class="col-lg-9 col-md-12" style="margin-bottom: 30px">\n' +
+                                    '<div>\n' +
+                                    '<hr style="border-top: 2px solid #043927;">\n' +
+                                    '<h5><span class="badge badge-light">' + jsonn[i].time + '</span></h5>\n' +
                                     '<div class="card h-100">\n' +
                                     '<div class="card-header font-italic">\n' +
                                     '<h5>' + jsonn[i].tittle + '</h5>\n' +
@@ -38,8 +41,8 @@ function DomOperation() {
                                     '<div class="card-footer">\n' +
                                     '<button type="button"  onClick="voteButton()" id="Like_' + jsonn[i].id + '" class="btn btn-dark fa fa-thumbs-up" style="width: 100px">' + jsonn[i].likes + '</button>\n' +
                                     '<button type="button"  onClick="voteButton()" id="Dislike_' + jsonn[i].id + '" class="btn btn-dark fa fa-thumbs-down" style="width: 100px">' + jsonn[i].dislikes + '</button>\n' +
-                                    '<button type="button" onClick="redirect()" id="' + jsonn[i].id + '" class="btn btn-dark fa fa-comment" style="width: 100px">' + jsonn[i].commentsCount +'</button>\n' +
-                                    '</div></div></div>\n';
+                                    '<button type="button" onClick="redirect()" id="' + jsonn[i].id + '" class="btn btn-dark fa fa-comment" style="width: 100px">' + jsonn[i].commentsCount + '</button>\n' +
+                                    '</div></div></div></div>\n';
                             }
                         }
                     });

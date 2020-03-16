@@ -17,20 +17,17 @@ namespace Yeetegy.Services.Data
         private readonly IDeletableEntityRepository<UserPostVote> postVoteRepository;
         private readonly ICategoryService categoryService;
         private readonly ICloudinaryService cloudinary;
-        private readonly IUserService userService;
 
         public PostsService(
             IDeletableEntityRepository<Post> postRepository,
             IDeletableEntityRepository<UserPostVote> postVoteRepository,
             ICategoryService categoryService,
-            ICloudinaryService cloudinary,
-            IUserService userService)
+            ICloudinaryService cloudinary)
         {
             this.postRepository = postRepository;
             this.postVoteRepository = postVoteRepository;
             this.categoryService = categoryService;
             this.cloudinary = cloudinary;
-            this.userService = userService;
         }
 
         public async Task CreatePostAsync(AddPostsViewModel post, string userId)
