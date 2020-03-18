@@ -7,7 +7,6 @@
     <div class="col-lg-3">
         <div id="catPos" class="position-fixed">
             <div id="catWid" class="list-group" style="margin-top: 60px; width: 220px">
-                <h2>Categorys</h2>
                 @foreach (var globalCategories in GlobalConstants.ConstantCategories)
                 {
                     <a href="/@globalCategories.Key" alt="@globalCategories.Key">
@@ -31,11 +30,11 @@
     </div>
     <!-- /.col-lg-3 -->
 
-    <div class="col-lg-9" style="margin-top: 90px;">
+    <div class="col-lg-9" style="margin-top: 60px;">
 
         <div class="row" id="PostContainer">
-
-            <div class="col-lg-9 col-md-12" style="margin-bottom: 30px">
+            <form id="voteform" method="post"></form>
+            <div class="col-lg-8 col-md-12" style="margin-bottom: 30px">
                 <div class="card h-100">
                     <div class="card-header font-italic">
                         <h5>@this.ViewData["CategoryName"]</h5>
@@ -43,8 +42,6 @@
                     <img id="srcP" src="@this.ViewData["CategoryUrl"]" class="card-img-top" alt="...">
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>

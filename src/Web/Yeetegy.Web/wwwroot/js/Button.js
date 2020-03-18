@@ -19,51 +19,51 @@ function topFunction() {
 }
 
 function voteButton() {
-    var id = event.target.getAttribute("id");
-    var vote = id.split("_")[0];
-    var urll = "/Posts/Vote?" + "vote=" + vote + "&id=" + id.split("_")[1];
+    var x = event.target.getAttribute("id").split("_");
+    var vote = x[0] === "Like" ? true : false;
+    var id = x[1];
+    var token = $("#voteform input[name=__RequestVerificationToken]").val();
 
+    var voteUrl = "/api/Votes";
+    var json = { postId: id, isUpVote: vote }
     request = new XMLHttpRequest();
-    request.open('GET', urll, /* async = */ false);
-    request.send();
+    request.open('POST', voteUrl, /* async = */ false);
+    request.setRequestHeader("X-CSRF-TOKEN", token);
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.send(JSON.stringify(json));
 
-    var myRequestUrl = request.responseURL;
-    var errorCode = myRequestUrl.split('=').pop();
     var code = request.status;
+    var dooo = JSON.parse(request.response);
 
-    if (errorCode == 404) {
-        window.location = myRequestUrl;
-    }
-    else if (errorCode == 401) {
-        window.location = "/Identity/Account/Login";
-    }
-    else if (vote === "Like") {
-        if (code == 202) {
-            event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
-            event.target.nextSibling.nextSibling.innerHTML =
-                parseInt(event.target.nextSibling.nextSibling.innerHTML) - 1;
+    console.log(dooo.status);
+
+    if (code != 200) {
+        if (code === 401) {
+            window.location = "/Identity/Account/Login";
+        } else {
+            window.location = "/Home/HttpError?statusCode=" + code;
         }
-        else if (code == 200) {
+    }
+    /// UnLike,UnDislike,
+    /// LikeToDislike,DislikeToLike.
+    switch (dooo.status) {
+        case "Like": case "Dislike":
             event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
-        }
-        else if (code == 204) {
+        break;
+        case "UnLike": case"UnDislike":
             event.target.innerHTML = parseInt(event.target.innerHTML) - 1;
-        }
-    }
-    else if (vote === "Dislike") {
-        if (code == 202) {
+            break;
+        case "LikeToDislike":
             event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
             event.target.previousSibling.previousSibling.innerHTML =
                 parseInt(event.target.previousSibling.previousSibling.innerHTML) - 1;
-        }
-        else if (code == 200) {
+        break;
+        case "DislikeToLike":
             event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
-        }
-        else if (code == 204) {
-            event.target.innerHTML = parseInt(event.target.innerHTML) - 1;
-        }
+            event.target.nextSibling.nextSibling.innerHTML =
+                parseInt(event.target.nextSibling.nextSibling.innerHTML) - 1;
+        break;
     }
-
 }
 
 function redirect() {

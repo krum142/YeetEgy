@@ -71,64 +71,6 @@ namespace Yeetegy.Web.Controllers
             return this.NotFound();
         }
 
-        public async Task<IActionResult> Vote(string id, string vote)
-        {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!await this.postsService.DoesPostExistAsync(id))
-            {
-                return this.NotFound();
-            }
-
-            if (this.User.Identity.IsAuthenticated)
-            {
-                var lastValue = await this.postsService.GetPostVoteValueAsync(id, userId);
-                if (lastValue != null)
-                {
-                    switch (vote)
-                    {
-                        case "Like":
-                            switch (lastValue)
-                            {
-                                case "Like":
-                                    await this.postsService.UndoLikeAsync(id, userId);
-                                    return this.NoContent();
-                                case "Dislike":
-                                    await this.postsService.DislikeToLikeAsync(id, userId);
-                                    return this.Accepted();
-                                default: return this.NotFound();
-                            }
-
-                        case "Dislike":
-                            switch (lastValue)
-                            {
-                                case "Dislike":
-                                    await this.postsService.UndoDislikeAsync(id, userId);
-                                    return this.NoContent();
-                                case "Like":
-                                    await this.postsService.LikeToDislikeAsync(id, userId);
-                                    return this.Accepted();
-                                default: return this.NotFound();
-                            }
-
-                        default: return this.NotFound();
-                    }
-                }
-
-                switch (vote)
-                {
-                    case "Like":
-                        await this.postsService.LikeAsync(id, userId);
-                        return this.Ok();
-                    case "Dislike":
-                        await this.postsService.DislikeAsync(id, userId);
-                        return this.Ok();
-                    default: return this.NotFound();
-                }
-            }
-
-            return this.Unauthorized();
-        }
-
         [Authorize]
         public async Task<IActionResult> Add()
         {

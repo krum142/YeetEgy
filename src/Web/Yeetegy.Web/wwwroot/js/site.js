@@ -29,7 +29,7 @@ function DomOperation() {
                         } else {
                             for (let i = 0; i < 5; i++) {
                                 document.getElementById("PostContainer").innerHTML +=
-                                    '<div class="col-lg-9 col-md-12" style="margin-bottom: 30px">\n' +
+                                    '<div class="col-lg-8 col-md-12" style="margin-bottom: 30px">\n' +
                                     '<div>\n' +
                                     '<hr style="border-top: 2px solid #043927;">\n' +
                                     '<h5><span class="badge badge-light">' + jsonn[i].time + '</span></h5>\n' +

@@ -47,10 +47,11 @@ namespace Yeetegy.Web
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
-            services.AddControllersWithViews(config =>
+            services.AddControllersWithViews(options =>
                 {
-                    config.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 });
+            services.AddAntiforgery(options => { options.HeaderName = "X-CSRF-TOKEN"; });
             services.AddRazorPages();
 
             services.AddSingleton(this.configuration);
@@ -66,6 +67,7 @@ namespace Yeetegy.Web
             services.AddTransient<IPostsService, PostsService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
+            services.AddTransient<IVotesService, VotesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

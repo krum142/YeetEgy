@@ -20,9 +20,9 @@ namespace Yeetegy.Web.ViewModels.PostViewModels
 
         public string CategoryId { get; set; }
 
-        public int CommentsCount { get; set; }
-
         public string Time { get; set; }
+
+        public int CommentsCount { get; set; }
 
         public IEnumerable<CommentsViewModel> Comments { get; set; }
 

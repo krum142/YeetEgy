@@ -5,58 +5,56 @@
 }
 @model PostDetailsViewModel
 
-<div class="row">
-    <div class="col-lg-3">
-        <div id="catPos" class="position-fixed">
-            <div id="catWid" class="list-group" style="margin-top: 60px; width: 220px">
-                <h2>Categorys</h2>
-                @foreach (var globalCategories in GlobalConstants.ConstantCategories)
-                {
-                    <a href="/@globalCategories.Key" alt="@globalCategories.Key">
-                        <div class="chip list-group-item-action">
-                            <img src="@globalCategories.Value" alt="Person" width="96" height="96">
-                            <p class="text-white">@globalCategories.Key</p>
-                        </div>
-                    </a>
-                }
-                @foreach (var categories in Model.CategoryViewModel)
-                {
-                    <a href="/@categories.Name" alt="@categories.Name">
-                        <div class="chip list-group-item-action">
-                            <img src="@categories.ImageUrl" alt="Person" width="96" height="96">
-                            <p class="text-white">@categories.Name</p>
-                        </div>
-                    </a>
-                }
-            </div>
-        </div>
-    </div>
-    <!-- /.col-lg-3 -->
-
-    <div class="col-lg-9" style="margin-top: 90px;">
-
-        <div class="row" id="PostContainer">
-
-            <div class="col-lg-9 col-md-12" style="margin-bottom: 30px">
-                <h5>
-                    <span class="badge badge-light">@Model.PostViewModel.Time</span>
-                </h5>
-                <div class="card h-100">
-                    <div class="card-header font-italic">
-                        <h5>@Model.PostViewModel.Tittle</h5>
-                    </div>
-                    <img id="srcP" src="@Model.PostViewModel.ImgUrl" class="card-img-top" alt="image">
-                    <div class="card-footer">
-                        <button type="button" onClick="voteButton()" id="Like_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 150px">@Model.PostViewModel.Likes</button>
-                        <button type="button" onClick="voteButton()" id="Dislike_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 150px">@Model.PostViewModel.Dislikes</button>
-                    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div id="catPos" class="position-fixed">
+                <div id="catWid" class="list-group" style="margin-top: 60px; width: 220px">
+                    @foreach (var globalCategories in GlobalConstants.ConstantCategories)
+                    {
+                        <a href="/@globalCategories.Key" alt="@globalCategories.Key">
+                            <div class="chip list-group-item-action">
+                                <img src="@globalCategories.Value" alt="Person" width="96" height="96">
+                                <p class="text-white">@globalCategories.Key</p>
+                            </div>
+                        </a>
+                    }
+                    @foreach (var categories in Model.CategoryViewModel)
+                    {
+                        <a href="/@categories.Name" alt="@categories.Name">
+                            <div class="chip list-group-item-action">
+                                <img src="@categories.ImageUrl" alt="Person" width="96" height="96">
+                                <p class="text-white">@categories.Name</p>
+                            </div>
+                        </a>
+                    }
                 </div>
             </div>
+        </div>
+        <!-- /.col-lg-3 -->
 
+        <div class="col-lg-9" style="margin-top: 25px;">
 
+            <div class="row" id="PostContainer">
+
+                <div class="col-lg-8 col-md-12" style="margin-bottom: 30px">
+                    <h5>
+                        <span class="badge badge-light">@Model.PostViewModel.Time</span>
+                    </h5>
+                    <div class="card h-100">
+                        <div class="card-header font-italic">
+                            <h5>@Model.PostViewModel.Tittle</h5>
+                        </div>
+                        <img id="srcP" src="@Model.PostViewModel.ImgUrl" class="card-img-top" alt="image">
+                        <div class="card-footer">
+                            <button type="button" onClick="voteButton()" id="Like_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 150px">@Model.PostViewModel.Likes</button>
+                            <button type="button" onClick="voteButton()" id="Dislike_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 150px">@Model.PostViewModel.Dislikes</button>
+                        </div>
+                    </div>
+                </div>
+                <hr style="border-top: 2px solid #043927;">
+            </div>
         </div>
     </div>
-</div>
 
 @section Scripts {
     <script src="~/js/General.js" asp-append-version="true"></script>
@@ -64,7 +62,6 @@
         $(window).resize(function () {
             resizeCategory.call();
         });
-
         $(document).ready(function () {
             resizeCategory.call();
         });
