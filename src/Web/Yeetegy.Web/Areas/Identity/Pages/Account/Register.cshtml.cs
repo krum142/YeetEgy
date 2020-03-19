@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Yeetegy.Common;
 using Yeetegy.Data.Models;
 using Yeetegy.Services.Messaging;
 
@@ -88,7 +89,7 @@ namespace Yeetegy.Web.Areas.Identity.Pages.Account
                 ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
                 if (ModelState.IsValid)
                 {
-                    var user = new ApplicationUser { UserName = Input.Username, Email = Input.Email };
+                    var user = new ApplicationUser { UserName = Input.Username, Email = Input.Email ,AvatarUrl = GlobalConstants.DefaltUserImg};
                     var result = await _userManager.CreateAsync(user, Input.Password);
                     if (result.Succeeded)
                     {

@@ -12,6 +12,8 @@ namespace Yeetegy.Common
 
         public const int LoadPostCountAjax = 5;
 
+        public const string DefaltUserImg = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.DOCaAYGm7-VBDsBFYH_jpAAAAA%26pid%3DApi&f=1"; // save it in the cloudinary
+
         public static Dictionary<string, string> ConstantCategories = new Dictionary<string, string>()
         {
             { "Newest", "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fimage.syracuse.com%2Fhome%2Fsyr-media%2Fwidth620%2Fimg%2Fnews%2Fphoto%2F2014%2F03%2Fne-140304-daylightsavingsjpg-055c1d8de9cfcc67.jpg&f=1&nofb=1" },

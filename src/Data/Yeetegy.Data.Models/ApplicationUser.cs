@@ -31,6 +31,8 @@ namespace Yeetegy.Data.Models
 
         public ICollection<Replay> Replays { get; set; }
 
+        public string AvatarUrl { get; set; }
+
         // Audit info
         public DateTime CreatedOn { get; set; }
 

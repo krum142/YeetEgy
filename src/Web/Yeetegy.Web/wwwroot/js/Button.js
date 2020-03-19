@@ -45,7 +45,7 @@ function voteButton() {
         }
     }
     /// UnLike,UnDislike,
-    /// LikeToDislike,DislikeToLike.
+    /// LikeToDislike,DislikeToLike
     switch (dooo.status) {
         case "Like": case "Dislike":
             event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
