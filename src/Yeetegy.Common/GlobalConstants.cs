@@ -12,7 +12,7 @@ namespace Yeetegy.Common
 
         public const int LoadPostCountAjax = 5;
 
-        public const string DefaltUserImg = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.DOCaAYGm7-VBDsBFYH_jpAAAAA%26pid%3DApi&f=1"; // save it in the cloudinary
+        public const string DefaltUserImg = "https://res.cloudinary.com/cloudnameiscool/image/upload/v1584633016/avatar_nq8tay.jpg"; // save it in the cloudinary
 
         public static Dictionary<string, string> ConstantCategories = new Dictionary<string, string>()
         {
