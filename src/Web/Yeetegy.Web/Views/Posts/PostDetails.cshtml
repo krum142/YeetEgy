@@ -14,7 +14,7 @@
                         <a href="/@globalCategories.Key" alt="@globalCategories.Key">
                             <div class="chip list-group-item-action">
                                 <img src="@globalCategories.Value" alt="Person" width="96" height="96">
-                                <p class="text-white">@globalCategories.Key</p>
+                                <p class="text-white"><b>@globalCategories.Key</b></p>
                             </div>
                         </a>
                     }
@@ -23,7 +23,7 @@
                         <a href="/@categories.Name" alt="@categories.Name">
                             <div class="chip list-group-item-action">
                                 <img src="@categories.ImageUrl" alt="Person" width="96" height="96">
-                                <p class="text-white">@categories.Name</p>
+                                <p class="text-white"><b>@categories.Name</b></p>
                             </div>
                         </a>
                     }
@@ -42,7 +42,7 @@
                     </h5>
                     <div class="card h-100">
                         <div class="card-header font-italic">
-                            <h5>@Model.PostViewModel.Tittle</h5>
+                            <h5><b>@Model.PostViewModel.Tittle</b></h5>
                         </div>
                         <img id="srcP" src="@Model.PostViewModel.ImgUrl" class="card-img-top" alt="image">
                         <div class="card-footer">
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 </div>
-                <hr style="border-top: 2px solid #043927;">
+                @*<hr style="border-top: 2px solid #043927;">*@
             </div>
         </div>
     </div>

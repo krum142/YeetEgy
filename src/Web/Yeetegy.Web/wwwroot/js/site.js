@@ -35,7 +35,7 @@ function DomOperation() {
                                     '<h5><span class="badge badge-light">' + jsonn[i].time + '</span></h5>\n' +
                                     '<div class="card h-100">\n' +
                                     '<div class="card-header font-italic">\n' +
-                                    '<h5>' + jsonn[i].tittle + '</h5>\n' +
+                                    '<h5><b>' + jsonn[i].tittle + '</b></h5>\n' +
                                     '</div>\n' +
                                     '<img id="1" src="' + jsonn[i].imgUrl + '" class="card-img-top">\n' +
                                     '<div class="card-footer">\n' +

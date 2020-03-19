@@ -7,7 +7,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <div class="dropdown" style="margin-left: 10px">
+        <div class="dropdown" style="margin-left: 20px">
             <a type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
                 <img style="border-radius: 50%; margin-top: 3px" width="33" height="33" src="@this.UserManager.Users.Where(x => x.UserName == User.Identity.Name).Select(x => x.AvatarUrl).FirstOrDefault()" />
             </a>

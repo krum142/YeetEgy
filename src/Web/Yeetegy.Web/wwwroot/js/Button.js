@@ -68,5 +68,5 @@ function voteButton() {
 
 function redirect() {
     var id = event.target.getAttribute("id");
-    window.location = "/Posts/PostDetails?id=" + id;
+    window.open("/Posts/PostDetails?id=" + id);
 }
