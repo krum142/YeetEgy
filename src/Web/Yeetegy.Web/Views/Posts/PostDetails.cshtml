@@ -5,57 +5,85 @@
 }
 @model PostDetailsViewModel
 
-    <div class="row">
-        <div class="col-lg-3">
-            <div id="catPos" class="position-fixed">
-                <div id="catWid" class="list-group" style="margin-top: 60px; width: 220px">
-                    @foreach (var globalCategories in GlobalConstants.ConstantCategories)
-                    {
-                        <a href="/@globalCategories.Key" alt="@globalCategories.Key">
-                            <div class="chip list-group-item-action">
-                                <img src="@globalCategories.Value" alt="Person" width="96" height="96">
-                                <p class="text-white"><b>@globalCategories.Key</b></p>
-                            </div>
-                        </a>
-                    }
-                    @foreach (var categories in Model.CategoryViewModel)
-                    {
-                        <a href="/@categories.Name" alt="@categories.Name">
-                            <div class="chip list-group-item-action">
-                                <img src="@categories.ImageUrl" alt="Person" width="96" height="96">
-                                <p class="text-white"><b>@categories.Name</b></p>
-                            </div>
-                        </a>
-                    }
-                </div>
-            </div>
-        </div>
-        <!-- /.col-lg-3 -->
-
-        <div class="col-lg-9" style="margin-top: 25px;">
-
-            <div class="row" id="PostContainer">
-                <form id="voteform" method="post"></form>
-                <div class="col-lg-8 col-md-12" style="margin-bottom: 30px">
-                    <h5>
-                        <span class="badge badge-light">@Model.PostViewModel.Time</span>
-                    </h5>
-                    <div class="card h-100">
-                        <div class="card-header font-italic">
-                            <h5><b>@Model.PostViewModel.Tittle</b></h5>
+<div class="row">
+    <div class="col-lg-3">
+        <div id="catPos" class="position-fixed">
+            <div id="catWid" class="list-group" style="margin-top: 60px; width: 220px">
+                @foreach (var globalCategories in GlobalConstants.ConstantCategories)
+                {
+                    <a href="/@globalCategories.Key" alt="@globalCategories.Key">
+                        <div class="chip list-group-item-action">
+                            <img src="@globalCategories.Value" alt="Person" width="96" height="96">
+                            <p class="text-white"><b>@globalCategories.Key</b></p>
                         </div>
-                        <img id="srcP" src="@Model.PostViewModel.ImgUrl" class="card-img-top" alt="image">
-                        <div class="card-footer">
-                            <button type="button" onClick="voteButton()" id="Like_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 150px">@Model.PostViewModel.Likes</button>
-                            <button type="button" onClick="voteButton()" id="Dislike_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 150px">@Model.PostViewModel.Dislikes</button>
+                    </a>
+                }
+                @foreach (var categories in Model.CategoryViewModel)
+                {
+                    <a href="/@categories.Name" alt="@categories.Name">
+                        <div class="chip list-group-item-action">
+                            <img src="@categories.ImageUrl" alt="Person" width="96" height="96">
+                            <p class="text-white"><b>@categories.Name</b></p>
                         </div>
-                    </div>
-                </div>
-                @*<hr style="border-top: 2px solid #043927;">*@
+                    </a>
+                }
             </div>
         </div>
     </div>
+    <!-- /.col-lg-3 -->
 
+    <div class="col-lg-9" style="margin-top: 25px;">
+        <div>
+            <form id="voteform" method="post"></form>
+            <div class="col-lg-8 col-md-12" style="margin-bottom: 30px">
+                <h5>
+                    <span class="badge badge-light">@Model.PostViewModel.Time</span>
+                </h5>
+                <div class="card h-100">
+                    <div class="card-header font-italic">
+                        <h5><b>@Model.PostViewModel.Tittle</b></h5>
+                    </div>
+                    <img id="srcP" src="@Model.PostViewModel.ImgUrl" class="card-img-top" alt="image">
+                    <div class="card-footer">
+                        <button type="button" onClick="voteButton()" id="Like_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 150px">@Model.PostViewModel.Likes</button>
+                        <button type="button" onClick="voteButton()" id="Dislike_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 150px">@Model.PostViewModel.Dislikes</button>
+                    </div>
+                </div>
+                <hr style="border-top: 2px solid #043927;">
+                <div class="testcontainer row">
+                    <div style="width: 14%;">
+                        <img style="display: block; margin: 0 auto; border-radius: 50%;" width="50" height="50" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fc2.staticflickr.com%2F2%2F1386%2F791791681_ecc5efac79_b.jpg&f=1&nofb=1" />
+                    </div>
+                    <div style="width: 83%; float: right;">
+                        <textarea placeholder="Enter your comment here..." class="form-control" style="resize: none; width: 100%"></textarea>
+                        <div style="width: 100%; height: 41px; margin-top: 1px">
+                            <label>
+                                <span class="btn btn-warning">
+                                    Add IMG… <input req style="display: none;" id="FileInput">
+                                </span>
+                            </label>
+                            <button class="btn btn-warning" style="float: right">post</button>
+                        </div>
+                    </div>
+                </div>
+                <hr style="border-top: 2px solid #043927;margin-top: 13px">
+                <div class="comment-container row">
+                    <div style="width: 14%;">
+                        <img style="display: block; margin: 0 auto; border-radius: 50%;" width="50" height="50" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fc2.staticflickr.com%2F2%2F1386%2F791791681_ecc5efac79_b.jpg&f=1&nofb=1" />
+                    </div>
+                    <div style="width: 83%; float: right;">
+                        <div style="width: 100%; word-wrap: break-word;">
+                            <a>testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
 @section Scripts {
     <script src="~/js/General.js" asp-append-version="true"></script>
     <script>
