@@ -39,7 +39,11 @@
     {
       "library": "font-awesome@4.7.0",
       "destination": "wwwroot/lib/Fontawsome/"
+    },
+    {
+      "library": "popper.js@1.0.4",
+      "destination": "wwwroot/lib/Popper/"
     }
-
+    //"<script" "src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js\"></script>"
   ]
 }
