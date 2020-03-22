@@ -74,7 +74,7 @@ namespace Yeetegy.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Add()
         {
-            var model = new AddPostsViewModel()
+            var model = new AddPostsModel()
             {
                 Categorys = await this.categoryService.GetAllListItemsAsync(),
             };
@@ -83,7 +83,7 @@ namespace Yeetegy.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddPostsViewModel post)
+        public async Task<IActionResult> Add(AddPostsModel post)
         {
             if (post.File != null && post.Tittle != null)
             {

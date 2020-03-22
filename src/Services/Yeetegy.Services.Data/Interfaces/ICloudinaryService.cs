@@ -5,6 +5,6 @@ namespace Yeetegy.Services.Data.Interfaces
 {
     public interface ICloudinaryService
     {
-        Task<string> SaveCloudinary(IFormFile image);
+        Task<string> SaveCloudinaryAsync(IFormFile image);
     }
 }

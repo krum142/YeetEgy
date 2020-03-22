@@ -1,6 +1,6 @@
 ﻿namespace Yeetegy.Web.ViewModels
 {
-    public class ResponseVoteModel
+    public class ResponseAddComment
     {
         public string Status { get; set; }
     }

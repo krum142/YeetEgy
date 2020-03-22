@@ -26,16 +26,14 @@ function voteButton() {
 
     var voteUrl = "/api/Votes";
     var json = { postId: id, isUpVote: vote }
-    request = new XMLHttpRequest();
+    var request = new XMLHttpRequest();
     request.open('POST', voteUrl, /* async = */ false);
     request.setRequestHeader("X-CSRF-TOKEN", token);
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     request.send(JSON.stringify(json));
 
     var code = request.status;
-    var dooo = JSON.parse(request.response);
-
-    console.log(dooo.status);
+    var myResponse = JSON.parse(request.response);
 
     if (code != 200) {
         if (code === 401) {
@@ -46,7 +44,7 @@ function voteButton() {
     }
     /// UnLike,UnDislike,
     /// LikeToDislike,DislikeToLike
-    switch (dooo.status) {
+    switch (myResponse.status) {
         case "Like": case "Dislike":
             event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
         break;

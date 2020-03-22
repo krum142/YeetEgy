@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Yeetegy.Data.Models;
+﻿using Yeetegy.Data.Models;
 using Yeetegy.Services.Mapping;
 
 namespace Yeetegy.Web.ViewModels

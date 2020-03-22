@@ -6,7 +6,7 @@ using Yeetegy.Web.Infrastructure.ValidationAtributes;
 
 namespace Yeetegy.Web.ViewModels.PostViewModels
 {
-    public class AddPostsViewModel
+    public class AddPostsModel
     {
         [Required(ErrorMessage = "Picture is Required!")]
         [FileValidation]

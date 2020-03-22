@@ -24,7 +24,7 @@ namespace Yeetegy.Services.Data
 
         public async Task CreateAsync(string name, IFormFile image)
         {
-            var imgUrl = this.cloudinaryService.SaveCloudinary(image);
+            var imgUrl = this.cloudinaryService.SaveCloudinaryAsync(image);
 
             var category = new Category()
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 using Yeetegy.Data.Common.Models;
 
 namespace Yeetegy.Data.Models
@@ -11,7 +12,6 @@ namespace Yeetegy.Data.Models
         {
             this.Id = Guid.NewGuid().ToString();
             this.Replays = new HashSet<Replay>();
-
         }
 
         [Required]

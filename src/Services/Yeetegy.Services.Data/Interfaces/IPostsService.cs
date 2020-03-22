@@ -7,7 +7,7 @@ namespace Yeetegy.Services.Data.Interfaces
 {
     public interface IPostsService
     {
-        Task CreatePostAsync(AddPostsViewModel post, string userId);
+        Task CreatePostAsync(AddPostsModel post, string userId);
 
         Task<IEnumerable<T>> GetPostsAsync<T>(int skip, int take, string category = null);
 

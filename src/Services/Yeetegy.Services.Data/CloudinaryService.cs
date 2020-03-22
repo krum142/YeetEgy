@@ -17,7 +17,7 @@ namespace Yeetegy.Services.Data
             this.configuration = configuration;
         }
 
-        public async Task<string> SaveCloudinary(IFormFile image)
+        public async Task<string> SaveCloudinaryAsync(IFormFile image)
         {
             var settings = this.configuration["CloudSettings"].Split("$");
             var cloudName = settings[0];

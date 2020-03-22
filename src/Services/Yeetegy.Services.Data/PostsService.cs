@@ -30,9 +30,9 @@ namespace Yeetegy.Services.Data
             this.cloudinary = cloudinary;
         }
 
-        public async Task CreatePostAsync(AddPostsViewModel post, string userId)
+        public async Task CreatePostAsync(AddPostsModel post, string userId)
         {
-            var urlTest = this.cloudinary.SaveCloudinary(post.File);
+            var urlTest = this.cloudinary.SaveCloudinaryAsync(post.File);
 
             var url = urlTest.Result;
 

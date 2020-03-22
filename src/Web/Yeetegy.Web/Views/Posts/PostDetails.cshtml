@@ -7,7 +7,7 @@
     ViewData["Title"] = "PostDetails";
 }
 @model PostDetailsViewModel
-
+<p type="hidden" id="postId" value="@Model.PostViewModel.Id"></p>
 <div class="row">
     <div class="col-lg-3">
         <div id="catPos" class="position-fixed">
@@ -53,19 +53,19 @@
                     </div>
                 </div>
                 <hr style="border-top: 2px solid #043927;">
-                <div class="formContainer row">
+                <div class="formContainer row" name="fileinfo">
                     <div style="width: 14%;">
                         <img style="display: block; margin: 0 auto; border-radius: 50%;" width="50" height="50" src="@this.UserManager.Users.Where(x => x.UserName == User.Identity.Name).Select(x => x.AvatarUrl).FirstOrDefault()" />
                     </div>
                     <div style="width: 83%; float: right;">
-                        <textarea placeholder="Enter your comment here..." class="form-control" style="resize: none; width: 100%"></textarea>
+                        <textarea placeholder="Enter your comment here..." id="commentDescription" class="form-control" style="resize: none; width: 100%"></textarea>
                         <div style="width: 100%; height: 41px; margin-top: 1px">
                             <label>
                                 <span class="btn btn-warning">
-                                    Add IMG… <input req style="display: none;" id="FileInput">
+                                    Add IMG… <input type="file" style="display: none;" id="commentFileInput">
                                 </span>
                             </label>
-                            <button class="btn btn-warning" style="float: right">post</button>
+                            <button class="btn btn-warning" onclick="addComment()" style="float: right">post</button>
                         </div>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                                 <a>testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest</a>
                             </div>
                             <div class="dropdown" style="width: 3%;">
-                                <a class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="#">Action</a>
@@ -107,13 +107,12 @@
 
 </div>
 @section Scripts {
-    <script src="~/js/General.js" asp-append-version="true"></script>
+    <script src="~/js/general.js" asp-append-version="true"></script>
+    <script src="~/js/comments.js"></script>
     <script>
         function testfun() {
             alert("hello");
         }
-
-
         $(window).resize(function () {
             resizeCategory.call();
         });

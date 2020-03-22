@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
+
 using Microsoft.AspNetCore.Http;
 
 namespace Yeetegy.Web.Infrastructure.ValidationAtributes
@@ -18,7 +16,7 @@ namespace Yeetegy.Web.Infrastructure.ValidationAtributes
             "image/png",
         };
 
-        private readonly IList<string> alloweFileExtensions = new List<string>()
+        private readonly IList<string> allowedFileExtensions = new List<string>()
         {
             ".png",
             ".jpeg",
@@ -37,7 +35,7 @@ namespace Yeetegy.Web.Infrastructure.ValidationAtributes
 
             var fileContentType = this.allowedMimeFiles.Contains(file.ContentType);
 
-            if (fileContentType && file.Length <= 8000000 && this.IsExtensionValid(file, this.alloweFileExtensions))
+            if (fileContentType && file.Length <= 8000000 && this.IsExtensionValid(file, this.allowedFileExtensions))
             {
                 return ValidationResult.Success;
             }
@@ -45,19 +43,19 @@ namespace Yeetegy.Web.Infrastructure.ValidationAtributes
             return new ValidationResult("Invalid File Extension!");
         }
 
-        private bool IsExtensionValid(IFormFile file,IList<string> AllowedTypes)
+        private bool IsExtensionValid(IFormFile file,IList<string> allowedTypes)
         {
-            bool ValidExtension = false;
+            bool validExtension = false;
 
-            foreach (var extension in AllowedTypes)
+            foreach (var extension in allowedTypes)
             {
                 if (file.FileName.EndsWith(extension))
                 {
-                    ValidExtension = true;
+                    validExtension = true;
                 }
             }
 
-            return ValidExtension;
+            return validExtension;
         }
     }
 }
