@@ -6,6 +6,6 @@ namespace Yeetegy.Services.Data.Interfaces
 {
     public interface ICommentsService
     {
-        Task<string> CreateCommentAsync(AddCommentsModel input, string userId);
+        Task CreateCommentAsync(AddCommentsModel input, string userId);
     }
 }

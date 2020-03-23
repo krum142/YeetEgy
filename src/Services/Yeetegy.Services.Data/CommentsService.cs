@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-
 using Yeetegy.Data.Common.Repositories;
 using Yeetegy.Data.Models;
 using Yeetegy.Services.Data.Interfaces;
@@ -12,13 +11,13 @@ namespace Yeetegy.Services.Data
         private readonly IDeletableEntityRepository<Comment> commentsRepository;
         private readonly ICloudinaryService cloudinaryService;
 
-        public CommentsService(IDeletableEntityRepository<Comment> commentsRepository, CloudinaryService cloudinaryService)
+        public CommentsService(IDeletableEntityRepository<Comment> commentsRepository, ICloudinaryService cloudinaryService)
         {
             this.commentsRepository = commentsRepository;
             this.cloudinaryService = cloudinaryService;
         }
 
-        public async Task<string> CreateCommentAsync(AddCommentsModel input, string userId)
+        public async Task CreateCommentAsync(AddCommentsModel input, string userId)
         {
             string url = null;
 
@@ -37,7 +36,6 @@ namespace Yeetegy.Services.Data
 
             await this.commentsRepository.AddAsync(comment);
             await this.commentsRepository.SaveChangesAsync();
-            return "200";
         }
     }
 }

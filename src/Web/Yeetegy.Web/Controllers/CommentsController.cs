@@ -1,6 +1,10 @@
-﻿using System.Security.Claims;
+﻿using System.IO.Compression;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-
+using GiphyDotNet.Manager;
+using GiphyDotNet.Model.Parameters;
+using GiphyDotNet.Model.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Yeetegy.Services.Data.Interfaces;
@@ -23,11 +27,10 @@ namespace Yeetegy.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<ResponseAddComment>> Post([FromForm]AddCommentsModel data)
         {
-
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var status = await this.commentsService.CreateCommentAsync(data, userId);
+            await this.commentsService.CreateCommentAsync(data, userId);
 
-            return new ResponseAddComment() { Status = status };
+            return new ResponseAddComment() { Status = "Created" };
         }
     }
 }

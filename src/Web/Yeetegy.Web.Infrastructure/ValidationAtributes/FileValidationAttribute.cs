@@ -30,17 +30,22 @@ namespace Yeetegy.Web.Infrastructure.ValidationAtributes
 
             if (file == null)
             {
-                return new ValidationResult("Image is Required!");
+                return ValidationResult.Success;
             }
 
             var fileContentType = this.allowedMimeFiles.Contains(file.ContentType);
 
-            if (fileContentType && file.Length <= 8000000 && this.IsExtensionValid(file, this.allowedFileExtensions))
+            if (file.Length > 1000000)
+            {
+                return new ValidationResult("File size too large max 1MB.");
+            }
+
+            if (fileContentType && this.IsExtensionValid(file, this.allowedFileExtensions)) // this might be too much size
             {
                 return ValidationResult.Success;
             }
 
-            return new ValidationResult("Invalid File Extension!");
+            return new ValidationResult("Invalid File Extension.");
         }
 
         private bool IsExtensionValid(IFormFile file,IList<string> allowedTypes)

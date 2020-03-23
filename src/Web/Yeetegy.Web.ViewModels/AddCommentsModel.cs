@@ -7,7 +7,7 @@ namespace Yeetegy.Web.ViewModels
 {
     public class AddCommentsModel
     {
-        [Required]
+        [Required(ErrorMessage = "Description is Required!")]
         public string Description { get; set; }
 
         [Required]

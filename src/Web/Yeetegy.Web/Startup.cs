@@ -47,6 +47,10 @@ namespace Yeetegy.Web
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
+            //services.Configure<ApiBehaviorOptions>(options =>
+            //{
+            //    options.SuppressModelStateInvalidFilter = true;
+            //});
             services.AddControllersWithViews(options =>
                 {
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
