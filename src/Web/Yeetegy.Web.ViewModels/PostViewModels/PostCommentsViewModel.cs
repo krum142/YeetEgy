@@ -24,8 +24,6 @@ namespace Yeetegy.Web.ViewModels.PostViewModels
 
         public int CommentsCount { get; set; }
 
-        public IEnumerable<CommentsViewModel> Comments { get; set; }
-
         public void CreateMappings(IProfileExpression configuration) // this can be done at the users browser if it proves to be slow
         {
             configuration.CreateMap<Post, PostCommentsViewModel>()

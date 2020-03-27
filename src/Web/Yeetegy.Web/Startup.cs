@@ -47,7 +47,7 @@ namespace Yeetegy.Web
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
-            //services.Configure<ApiBehaviorOptions>(options =>
+            //services.Configure<ApiBehaviorOptions>(options => // if you put this this here the modelstate won't be validated automaticly
             //{
             //    options.SuppressModelStateInvalidFilter = true;
             //});
@@ -89,12 +89,6 @@ namespace Yeetegy.Web
                 //{
                 //    Name = "User",
                 //    NormalizedName = "USER",
-                //});
-
-                //dbContext.Roles.Add(new ApplicationRole()
-                //{
-                //    Name = "Admin",
-                //    NormalizedName = "ADMIN",
                 //});
 
                 if (env.IsDevelopment())

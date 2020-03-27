@@ -1,7 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Microsoft.EntityFrameworkCore;
 using Yeetegy.Data.Common.Repositories;
 using Yeetegy.Data.Models;
 using Yeetegy.Services.Data.Interfaces;
+using Yeetegy.Services.Mapping;
 using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Services.Data
@@ -36,6 +41,13 @@ namespace Yeetegy.Services.Data
 
             await this.commentsRepository.AddAsync(comment);
             await this.commentsRepository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetCommentsAsync<T>(string postId, int skip, int take)
+        {
+            var query = this.commentsRepository.AllAsNoTracking();
+
+            return await query.Where(x => x.PostId == postId).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(take).To<T>().ToListAsync();
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Yeetegy.Web.Controllers
             if (await this.categoryService.IsThereAnyAsync(category))
             {
                 var categories = await this.categoryService.GetAllAsync<CategoryViewModel>();
-                var currentCat = categories.First(x => x.Name == category);
+                var currentCat = categories.First(x => x.Name.ToLower() == category.ToLower());
                 this.ViewData["CategoryName"] = currentCat.Name;
                 this.ViewData["CategoryUrl"] = currentCat.ImageUrl;
                 return this.View(categories);

@@ -18,7 +18,7 @@ function topFunction() {
     document.documentElement.scrollTop = 0;
 }
 
-function voteButton() {
+function postVoteButton() {
     var x = event.target.getAttribute("id").split("_");
     var vote = x[0] === "Like" ? true : false;
     var id = x[1];

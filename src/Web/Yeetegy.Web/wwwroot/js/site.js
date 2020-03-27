@@ -39,9 +39,9 @@ function DomOperation() {
                                     '</div>\n' +
                                     '<img id="1" src="' + jsonn[i].imgUrl + '" class="card-img-top">\n' +
                                     '<div class="card-footer">\n' +
-                                    '<button type="button"  onClick="voteButton()" id="Like_' + jsonn[i].id + '" class="btn btn-dark fa fa-thumbs-up" style="width: 100px">' + jsonn[i].likes + '</button>\n' +
-                                    '<button type="button"  onClick="voteButton()" id="Dislike_' + jsonn[i].id + '" class="btn btn-dark fa fa-thumbs-down" style="width: 100px">' + jsonn[i].dislikes + '</button>\n' +
-                                    '<button type="button" onClick="redirect()" id="' + jsonn[i].id + '" class="btn btn-dark fa fa-comment" style="width: 100px">' + jsonn[i].commentsCount + '</button>\n' +
+                                    '<button type="button"  onClick="postVoteButton()" id="Like_' + jsonn[i].id + '" class="btn btn-dark fa fa-thumbs-up" style="width: 90px">' + jsonn[i].likes + '</button>\n' +
+                                    '<button type="button"  onClick="postVoteButton()" id="Dislike_' + jsonn[i].id + '" class="btn btn-dark fa fa-thumbs-down" style="width: 90px">' + jsonn[i].dislikes + '</button>\n' +
+                                    '<button type="button" onClick="redirect()" id="' + jsonn[i].id + '" class="btn btn-dark fa fa-comment" style="width: 90px">' + jsonn[i].commentsCount + '</button>\n' +
                                     '</div></div></div></div>\n';
                             }
                         }

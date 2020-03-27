@@ -141,7 +141,7 @@
 
             builder.Entity<Category>().HasIndex(x => new
             {
-                x.Name
+                x.Name,
             });
         }
 
