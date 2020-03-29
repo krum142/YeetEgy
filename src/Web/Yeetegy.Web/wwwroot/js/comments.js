@@ -21,7 +21,7 @@ function domOperationComments() {
                             for (let i = 0; i < 10; i++) {
                                 var replayHtml = "";
                                 if (jsonn[i].replaysCount > 0) {
-                                    replayHtml = '<a onclick="loadReplays()" id="Comment_' + jsonn[i].id + '" style="font-weight: bold;">View ' + jsonn[i].replaysCount + ' Replays</a>\n';
+                                    replayHtml = '<a onclick="loadReplays()" id="' + jsonn[i].id + '" style="font-weight: bold;">View ' + jsonn[i].replaysCount + ' Replays</a>\n';
                                 }
 
                                 document.getElementById("Comment-Container").innerHTML +=
@@ -41,10 +41,11 @@ function domOperationComments() {
                                     '<a class="dropdown-item" href="#">Another action</a>\n' +
                                     '<a class="dropdown-item" href="#">Something else here</a>\n' +
                                     '</div></div></div><div style="margin-left: -15px">\n' +
-                                    '<a onclick="testfun()"><b>Replay</b></a>\n' +
+                                    '<a style="font-weight: bold;" onclick="loadAddReplayForm()" id="' + jsonn[i].id + '">Replay</a>\n' +
+                                    '<span id="createReplayContainer_' + jsonn[i].id + '"></span>\n' +
                                     '<span style="margin-left: 7px"></span>\n' +
-                                    '<a onclick="commentVoteButton()" id="Like_' + jsonn[i].id + '" class="fa fa-thumbs-up">' + jsonn[i].likes + '</a>\n' +
-                                    '<a onclick="commentVoteButton()" id="Dislike_' + jsonn[i].id + '" class="fa fa-thumbs-down">' + jsonn[i].dislikes + '</a><br>\n' +
+                                    '<a onclick="voteButton()" id="Comment_Like_' + jsonn[i].id + '" class="fa fa-thumbs-up">' + jsonn[i].likes + '</a>\n' +
+                                    '<a onclick="voteButton()" id="Comment_Dislike_' + jsonn[i].id + '" class="fa fa-thumbs-down">' + jsonn[i].dislikes + '</a><br>\n' +
                                     replayHtml +
                                     '<div id="Replay-Container_' + jsonn[i].id + '"></div>\n' +
                                     '</div></div></div>\n' +
@@ -59,6 +60,8 @@ function domOperationComments() {
     }
 }
 
+
+
 function getComments() {
     var docHeight = $(document).height();
     var winScrolled = $(window).height() + $(window).scrollTop();
@@ -68,7 +71,7 @@ function getComments() {
 }
 
 function loadReplays() {
-    var commentId = event.target.getAttribute("id").split("_")[1];
+    var commentId = event.target.getAttribute("id");
     fetch("/api/Replays?commentId=" + commentId,
         {
             method: "GET"
@@ -87,7 +90,7 @@ function loadReplays() {
                             '<a style="font-weight: bold;">' + jsonn[i].applicationUserUsername + '</a>\n' +
                             '<h9><span class="badge badge-light">' + jsonn[i].time + '</span></h9><br>\n' +
                             '<a>' + jsonn[i].description + '</a><span>\n' +
-                            '<img style="width: 100%" src="'+ jsonn[i].imgUrl+'" alt=" ">\n' +
+                            '<img style="width: 100%" src="' + jsonn[i].imgUrl + '" alt=" ">\n' +
                             '</span></div><div class="dropdown" style="width: 3%;">\n' +
                             '<a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n' +
                             '</a><div class="dropdown-menu" aria-labelledby="dropdownMenuButton">\n' +
@@ -96,9 +99,8 @@ function loadReplays() {
                             '<a class="dropdown-item" href="#">Something else here</a>\n' +
                             '</div></div></div>\n' +
                             '<div style="margin-left: -15px">\n' +
-                            '<a onclick="testfun()" class="fa fa-thumbs-up">' + jsonn[i].likes + '</a>\n' +
-                            '<span style="margin-left: 7px"></span>\n' +
-                            '<a onclick="testfun()" class="fa fa-thumbs-down">' + jsonn[i].dislikes + '</a>\n' +
+                            '<a onclick="voteButton()" id="Comment_Like_' + jsonn[i].id + '" class="fa fa-thumbs-up">' + jsonn[i].likes + '</a>\n' +
+                            '<a onclick="voteButton()" id="Comment_Dislike_' + jsonn[i].id + '" class="fa fa-thumbs-down">' + jsonn[i].dislikes + '</a>\n' +
                             '</div></div></div>\n'
                         );
                     }
@@ -107,50 +109,82 @@ function loadReplays() {
         });
 }
 
-function commentVoteButton() {
-    var myEvent = event.target.getAttribute("id").split("_");
-    var vote = myEvent[0] === "Like" ? true : false;
-    var id = myEvent[1];
+function loadAddReplayForm() {
+    var commentId = event.target.getAttribute("id");
+    $("#LoadForm_" + commentId).remove();
+    var avatarUrl = $("#avatarUrl").attr("src");
+    $("#createReplayContainer_" + commentId).append(
+        '<div class="row">\n' +
+        '<div style="width: 14%;">\n' +
+        '<img style="display: block; margin: 0 auto; border-radius: 50%;" width="50" height="50" src="' + avatarUrl + '" />\n' +
+        '</div><div style="width: 83%; float: right;">\n' +
+        '<div class="spinner-border text-success" id="commentSpinner_' + commentId + '" hidden role="status">\n' +
+        '<span class="sr-only"></span></div>\n' +
+        '<span class="badge badge-pill" id="commentError_' + commentId + '"></span>\n' +
+        '<textarea placeholder="Enter your replay here..." id="replayDescription_' + commentId + '" class="form-control" style="resize: none; width: 100%"></textarea>\n' +
+        '<div style="width: 100%; height: 41px; margin-top: 1px">\n' +
+        '<label><span class="btn btn-warning">\n' +
+        'Add IMG… <input type="file" class="custom-file-input" style="display: none;" id="commentFileInput_' + commentId + '">\n' +
+        '</span></label>\n' +
+        '<button class="btn btn-warning" onclick="addReplay()" id="' + commentId + '" style="float: right">Post</button>\n' +
+        '<button class="btn btn-light" onclick="clearComment()" style="float: right">Cancel</button>\n' +
+        '</div></div></div>\n'
+    );
+}
+
+function addReplay() {
+    var commentId = event.target.getAttribute("id");
+    var replayDescription = $("#replayDescription_" + commentId).val();
     var token = $("#voteform input[name=__RequestVerificationToken]").val();
+    var postId = $("#postId").attr("value");
+    var myUrl = "/api/Replays";
+    var file = document.getElementById("commentFileInput_" + commentId).files[0];
 
-    var voteUrl = "/api/Votes/Comment";
-    var json = { commentId: id, isUpVote: vote }
-    var request = new XMLHttpRequest();
-    request.open('POST', voteUrl, /* async = */ false);
-    request.setRequestHeader("X-CSRF-TOKEN", token);
-    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    request.send(JSON.stringify(json));
+    var commentEr = $("#commentError_" + commentId);
+    var spinner = $("#commentSpinner_" + commentId);
+    var request;
 
-    var code = request.status;
-    var myResponse = JSON.parse(request.response);
+    if (isStringNullOrWhiteSpace(replayDescription)) {
+        commentEr.addClass("badge-danger");
+        commentEr.text('Comment is required.');
+        commentEr.removeAttr("hidden");
+    } else {
+        commentEr.text("");
+        var obj = new FormData();
+        obj.set('description', replayDescription);
+        obj.set('postId', postId);
+        obj.set('commentId', commentId);
+        obj.append('file', file);
 
-    if (code != 200) {
-        if (code === 401) {
+        request = new XMLHttpRequest();
+        request.open('POST', myUrl, /* async = */ false);
+        request.setRequestHeader("X-CSRF-TOKEN", token);
+        spinner.attr("hidden", false);
+        request.send(obj);
+        spinner.attr("hidden", true);
+
+        if (request.responseURL.includes("HttpError")) {
+            window.location = request.responseURL;
+        } else if (request.status === 200) {
+            commentEr.text("");
+            commentEr.removeClass("badge-danger");
+            commentEr.addClass("badge-success");
+            commentEr.text("Created");
+        } else if (request.status === 400) {
+            commentEr.addClass("badge-danger");
+            commentEr.text("");
+            var filError = JSON.parse(request.response).errors.File[0];
+            commentEr.text(filError);
+        } else if (request.status === 401) {
             window.location = "/Identity/Account/Login";
         } else {
-            window.location = "/Home/HttpError?statusCode=" + code;
+            window.location = "/Home/HttpError?statusCode=" + request.status;
         }
     }
-    /// UnLike,UnDislike,
-    /// LikeToDislike,DislikeToLike
-    switch (myResponse.status) {
-        case "Like": case "Dislike":
-            event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
-            break;
-        case "UnLike": case "UnDislike":
-            event.target.innerHTML = parseInt(event.target.innerHTML) - 1;
-            break;
-        case "LikeToDislike":
-            event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
-            event.target.previousSibling.previousSibling.innerHTML =
-                parseInt(event.target.previousSibling.previousSibling.innerHTML) - 1;
-            break;
-        case "DislikeToLike":
-            event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
-            event.target.nextSibling.nextSibling.innerHTML =
-                parseInt(event.target.nextSibling.nextSibling.innerHTML) - 1;
-            break;
-    }
+
+
+    clearComment.call();
+
 }
 
 function addComment() {
@@ -182,7 +216,9 @@ function addComment() {
         request.send(obj);
         spinner.attr("hidden", true);
 
-        if (request.status === 200) {
+        if (request.responseURL.includes("HttpError")) {
+            window.location = request.responseURL;
+        } else if (request.status === 200) {
             commentEr.text("");
             commentEr.removeClass("badge-danger");
             commentEr.addClass("badge-success");

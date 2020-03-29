@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Yeetegy.Services.Data.Interfaces;
@@ -30,6 +31,20 @@ namespace Yeetegy.Web.Controllers
             }
 
             return this.NotFound();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ResponseAddComment>> Post([FromForm]AddReplayModel data)
+        {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await this.replaysService.CreateCommentAsync(data, userId);
+
+                return new ResponseAddComment() { Status = "Created" };
+            }
+
+            return this.Unauthorized();
         }
     }
 }

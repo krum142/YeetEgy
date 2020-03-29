@@ -126,7 +126,7 @@ namespace Yeetegy.Services.Data
         {
             var query = this.commentsRepository.AllAsNoTracking();
 
-            return await query.Where(x => x.PostId == postId).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(take).To<T>().ToListAsync();
+            return await query.Where(x => x.PostId == postId && string.IsNullOrWhiteSpace(x.ReplayId)).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(take).To<T>().ToListAsync();
         }
     }
 }

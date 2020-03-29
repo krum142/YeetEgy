@@ -18,14 +18,18 @@ function topFunction() {
     document.documentElement.scrollTop = 0;
 }
 
-function postVoteButton() {
+function voteButton() {
     var x = event.target.getAttribute("id").split("_");
-    var vote = x[0] === "Like" ? true : false;
-    var id = x[1];
+    var typeVote = x[0];
+    var vote = x[1] === "Like" ? true : false;
+    var id = x[2];
     var token = $("#voteform input[name=__RequestVerificationToken]").val();
 
-    var voteUrl = "/api/Votes/Post";
-    var json = { postId: id, isUpVote: vote }
+    var voteUrl = "/api/Votes/" + typeVote;
+
+    var keyid = typeVote.toLowerCase() + "Id";
+    var json = { isUpVote: vote }
+    json[keyid] = id;
 
     var request = new XMLHttpRequest();
     request.open('POST', voteUrl, /* async = */ false);

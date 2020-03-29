@@ -53,14 +53,14 @@
                     </div>
                     <img id="srcP" src="@Model.PostViewModel.ImgUrl" class="card-img-top" alt="image">
                     <div class="card-footer">
-                        <button type="button" onClick="postVoteButton()" id="Like_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 150px">@Model.PostViewModel.Likes</button>
-                        <button type="button" onClick="postVoteButton()" id="Dislike_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 150px">@Model.PostViewModel.Dislikes</button>
+                        <button type="button" onClick="voteButton()" id="Post_Like_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 150px">@Model.PostViewModel.Likes</button>
+                        <button type="button" onClick="voteButton()" id="Post_Dislike_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 150px">@Model.PostViewModel.Dislikes</button>
                     </div>
                 </div>
                 <hr style="border-top: 2px solid #043927;">
-                <div class="formContainer row" name="fileinfo">
+                <div class="row">
                     <div style="width: 14%;">
-                        <img style="display: block; margin: 0 auto; border-radius: 50%;" width="50" height="50" src="@avatar" />
+                        <img id="avatarUrl" style="display: block; margin: 0 auto; border-radius: 50%;" width="50" height="50" src="@avatar" />
                     </div>
                     <div style="width: 83%; float: right;">
                         <div class="spinner-border text-success" id="commentSpinner" hidden role="status">
