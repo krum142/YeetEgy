@@ -22,21 +22,23 @@ namespace Yeetegy.Web.Controllers
         {
             if (category == null)
             {
-                category = "Newest";
+                category = "newest";
             }
 
-            if (GlobalConstants.ConstantCategories.ContainsKey(category))
+            var categoryLow = category.ToLower();
+
+            if (GlobalConstants.ConstantCategories.Select(x => x.Key.ToLower()).Contains(categoryLow))
             {
                 var categories = await this.categoryService.GetAllAsync<CategoryViewModel>();
-                this.ViewData["CategoryName"] = GlobalConstants.ConstantCategories.FirstOrDefault(x => x.Key.ToLower() == category.ToLower()).Key;
-                this.ViewData["CategoryUrl"] = GlobalConstants.ConstantCategories.FirstOrDefault(x => x.Key.ToLower() == category.ToLower()).Value;
+                this.ViewData["CategoryName"] = GlobalConstants.ConstantCategories.FirstOrDefault(x => x.Key.ToLower() == categoryLow).Key;
+                this.ViewData["CategoryUrl"] = GlobalConstants.ConstantCategories.FirstOrDefault(x => x.Key.ToLower() == categoryLow).Value;
                 return this.View(categories);
             }
 
-            if (await this.categoryService.IsThereAnyAsync(category))
+            if (await this.categoryService.IsThereAnyAsync(categoryLow))
             {
                 var categories = await this.categoryService.GetAllAsync<CategoryViewModel>();
-                var currentCat = categories.First(x => x.Name.ToLower() == category.ToLower());
+                var currentCat = categories.First(x => x.Name.ToLower() == categoryLow);
                 this.ViewData["CategoryName"] = currentCat.Name;
                 this.ViewData["CategoryUrl"] = currentCat.ImageUrl;
                 return this.View(categories);

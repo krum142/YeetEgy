@@ -35,7 +35,7 @@ namespace Yeetegy.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(
-                options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
                 .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
@@ -47,10 +47,10 @@ namespace Yeetegy.Web
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
-            //services.Configure<ApiBehaviorOptions>(options => // if you put this this here the modelstate won't be validated automaticly
-            //{
+            // services.Configure<ApiBehaviorOptions>(options => // if you put this this here the modelstate won't be validated automaticly
+            // {
             //    options.SuppressModelStateInvalidFilter = true;
-            //});
+            // });
             services.AddControllersWithViews(options =>
                 {
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -71,8 +71,9 @@ namespace Yeetegy.Web
             services.AddTransient<IPostsService, PostsService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
-            services.AddTransient<IVotesService, VotesService>();
+            services.AddTransient<IVotesService, PostVotesService>();
             services.AddTransient<ICommentsService, CommentsService>();
+            services.AddTransient<IReplaysService, ReplaysService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,12 +86,11 @@ namespace Yeetegy.Web
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-                //dbContext.Roles.Add(new ApplicationRole()
-                //{
+                // dbContext.Roles.Add(new ApplicationRole()
+                // {
                 //    Name = "User",
                 //    NormalizedName = "USER",
-                //});
-
+                // });
                 if (env.IsDevelopment())
                 {
                     dbContext.Database.Migrate();

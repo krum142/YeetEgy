@@ -1,13 +1,12 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
+using System;
+using System.Collections.Generic;
+
+using Microsoft.AspNetCore.Identity;
+using Yeetegy.Data.Common.Models;
+
 namespace Yeetegy.Data.Models
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Yeetegy.Data.Common.Models;
-
-    using Microsoft.AspNetCore.Identity;
-
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
     {
         public ApplicationUser()
@@ -18,18 +17,15 @@ namespace Yeetegy.Data.Models
             this.Logins = new HashSet<IdentityUserLogin<string>>();
             this.PostVotes = new HashSet<UserPostVote>();
             this.Posts = new HashSet<Post>();
-            this.Replays = new HashSet<Replay>();
             this.Comments = new HashSet<Comment>();
         }
-        // Yeetegy Additional
 
+        // Yeetegy Additional
         public ICollection<UserPostVote> PostVotes { get; set; }
 
         public ICollection<Post> Posts { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
-
-        public ICollection<Replay> Replays { get; set; }
 
         public string AvatarUrl { get; set; }
 

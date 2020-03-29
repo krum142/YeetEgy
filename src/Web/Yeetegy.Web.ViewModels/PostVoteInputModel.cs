@@ -1,6 +1,6 @@
 ﻿namespace Yeetegy.Web.ViewModels
 {
-    public class VoteInputModel
+    public class PostVoteInputModel
     {
         public string PostId { get; set; }
 

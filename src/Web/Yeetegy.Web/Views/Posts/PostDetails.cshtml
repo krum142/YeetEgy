@@ -53,8 +53,8 @@
                     </div>
                     <img id="srcP" src="@Model.PostViewModel.ImgUrl" class="card-img-top" alt="image">
                     <div class="card-footer">
-                        <button type="button" onClick="voteButton()" id="Like_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 150px">@Model.PostViewModel.Likes</button>
-                        <button type="button" onClick="voteButton()" id="Dislike_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 150px">@Model.PostViewModel.Dislikes</button>
+                        <button type="button" onClick="postVoteButton()" id="Like_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 150px">@Model.PostViewModel.Likes</button>
+                        <button type="button" onClick="postVoteButton()" id="Dislike_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 150px">@Model.PostViewModel.Dislikes</button>
                     </div>
                 </div>
                 <hr style="border-top: 2px solid #043927;">
@@ -110,7 +110,8 @@
                                 <span style="margin-left: 7px"></span>
                                 <a onclick="testfun()" class="fa fa-thumbs-up">10</a>
                                 <span style="margin-left: 7px"></span>
-                                <a onclick="testfun()" class="fa fa-thumbs-down">10</a>
+                                <a onclick="testfun()" class="fa fa-thumbs-down">10</a><br>
+                                <a style="font-weight: bold;">View 5 Replays</a>
                                 <div id="Replay-Container">
                                     <hr>
                                     <div class="row">

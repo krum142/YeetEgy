@@ -36,7 +36,7 @@ namespace Yeetegy.Web.Controllers
             await this.repository.AddAsync(setting);
             await this.repository.SaveChangesAsync();
 
-            return this.RedirectToAction(nameof(Index));
+            return this.RedirectToAction(nameof(this.Index));
         }
     }
 }

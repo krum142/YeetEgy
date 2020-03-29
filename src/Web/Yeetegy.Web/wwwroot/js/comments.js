@@ -3,11 +3,12 @@ var noMoredata = false;
 var inProgress = false;
 var jsonn;
 var posthtml;
+var postid = $("#postId").attr('value');
 
 function domOperationComments() {
     if (noMoredata === false && inProgress === false) {
         inProgress = true;
-        fetch('/api/Comments/?postid=5d26fa31-a661-4655-bd21-49d1ff60ff9b&offset=' + myPageIndex,
+        fetch('/api/Comments/?postId=' + postid + '&offset=' + myPageIndex,
             {
                 method: "GET",
             }).then(response => {
@@ -18,14 +19,19 @@ function domOperationComments() {
                             noMoredata = true;
                         } else {
                             for (let i = 0; i < 10; i++) {
+                                var replayHtml = "";
+                                if (jsonn[i].replaysCount > 0) {
+                                    replayHtml = '<a onclick="loadReplays()" id="Comment_' + jsonn[i].id + '" style="font-weight: bold;">View ' + jsonn[i].replaysCount + ' Replays</a>\n';
+                                }
+
                                 document.getElementById("Comment-Container").innerHTML +=
                                     '<div class="row"><div style="width: 14%;margin-right: 7px">\n' +
-                                    '<img style="display: block; margin: 0 auto; border-radius: 50%;" width="50" height="50" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fc2.staticflickr.com%2F2%2F1386%2F791791681_ecc5efac79_b.jpg&f=1&nofb=1" />\n' +
+                                    '<img style="display: block; margin: 0 auto; border-radius: 50%;" width="50" height="50" src="' + jsonn[i].applicationUserAvatarUrl + '" />\n' +
                                     '</div><div style="width: 83%; float: right;">\n' +
                                     '<div style="width: 100%; word-wrap: break-word;" class="row">\n' +
                                     '<div style="width: 97%; float: left">\n' +
-                                    '<a style="font-weight: bold;">Username</a>\n' +
-                                    '<h9><span class="badge badge-light">5h</span></h9><br>\n'+
+                                    '<a style="font-weight: bold;">' + jsonn[i].applicationUserUsername + '</a>\n' +
+                                    '<h9><span class="badge badge-light">' + jsonn[i].time + '</span></h9><br>\n' +
                                     '<a>' + jsonn[i].description + '</a>\n' +
                                     '<span><img style="width: 100%;" src="' + jsonn[i].imgUrl + '" alt=" "></span>\n' +
                                     '</div><div class="dropdown" style="width: 3%;">\n' +
@@ -37,10 +43,10 @@ function domOperationComments() {
                                     '</div></div></div><div style="margin-left: -15px">\n' +
                                     '<a onclick="testfun()"><b>Replay</b></a>\n' +
                                     '<span style="margin-left: 7px"></span>\n' +
-                                    '<a onclick="testfun()" class="fa fa-thumbs-up">' + jsonn[i].likes + '</a>\n' +
-                                    '<span style="margin-left: 7px"></span>\n' +
-                                    '<a onclick="testfun()" class="fa fa-thumbs-down">' + jsonn[i].dislikes + '</a>\n' +
-                                    '<div id="Replay-Container"></div>\n' +
+                                    '<a onclick="commentVoteButton()" id="Like_' + jsonn[i].id + '" class="fa fa-thumbs-up">' + jsonn[i].likes + '</a>\n' +
+                                    '<a onclick="commentVoteButton()" id="Dislike_' + jsonn[i].id + '" class="fa fa-thumbs-down">' + jsonn[i].dislikes + '</a><br>\n' +
+                                    replayHtml +
+                                    '<div id="Replay-Container_' + jsonn[i].id + '"></div>\n' +
                                     '</div></div></div>\n' +
                                     '<hr>\n';
                             }
@@ -58,6 +64,92 @@ function getComments() {
     var winScrolled = $(window).height() + $(window).scrollTop();
     if ((docHeight - winScrolled) < 200) { // scroll time 
         domOperationComments.call();
+    }
+}
+
+function loadReplays() {
+    var commentId = event.target.getAttribute("id").split("_")[1];
+    fetch("/api/Replays?commentId=" + commentId,
+        {
+            method: "GET"
+        }).then(response => {
+            if (response.status === 200) {
+                response.json().then(j => {
+                    jsonn = j;
+                    $("#Comment_" + commentId).remove();
+                    for (var i = 0; i < jsonn.length; i++) {
+                        $("#Replay-Container_" + commentId).append(
+                            '<hr><div class="row"><div style="width: 14%; margin-right: 7px">\n' +
+                            '<img style="display: block; margin: 0 auto; border-radius: 50%;" width="40" height="40" src="' + jsonn[i].applicationUserAvatarUrl + '" alt=" "/>\n' +
+                            '</div><div style="width: 83%; float: right;">\n' +
+                            '<div style="width: 100%; word-wrap: break-word;" class="row">\n' +
+                            '<div style="width: 97%; float: left">\n' +
+                            '<a style="font-weight: bold;">' + jsonn[i].applicationUserUsername + '</a>\n' +
+                            '<h9><span class="badge badge-light">' + jsonn[i].time + '</span></h9><br>\n' +
+                            '<a>' + jsonn[i].description + '</a><span>\n' +
+                            '<img style="width: 100%" src="'+ jsonn[i].imgUrl+'" alt=" ">\n' +
+                            '</span></div><div class="dropdown" style="width: 3%;">\n' +
+                            '<a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n' +
+                            '</a><div class="dropdown-menu" aria-labelledby="dropdownMenuButton">\n' +
+                            '<a class="dropdown-item" href="#">Action</a>\n' +
+                            '<a class="dropdown-item" href="#">Another action</a>\n' +
+                            '<a class="dropdown-item" href="#">Something else here</a>\n' +
+                            '</div></div></div>\n' +
+                            '<div style="margin-left: -15px">\n' +
+                            '<a onclick="testfun()" class="fa fa-thumbs-up">' + jsonn[i].likes + '</a>\n' +
+                            '<span style="margin-left: 7px"></span>\n' +
+                            '<a onclick="testfun()" class="fa fa-thumbs-down">' + jsonn[i].dislikes + '</a>\n' +
+                            '</div></div></div>\n'
+                        );
+                    }
+                });
+            }
+        });
+}
+
+function commentVoteButton() {
+    var myEvent = event.target.getAttribute("id").split("_");
+    var vote = myEvent[0] === "Like" ? true : false;
+    var id = myEvent[1];
+    var token = $("#voteform input[name=__RequestVerificationToken]").val();
+
+    var voteUrl = "/api/Votes/Comment";
+    var json = { commentId: id, isUpVote: vote }
+    var request = new XMLHttpRequest();
+    request.open('POST', voteUrl, /* async = */ false);
+    request.setRequestHeader("X-CSRF-TOKEN", token);
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.send(JSON.stringify(json));
+
+    var code = request.status;
+    var myResponse = JSON.parse(request.response);
+
+    if (code != 200) {
+        if (code === 401) {
+            window.location = "/Identity/Account/Login";
+        } else {
+            window.location = "/Home/HttpError?statusCode=" + code;
+        }
+    }
+    /// UnLike,UnDislike,
+    /// LikeToDislike,DislikeToLike
+    switch (myResponse.status) {
+        case "Like": case "Dislike":
+            event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
+            break;
+        case "UnLike": case "UnDislike":
+            event.target.innerHTML = parseInt(event.target.innerHTML) - 1;
+            break;
+        case "LikeToDislike":
+            event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
+            event.target.previousSibling.previousSibling.innerHTML =
+                parseInt(event.target.previousSibling.previousSibling.innerHTML) - 1;
+            break;
+        case "DislikeToLike":
+            event.target.innerHTML = parseInt(event.target.innerHTML) + 1;
+            event.target.nextSibling.nextSibling.innerHTML =
+                parseInt(event.target.nextSibling.nextSibling.innerHTML) - 1;
+            break;
     }
 }
 

@@ -1,17 +1,16 @@
-﻿namespace Yeetegy.Data
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Yeetegy.Data.Common.Models;
+using Yeetegy.Data.Models;
+
+namespace Yeetegy.Data
 {
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using Yeetegy.Data.Common.Models;
-    using Models;
-
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore;
-
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         private static readonly MethodInfo SetIsDeletedQueryFilterMethod =
@@ -28,11 +27,11 @@
 
         public DbSet<UserPostVote> UserPostVotes { get; set; }
 
+        public DbSet<UserCommentVote> UserCommentVotes { get; set; }
+
         public DbSet<Post> Posts { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
-
-        public DbSet<Replay> Replays { get; set; }
 
         public DbSet<Setting> Settings { get; set; }
 
@@ -89,6 +88,8 @@
 
             builder.Entity<UserPostVote>().HasKey(x => new { x.ApplicationUserId, x.PostId });
 
+            builder.Entity<UserCommentVote>().HasKey(x => new { x.ApplicationUserId, x.CommentId });
+
             builder.Entity<ApplicationUser>()
                 .HasMany(e => e.Claims)
                 .WithOne()
@@ -121,11 +122,6 @@
                     .HasMany(u => u.Comments)
                     .WithOne(c => c.ApplicationUser)
                     .OnDelete(DeleteBehavior.Restrict);
-
-                e
-                    .HasMany(u => u.Replays)
-                    .WithOne(r => r.ApplicationUser)
-                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             builder.Entity<Post>()
@@ -135,8 +131,8 @@
 
             builder.Entity<Comment>()
                 .HasMany(c => c.Replays)
-                .WithOne(r => r.Comment)
-                .HasForeignKey(r => r.CommentId)
+                .WithOne(r => r.Replay)
+                .HasForeignKey(r => r.ReplayId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Category>().HasIndex(x => new

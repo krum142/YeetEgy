@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Yeetegy.Data;
 
 namespace Yeetegy.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200328145950_AddUserReplayVoteUserCommentVote")]
+    partial class AddUserReplayVoteUserCommentVote
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -320,9 +322,6 @@ namespace Yeetegy.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ReplayId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
@@ -330,8 +329,6 @@ namespace Yeetegy.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("PostId");
-
-                    b.HasIndex("ReplayId");
 
                     b.ToTable("Comments");
                 });
@@ -386,6 +383,57 @@ namespace Yeetegy.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("Yeetegy.Data.Models.Replay", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CommentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(2500)")
+                        .HasMaxLength(2500);
+
+                    b.Property<int>("Dislikes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImgUrl")
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Likes")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Replays");
                 });
 
             modelBuilder.Entity("Yeetegy.Data.Models.Setting", b =>
@@ -490,6 +538,41 @@ namespace Yeetegy.Data.Migrations
                     b.ToTable("UserPostVotes");
                 });
 
+            modelBuilder.Entity("Yeetegy.Data.Models.UserReplayVote", b =>
+                {
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ReplayId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ApplicationUserId", "ReplayId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("ReplayId");
+
+                    b.ToTable("UserReplayVotes");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Yeetegy.Data.Models.ApplicationRole", null)
@@ -554,11 +637,6 @@ namespace Yeetegy.Data.Migrations
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Yeetegy.Data.Models.Comment", "Replay")
-                        .WithMany("Replays")
-                        .HasForeignKey("ReplayId")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Yeetegy.Data.Models.Post", b =>
@@ -572,6 +650,21 @@ namespace Yeetegy.Data.Migrations
                     b.HasOne("Yeetegy.Data.Models.Category", "Category")
                         .WithMany("Posts")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Yeetegy.Data.Models.Replay", b =>
+                {
+                    b.HasOne("Yeetegy.Data.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Replays")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Yeetegy.Data.Models.Comment", "Comment")
+                        .WithMany("Replays")
+                        .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -602,6 +695,21 @@ namespace Yeetegy.Data.Migrations
                     b.HasOne("Yeetegy.Data.Models.Post", "Post")
                         .WithMany("UserVotes")
                         .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Yeetegy.Data.Models.UserReplayVote", b =>
+                {
+                    b.HasOne("Yeetegy.Data.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Yeetegy.Data.Models.Replay", "Replay")
+                        .WithMany()
+                        .HasForeignKey("ReplayId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

@@ -11,13 +11,17 @@ namespace Yeetegy.Data.Models
         public Comment()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.Replays = new HashSet<Replay>();
+            this.Replays = new HashSet<Comment>();
         }
 
         [Required]
         public string ApplicationUserId { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
+
+        public string ReplayId { get; set; }
+
+        public Comment Replay { get; set; }
 
         [Required]
         [MaxLength(2000)]
@@ -35,6 +39,6 @@ namespace Yeetegy.Data.Models
 
         public int Dislikes { get; set; }
 
-        public ICollection<Replay> Replays { get; set; }
+        public ICollection<Comment> Replays { get; set; }
     }
 }

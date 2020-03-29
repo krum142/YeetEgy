@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
 using Yeetegy.Services.Data.Interfaces;
 using Yeetegy.Web.ViewModels;
@@ -11,21 +12,28 @@ namespace Yeetegy.Web.Controllers
     public class CommentsController : Controller // removed Base
     {
         private readonly ICommentsService commentsService;
+        private readonly IPostsService postsService;
 
-        public CommentsController(ICommentsService commentsService)
+        public CommentsController(ICommentsService commentsService, IPostsService postsService)
         {
             this.commentsService = commentsService;
+            this.postsService = postsService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get(string postId, int offset)
         {
-            var comments = await this.commentsService.GetCommentsAsync<CommentsViewModel>(postId, offset, 10);
+            if (await this.postsService.DoesPostExistAsync(postId))
+            {
+                var comments = await this.commentsService.GetCommentsAsync<CommentsViewModel>(postId, offset, 10);
 
-            return this.Json(comments);
+                return this.Json(comments);
+            }
+
+            return this.NotFound();
         }
 
-        //[Authorize]
+        // [Authorize]
         [HttpPost]
         public async Task<ActionResult<ResponseAddComment>> Post([FromForm]AddCommentsModel data)
         {

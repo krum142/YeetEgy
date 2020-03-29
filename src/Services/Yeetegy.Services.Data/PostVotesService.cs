@@ -8,12 +8,14 @@ using Yeetegy.Services.Data.Interfaces;
 
 namespace Yeetegy.Services.Data
 {
-    public class VotesService : IVotesService
+    public class PostVotesService : IVotesService
     {
         private readonly IDeletableEntityRepository<UserPostVote> postVoteRepository;
         private readonly IDeletableEntityRepository<Post> postRepository;
 
-        public VotesService(IDeletableEntityRepository<UserPostVote> postVoteRepository, IDeletableEntityRepository<Post> postRepository)
+        public PostVotesService(
+            IDeletableEntityRepository<UserPostVote> postVoteRepository,
+            IDeletableEntityRepository<Post> postRepository)
         {
             this.postVoteRepository = postVoteRepository;
             this.postRepository = postRepository;
@@ -32,7 +34,7 @@ namespace Yeetegy.Services.Data
         /// <param name="userId"></param>
         /// <param name="isUpVote"></param>
         /// <returns></returns>
-        public async Task<string> VoteAsync(string postId, string userId, bool isUpVote)
+        public async Task<string> PostVoteAsync(string postId, string userId, bool isUpVote)
         {
             var lastVote = await this.postVoteRepository.All()
                 .Where(x => x.PostId == postId && x.ApplicationUserId == userId)

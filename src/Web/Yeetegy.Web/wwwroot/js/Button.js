@@ -24,8 +24,9 @@ function postVoteButton() {
     var id = x[1];
     var token = $("#voteform input[name=__RequestVerificationToken]").val();
 
-    var voteUrl = "/api/Votes";
+    var voteUrl = "/api/Votes/Post";
     var json = { postId: id, isUpVote: vote }
+
     var request = new XMLHttpRequest();
     request.open('POST', voteUrl, /* async = */ false);
     request.setRequestHeader("X-CSRF-TOKEN", token);

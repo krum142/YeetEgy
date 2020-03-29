@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Yeetegy.Common;
 using Yeetegy.Services.Data.Interfaces;
 using Yeetegy.Web.ViewModels;
@@ -27,17 +26,17 @@ namespace Yeetegy.Web.Controllers
         public async Task<IActionResult> GetPosts(int page)
         {
             var loadPostsCount = GlobalConstants.LoadPostCountAjax;
-            var header = this.Request.Headers.FirstOrDefault(x => x.Key == "x-category").Value.ToString().Trim();
+            var header = this.Request.Headers.FirstOrDefault(x => x.Key == "x-category").Value.ToString().ToLower().Trim();
 
-            header = string.IsNullOrWhiteSpace(header) ? "Newest" : header;
+            header = string.IsNullOrWhiteSpace(header) ? "newest" : header;
 
-            if (GlobalConstants.ConstantCategories.Any(x => x.Key == header))
+            if (GlobalConstants.ConstantCategories.Any(x => x.Key.ToLower() == header))
             {
                 var posts = header switch
                 {
-                    "Newest" => await this.postsService.GetPostsAsync<PostsViewModel>(page, loadPostsCount),
-                    "Popular" => await this.postsService.GetPostsPopularAsync<PostsViewModel>(page, loadPostsCount),
-                    "Discussed" => await this.postsService.GetPostsTrendingAsync<PostsViewModel>(page, loadPostsCount),
+                    "newest" => await this.postsService.GetPostsAsync<PostsViewModel>(page, loadPostsCount),
+                    "popular" => await this.postsService.GetPostsPopularAsync<PostsViewModel>(page, loadPostsCount),
+                    "discussed" => await this.postsService.GetPostsTrendingAsync<PostsViewModel>(page, loadPostsCount),
                     _ => await this.postsService.GetPostsAsync<PostsViewModel>(page, loadPostsCount),
                 };
                 return this.Json(posts);
