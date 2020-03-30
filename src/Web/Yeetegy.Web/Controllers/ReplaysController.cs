@@ -3,7 +3,8 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Yeetegy.Services.Data.Interfaces;
-using Yeetegy.Web.ViewModels;
+using Yeetegy.Web.ViewModels.CommentModels;
+using Yeetegy.Web.ViewModels.ReplayModels;
 
 namespace Yeetegy.Web.Controllers
 {

@@ -1,4 +1,4 @@
-﻿namespace Yeetegy.Web.ViewModels
+﻿namespace Yeetegy.Web.ViewModels.PostViewModels
 {
     public class PostVoteInputModel
     {

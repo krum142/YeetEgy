@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
 using Microsoft.AspNetCore.Http;
 using Yeetegy.Web.Infrastructure.ValidationAtributes;
 
-namespace Yeetegy.Web.ViewModels
+namespace Yeetegy.Web.ViewModels.ReplayModels
 {
     public class AddReplayModel
     {

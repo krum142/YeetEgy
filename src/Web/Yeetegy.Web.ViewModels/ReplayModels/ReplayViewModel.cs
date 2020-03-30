@@ -4,9 +4,9 @@ using AutoMapper;
 using Yeetegy.Data.Models;
 using Yeetegy.Services.Mapping;
 
-namespace Yeetegy.Web.ViewModels
+namespace Yeetegy.Web.ViewModels.ReplayModels
 {
-    public class CommentsViewModel : IMapFrom<Comment>, IHaveCustomMappings
+    public class ReplayViewModel : IMapFrom<Comment>, IHaveCustomMappings
     {
         public string Id { get; set; }
 
@@ -16,11 +16,9 @@ namespace Yeetegy.Web.ViewModels
 
         public string ApplicationUserUsername { get; set; }
 
-        public string Time { get; set; }
-
         public string Description { get; set; }
 
-        public string PostId { get; set; }
+        public string ReplayId { get; set; }
 
         public string ImgUrl { get; set; }
 
@@ -28,11 +26,11 @@ namespace Yeetegy.Web.ViewModels
 
         public int Dislikes { get; set; }
 
-        public int ReplaysCount { get; set; }
+        public string Time { get; set; }
 
         public void CreateMappings(IProfileExpression configuration) // this can be done at the users browser if it proves to be slow
         {
-            configuration.CreateMap<Comment, CommentsViewModel>()
+            configuration.CreateMap<Comment, ReplayViewModel>()
                 .ForMember(
                     x => x.Time,
                     y => y.MapFrom(x =>

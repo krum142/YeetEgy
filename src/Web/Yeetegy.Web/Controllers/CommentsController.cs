@@ -2,8 +2,9 @@
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
+using Yeetegy.Common;
 using Yeetegy.Services.Data.Interfaces;
-using Yeetegy.Web.ViewModels;
+using Yeetegy.Web.ViewModels.CommentModels;
 
 namespace Yeetegy.Web.Controllers
 {
@@ -25,7 +26,7 @@ namespace Yeetegy.Web.Controllers
         {
             if (await this.postsService.DoesPostExistAsync(postId))
             {
-                var comments = await this.commentsService.GetCommentsAsync<CommentsViewModel>(postId, offset, 10);
+                var comments = await this.commentsService.GetCommentsAsync<CommentsViewModel>(postId, offset, GlobalConstants.LoadCommentsCountAjax);
 
                 return this.Json(comments);
             }
@@ -43,6 +44,22 @@ namespace Yeetegy.Web.Controllers
                 await this.commentsService.CreateCommentAsync(data, userId);
 
                 return new ResponseAddComment() { Status = "Created" };
+            }
+
+            return this.Unauthorized();
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> Delete([FromForm]DeleteCommentInputModel data)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var commentUserId = await this.commentsService.TakeAuthorIdAsync(data.Id);
+
+            if (this.User.Identity.IsAuthenticated && userId == commentUserId)
+            {
+                await this.commentsService.DeleteCommentAsync(data.Id);
+
+                return this.Ok(data.Id);
             }
 
             return this.Unauthorized();

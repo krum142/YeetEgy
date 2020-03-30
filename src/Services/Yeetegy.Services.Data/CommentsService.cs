@@ -8,6 +8,7 @@ using Yeetegy.Data.Models;
 using Yeetegy.Services.Data.Interfaces;
 using Yeetegy.Services.Mapping;
 using Yeetegy.Web.ViewModels;
+using Yeetegy.Web.ViewModels.CommentModels;
 
 namespace Yeetegy.Services.Data
 {
@@ -48,6 +49,19 @@ namespace Yeetegy.Services.Data
             await this.commentsRepository.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// votes for the specified post and corresponding user
+        /// isUpVote == False = downVote
+        /// isUpVote == true = up vote.
+        /// Possible return types:
+        /// Like,Dislike,
+        /// UnLike,UnDislike,
+        /// LikeToDislike,DislikeToLike.
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <param name="userId"></param>
+        /// <param name="isUpVote"></param>
+        /// <returns></returns>
         public async Task<string> CommentVoteAsync(string commentId, string userId, bool isUpVote)
         {
             var lastVote = await this.userCommentVoteRepository.All()
@@ -119,14 +133,35 @@ namespace Yeetegy.Services.Data
 
         public async Task<bool> DoesCommentExistAsync(string commentId)
         {
-            return await this.commentsRepository.AllAsNoTracking().AnyAsync(x => x.Id == commentId);
+            return await this.commentsRepository
+                .AllAsNoTracking()
+                .AnyAsync(x => x.Id == commentId);
+        }
+
+        public async Task<string> TakeAuthorIdAsync(string commentId) // Gets the comments Author Id
+        {
+            return await this.commentsRepository.AllAsNoTracking().Where(x => x.Id == commentId)
+                .Select(x => x.ApplicationUserId)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<string> DeleteCommentAsync(string commentId)
+        {
+            var comment = await this.commentsRepository
+                .AllAsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == commentId);
+
+            this.commentsRepository.Delete(comment);
+            await this.commentsRepository.SaveChangesAsync();
+
+            return comment.Id;
         }
 
         public async Task<IEnumerable<T>> GetCommentsAsync<T>(string postId, int skip, int take)
         {
             var query = this.commentsRepository.AllAsNoTracking();
 
-            return await query.Where(x => x.PostId == postId && string.IsNullOrWhiteSpace(x.ReplayId)).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(take).To<T>().ToListAsync();
+            return await query.Where(x => x.PostId == postId && string.IsNullOrWhiteSpace(x.ReplayId)).OrderByDescending(x => x.Likes).ThenByDescending(x => x.CreatedOn).Skip(skip).Take(take).To<T>().ToListAsync();
         }
     }
 }

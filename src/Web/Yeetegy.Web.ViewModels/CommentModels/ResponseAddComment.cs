@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Yeetegy.Web.ViewModels
+﻿namespace Yeetegy.Web.ViewModels.CommentModels
 {
     public class ResponseAddComment
     {

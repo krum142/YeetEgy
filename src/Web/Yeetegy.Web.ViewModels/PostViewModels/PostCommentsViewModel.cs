@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+
 using AutoMapper;
 using Yeetegy.Data.Models;
 using Yeetegy.Services.Mapping;

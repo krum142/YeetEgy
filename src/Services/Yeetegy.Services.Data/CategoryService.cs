@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,6 @@ namespace Yeetegy.Services.Data
 
             await this.categoryRepository.AddAsync(category);
             await this.categoryRepository.SaveChangesAsync();
-
         }
 
         public async Task<IEnumerable<T>> GetAllAsync<T>()

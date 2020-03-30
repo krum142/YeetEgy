@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Yeetegy.Common
 {
@@ -11,6 +9,8 @@ namespace Yeetegy.Common
         public const string AdministratorRoleName = "Administrator";
 
         public const int LoadPostCountAjax = 5;
+
+        public const int LoadCommentsCountAjax = 10;
 
         public const string DefaltUserImg = "https://res.cloudinary.com/cloudnameiscool/image/upload/v1584633016/avatar_nq8tay.jpg"; // save it in the cloudinary
 

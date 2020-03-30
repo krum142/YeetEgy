@@ -4,6 +4,7 @@ var inProgress = false;
 var jsonn;
 var posthtml;
 var postid = $("#postId").attr('value');
+var deleteInProgress = false;
 
 function domOperationComments() {
     if (noMoredata === false && inProgress === false) {
@@ -20,10 +21,13 @@ function domOperationComments() {
                         } else {
                             for (let i = 0; i < 10; i++) {
                                 var replayHtml = "";
+                                var deleteHtml = "";
                                 if (jsonn[i].replaysCount > 0) {
-                                    replayHtml = '<a onclick="loadReplays()" id="' + jsonn[i].id + '" style="font-weight: bold;">View ' + jsonn[i].replaysCount + ' Replays</a>\n';
+                                    replayHtml = '<a onclick="loadReplays()" id="LoadReplays_' + jsonn[i].id + '" style="font-weight: bold;">View ' + jsonn[i].replaysCount + ' Replays</a>\n';
                                 }
-
+                                if ($("#userId").attr('value') === jsonn[i].applicationUserId) {
+                                    deleteHtml = '<a class="dropdown-item" onclick="deleteComment()" id="' + jsonn[i].id + '">Delete</a>\n';
+                                }
                                 document.getElementById("Comment-Container").innerHTML +=
                                     '<div class="row"><div style="width: 14%;margin-right: 7px">\n' +
                                     '<img style="display: block; margin: 0 auto; border-radius: 50%;" width="50" height="50" src="' + jsonn[i].applicationUserAvatarUrl + '" />\n' +
@@ -38,10 +42,9 @@ function domOperationComments() {
                                     '<a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>\n' +
                                     '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">\n' +
                                     '<a class="dropdown-item" href="#">Action</a>\n' +
-                                    '<a class="dropdown-item" href="#">Another action</a>\n' +
-                                    '<a class="dropdown-item" href="#">Something else here</a>\n' +
+                                    deleteHtml +
                                     '</div></div></div><div style="margin-left: -15px">\n' +
-                                    '<a style="font-weight: bold;" onclick="loadAddReplayForm()" id="' + jsonn[i].id + '">Replay</a>\n' +
+                                    '<a style="font-weight: bold;" onclick="loadAddReplayForm()" id="LoadForm_' + jsonn[i].id + '">Replay</a>\n' +
                                     '<span id="createReplayContainer_' + jsonn[i].id + '"></span>\n' +
                                     '<span style="margin-left: 7px"></span>\n' +
                                     '<a onclick="voteButton()" id="Comment_Like_' + jsonn[i].id + '" class="fa fa-thumbs-up">' + jsonn[i].likes + '</a>\n' +
@@ -62,7 +65,7 @@ function domOperationComments() {
 
 
 
-function getComments() {
+function loadComments() {
     var docHeight = $(document).height();
     var winScrolled = $(window).height() + $(window).scrollTop();
     if ((docHeight - winScrolled) < 200) { // scroll time 
@@ -71,7 +74,8 @@ function getComments() {
 }
 
 function loadReplays() {
-    var commentId = event.target.getAttribute("id");
+    var commentId = event.target.getAttribute("id").split('_')[1];
+    $("#LoadReplays_" + commentId).remove();
     fetch("/api/Replays?commentId=" + commentId,
         {
             method: "GET"
@@ -81,6 +85,12 @@ function loadReplays() {
                     jsonn = j;
                     $("#Comment_" + commentId).remove();
                     for (var i = 0; i < jsonn.length; i++) {
+                        var deleteHtml = "";
+
+                        if ($("#userId").attr('value') === jsonn[i].applicationUserId) {
+                            deleteHtml = '<a class="dropdown-item" onclick="deleteComment()" id="' + jsonn[i].id + '">Delete</a>\n';
+                        }
+
                         $("#Replay-Container_" + commentId).append(
                             '<hr><div class="row"><div style="width: 14%; margin-right: 7px">\n' +
                             '<img style="display: block; margin: 0 auto; border-radius: 50%;" width="40" height="40" src="' + jsonn[i].applicationUserAvatarUrl + '" alt=" "/>\n' +
@@ -95,8 +105,7 @@ function loadReplays() {
                             '<a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n' +
                             '</a><div class="dropdown-menu" aria-labelledby="dropdownMenuButton">\n' +
                             '<a class="dropdown-item" href="#">Action</a>\n' +
-                            '<a class="dropdown-item" href="#">Another action</a>\n' +
-                            '<a class="dropdown-item" href="#">Something else here</a>\n' +
+                            deleteHtml +
                             '</div></div></div>\n' +
                             '<div style="margin-left: -15px">\n' +
                             '<a onclick="voteButton()" id="Comment_Like_' + jsonn[i].id + '" class="fa fa-thumbs-up">' + jsonn[i].likes + '</a>\n' +
@@ -110,7 +119,7 @@ function loadReplays() {
 }
 
 function loadAddReplayForm() {
-    var commentId = event.target.getAttribute("id");
+    var commentId = event.target.getAttribute("id").split('_')[1];
     $("#LoadForm_" + commentId).remove();
     var avatarUrl = $("#avatarUrl").attr("src");
     $("#createReplayContainer_" + commentId).append(
@@ -124,10 +133,10 @@ function loadAddReplayForm() {
         '<textarea placeholder="Enter your replay here..." id="replayDescription_' + commentId + '" class="form-control" style="resize: none; width: 100%"></textarea>\n' +
         '<div style="width: 100%; height: 41px; margin-top: 1px">\n' +
         '<label><span class="btn btn-warning">\n' +
-        'Add IMG… <input type="file" class="custom-file-input" style="display: none;" id="commentFileInput_' + commentId + '">\n' +
+        'Add IMG… <input type="file" class="custom-file-input" style="display: none;" id="replayFileInput_' + commentId + '">\n' +
         '</span></label>\n' +
         '<button class="btn btn-warning" onclick="addReplay()" id="' + commentId + '" style="float: right">Post</button>\n' +
-        '<button class="btn btn-light" onclick="clearComment()" style="float: right">Cancel</button>\n' +
+        '<button class="btn btn-light" onclick="clearReplay()" id="' + commentId + '" style="float: right">Cancel</button>\n' +
         '</div></div></div>\n'
     );
 }
@@ -138,7 +147,7 @@ function addReplay() {
     var token = $("#voteform input[name=__RequestVerificationToken]").val();
     var postId = $("#postId").attr("value");
     var myUrl = "/api/Replays";
-    var file = document.getElementById("commentFileInput_" + commentId).files[0];
+    var file = document.getElementById("replayFileInput_" + commentId).files[0];
 
     var commentEr = $("#commentError_" + commentId);
     var spinner = $("#commentSpinner_" + commentId);
@@ -239,7 +248,14 @@ function addComment() {
     clearComment.call();
 }
 
+function clearReplay() {
+    var commentId = event.target.getAttribute("id");
+    var control = $("#replayFileInput_" + commentId);
+    var text = $("#replayDescription_" + commentId);
 
+    text.val('');
+    control.replaceWith(control.val('').clone(true));
+}
 
 function clearComment() {
     var control = $("#commentFileInput");
@@ -247,6 +263,27 @@ function clearComment() {
 
     text.val('');
     control.replaceWith(control.val('').clone(true));
+}
+
+function deleteComment() {
+    var id = event.target.getAttribute("id");
+    var token = $("#voteform input[name=__RequestVerificationToken]").val();
+    var deleteUrl = "/api/Comments";
+
+    var obj = new FormData();
+    obj.set("id",id);
+    if (deleteInProgress === false) {
+        deleteInProgress = true;
+        fetch(deleteUrl,
+            {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                body: obj
+            }).then(deleteInProgress = false);
+    }
+    
 }
 
 /**

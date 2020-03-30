@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+
 using Yeetegy.Data.Models;
 using Yeetegy.Services.Mapping;
-using Yeetegy.Web.ViewModels.PostViewModels;
 
-namespace Yeetegy.Web.ViewModels
+namespace Yeetegy.Web.ViewModels.PostViewModels
 {
     public class PostDetailsViewModel : IMapFrom<Post>
     {

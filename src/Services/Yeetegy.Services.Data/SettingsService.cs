@@ -1,14 +1,13 @@
-﻿using Yeetegy.Services.Data.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using Yeetegy.Data.Common.Repositories;
+using Yeetegy.Data.Models;
+using Yeetegy.Services.Data.Interfaces;
+using Yeetegy.Services.Mapping;
 
 namespace Yeetegy.Services.Data
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Yeetegy.Data.Common.Repositories;
-    using Yeetegy.Data.Models;
-    using Mapping;
-
     public class SettingsService : ISettingsService
     {
         private readonly IDeletableEntityRepository<Setting> settingsRepository;
@@ -20,12 +19,12 @@ namespace Yeetegy.Services.Data
 
         public int GetCount()
         {
-            return settingsRepository.All().Count();
+            return this.settingsRepository.All().Count();
         }
 
         public IEnumerable<T> GetAll<T>()
         {
-            return settingsRepository.All().To<T>().ToList();
+            return this.settingsRepository.All().To<T>().ToList();
         }
     }
 }
