@@ -18,13 +18,8 @@ namespace Yeetegy.Web.Controllers
             this.categoryService = categoryService;
         }
 
-        public async Task<IActionResult> Index(string category)
+        public async Task<IActionResult> Index(string category = "newest")
         {
-            if (category == null)
-            {
-                category = "newest";
-            }
-
             var categoryLow = category.ToLower();
 
             if (GlobalConstants.ConstantCategories.Select(x => x.Key.ToLower()).Contains(categoryLow))
