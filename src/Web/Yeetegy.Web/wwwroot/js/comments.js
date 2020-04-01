@@ -204,31 +204,31 @@ function clearComment() {
     control.replaceWith(control.val('').clone(true));
 }
 
-function deleteComment() { // ajax
-    var commentId = event.target.getAttribute("id");
-    var token = $("#voteform input[name=__RequestVerificationToken]").val();
-    var deleteUrl = "/api/Comments";
+//function deleteComment() { // ajax
+//    var commentId = event.target.getAttribute("id");
+//    var token = $("#voteform input[name=__RequestVerificationToken]").val();
+//    var deleteUrl = "/api/Comments";
 
-    var obj = new FormData();
-    obj.set("id",commentId);
-    if (deleteInProgress === false) {
-        deleteInProgress = true;
-        fetch(deleteUrl,
-            {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': token
-                },
-                body: obj
-            }).then(response => {
-                if (response.status === 200) {
-                    $("#CommentId_" + commentId).remove();
-                }
-                deleteInProgress = false;
-        });
-    }
+//    var obj = new FormData();
+//    obj.set("id",commentId);
+//    if (deleteInProgress === false) {
+//        deleteInProgress = true;
+//        fetch(deleteUrl,
+//            {
+//                method: 'DELETE',
+//                headers: {
+//                    'X-CSRF-TOKEN': token
+//                },
+//                body: obj
+//            }).then(response => {
+//                if (response.status === 200) {
+//                    $("#CommentId_" + commentId).remove();
+//                }
+//                deleteInProgress = false;
+//        });
+//    }
     
-}
+//}
 
 /**
   * Checks the string if undefined, null, not typeof string, empty or space(s)

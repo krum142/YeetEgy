@@ -19,7 +19,7 @@
                             <a class="dropdown-item" href="#">Action</a>
                             @if (User.Identity.Name == comment.ApplicationUserUsername)
                             {
-                                <a class="dropdown-item" onclick="deleteComment()" id="' + jsonn[i].id + '">Delete</a>
+                                <a class="dropdown-item" onclick="deleteComment()" id="@comment.Id">Delete</a>
                             }
                         </div>
                     </div>

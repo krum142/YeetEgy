@@ -166,6 +166,33 @@
     <script src="~/js/comments.js"></script>
     <script>
 
+        var deleteInProgress = false;
+        function deleteComment() { // ajax
+            var commentId = event.target.getAttribute("id");
+            var token = $("#voteform input[name=__RequestVerificationToken]").val();
+            var deleteUrl = "@Url.Action("Delete","Comments")";
+
+            var obj = new FormData();
+            obj.set("id",commentId);
+            if (deleteInProgress === false) {
+                deleteInProgress = true;
+                fetch(deleteUrl,
+                    {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': token
+                        },
+                        body: obj
+                    }).then(response => {
+                    if (response.status === 200) {
+                        $("#CommentId_" + commentId).remove();
+                    }
+                    deleteInProgress = false;
+                });
+            }
+    
+        }
+
         function loadReplays() { // ajax
             var commentId = event.target.getAttribute("id").split('_')[1];
             $("#LoadReplays_" + commentId).remove();
@@ -186,7 +213,6 @@
         var noMoredata = false;
         var inProgress = false;
         var postid = "@Model.PostViewModel.Id";
-
         function domOperationComments() { // ajax
             if (noMoredata === false && inProgress === false) {
                 inProgress = true;
