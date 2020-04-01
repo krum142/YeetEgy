@@ -1,5 +1,6 @@
 ﻿@using System.Security.Claims
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Routing
 @using Yeetegy.Common
 @using Yeetegy.Data.Models
 @inject UserManager<ApplicationUser> UserManager
@@ -167,10 +168,10 @@
         function testfun() {
             alert("hello");
         }
-        $(window).resize(function () {
+        $(window).resize(function() {
             resizeCategory.call();
         });
-        $(document).ready(function () {
+        $(document).ready(function() {
             resizeCategory.call();
             domOperationComments.call();
             $(window).on("scroll", loadComments);

@@ -52,12 +52,48 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/general.js" asp-append-version="true"></script>
     <script>
-        $(window).resize(function () {
+        $(window).resize(function() {
             resizeCategory.call();
             //console.log(Math.max(document.documentElement.clientHeight, window.innerHeight || 0));
         });
 
-        $(document).ready(function () {
+        var myPageIndex = 0;
+        var noMoredata = false;
+        var inProgress = false;
+
+        function DomOperation() {
+            if (noMoredata === false && inProgress === false) {
+                inProgress = true;
+                fetch('@Url.Action("GetPosts","Posts")?page=' + myPageIndex + "&category=" +
+                    location.pathname.split("/").pop(),
+                    {
+                        method: "GET",
+                    }).then(response => {
+                    if (response.status === 200) {
+                        response.text().then(html => {
+                            if (html.length < 10) {
+                                noMoredata = true;
+                            } else {
+                            document.getElementById("PostContainer").innerHTML += html;
+
+                            }
+                        });
+                        inProgress = false;
+                        myPageIndex += @GlobalConstants.LoadPostCountAjax;
+                    }
+                });
+            }
+        }
+
+        function getPosts() {
+            var docHeight = $(document).height();
+            var winScrolled = $(window).height() + $(window).scrollTop();
+            if ((docHeight - winScrolled) < 400) { // scroll time
+                DomOperation.call();
+            }
+        }
+
+        $(document).ready(function() {
             DomOperation.call();
             resizeCategory.call();
             $(window).on("scroll", getPosts);

@@ -23,32 +23,31 @@ namespace Yeetegy.Web.Controllers
             this.categoryService = categoryService;
         }
 
-        public async Task<IActionResult> GetPosts(int page)
+        public async Task<IActionResult> GetPosts(int page, string category)
         {
             var loadPostsCount = GlobalConstants.LoadPostCountAjax;
-            var header = this.Request.Headers.FirstOrDefault(x => x.Key == "x-category").Value.ToString().ToLower().Trim();
 
-            header = string.IsNullOrWhiteSpace(header) ? "newest" : header;
+            var currentCategory = string.IsNullOrWhiteSpace(category) ? "newest" : category.ToLower();
 
-            if (GlobalConstants.ConstantCategories.Any(x => x.Key.ToLower() == header))
+            if (GlobalConstants.ConstantCategories.Any(x => x.Key.ToLower() == currentCategory))
             {
-                var posts = header switch
+                var posts = currentCategory switch
                 {
                     "newest" => await this.postsService.GetPostsAsync<PostsViewModel>(page, loadPostsCount),
                     "popular" => await this.postsService.GetPostsPopularAsync<PostsViewModel>(page, loadPostsCount),
                     "discussed" => await this.postsService.GetPostsTrendingAsync<PostsViewModel>(page, loadPostsCount),
                     _ => await this.postsService.GetPostsAsync<PostsViewModel>(page, loadPostsCount),
                 };
-                return this.Json(posts);
+                return this.PartialView("_GetPostsPartial", posts);
             }
 
-            if (await this.categoryService.IsThereAnyAsync(header))
+            if (await this.categoryService.IsThereAnyAsync(currentCategory))
             {
-                var posts = await this.postsService.GetPostsAsync<PostsViewModel>(page, loadPostsCount, header);
-                return this.Json(posts);
+                var posts = await this.postsService.GetPostsAsync<PostsViewModel>(page, loadPostsCount, currentCategory);
+                return this.PartialView("_GetPostsPartial", posts);
             }
 
-            return this.Json(new List<PostsViewModel>());
+            return this.Content(string.Empty);
         }
 
         public async Task<IActionResult> PostDetails(string id)
