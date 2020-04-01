@@ -28,7 +28,8 @@ namespace Yeetegy.Web.Controllers
             {
                 var replays = await this.replaysService.AllAsync<ReplayViewModel>(commentId);
 
-                return this.Json(replays);
+                return this.PartialView("_ReplaysPartial", replays);
+                //return this.Json(replays);
             }
 
             return this.NotFound();

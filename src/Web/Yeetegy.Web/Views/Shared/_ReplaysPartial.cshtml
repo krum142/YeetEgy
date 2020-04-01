@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Yeetegy.Web.ViewModels.ReplayModels.ReplayViewModel>
+
+@foreach (var replay in Model)
+{
+    <div id="CommentId_@replay.Id">
+        <hr><div class="row">
+            <div style="width: 14%; margin-right: 7px">
+                <img style="display: block; margin: 0 auto; border-radius: 50%;" width="40" height="40" src="@replay.ApplicationUserAvatarUrl" alt=" " />
+            </div><div style="width: 83%; float: right;">
+                <div style="width: 100%; word-wrap: break-word;" class="row">
+                    <div style="width: 97%; float: left">
+                        <a style="font-weight: bold;">@replay.ApplicationUserUsername</a>
+                        <h9><span class="badge badge-light">@replay.Time</span></h9><br>
+                        <a>@replay.Description</a><span>
+                            <img style="width: 100%" src="@replay.ImgUrl" alt=" ">
+                        </span>
+                    </div>
+                    <div class="dropdown" style="width: 3%;">
+                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        </a><div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Action</a>
+                            @if (User.Identity.Name == replay.ApplicationUserUsername)
+                            {
+                                <a class="dropdown-item" onclick="deleteComment()" id="@replay.Id">Delete</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-left: -15px">
+                    <a onclick="voteButton()" id="Comment_Like_@replay.Id" class="fa fa-thumbs-up">@replay.Likes</a>
+                    <a onclick="voteButton()" id="Comment_Dislike_@replay.Id" class="fa fa-thumbs-down">@replay.Dislikes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

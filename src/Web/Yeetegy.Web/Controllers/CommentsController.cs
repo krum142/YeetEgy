@@ -28,7 +28,7 @@ namespace Yeetegy.Web.Controllers
             {
                 var comments = await this.commentsService.GetCommentsAsync<CommentsViewModel>(postId, offset, GlobalConstants.LoadCommentsCountAjax);
 
-                return this.Json(comments);
+                return this.PartialView("_CommentsPartial", comments);
             }
 
             return this.NotFound();
