@@ -1,34 +1,12 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Yeetegy Kill the boredom";
 }
 @using Yeetegy.Common
 @model IEnumerable<CategoryViewModel>
 <div class="row">
-    <div class="col-lg-3">
-        <div id="catPos" class="position-fixed">
-            <div id="catWid" class="list-group" style="margin-top: 60px; width: 220px">
-                @foreach (var globalCategories in GlobalConstants.ConstantCategories)
-                {
-                    <a href="/@globalCategories.Key" alt="@globalCategories.Key">
-                        <div class="chip list-group-item-action">
-                            <img src="@globalCategories.Value" alt="Person" width="96" height="96">
-                            <p class="text-white"><b>@globalCategories.Key</b></p>
-                        </div>
-                    </a>
-                }
-                @foreach (var categories in Model)
-                {
-                    <a href="/@categories.Name" alt="@categories.Name">
-                        <div class="chip list-group-item-action">
-                            <img src="@categories.ImageUrl" alt="Person" width="96" height="96">
-                            <p class="text-white"><b>@categories.Name</b></p>
-                        </div>
-                    </a>
-                }
-            </div>
-        </div>
-    </div>
-    <!-- /.col-lg-3 -->
+
+    <partial name="_SideNavBarPartial" model="Model"></partial>
+
 
     <div class="col-lg-9" style="margin-top: 60px;">
 
@@ -45,8 +23,6 @@
         </div>
     </div>
 </div>
-<!-- /.row -->
-
 
 @section Scripts {
     <script src="~/js/site.js" asp-append-version="true"></script>

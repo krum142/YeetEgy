@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -54,7 +53,7 @@ namespace Yeetegy.Web.Controllers
         {
             if (await this.postsService.DoesPostExistAsync(id))
             {
-                var post = await this.postsService.GetPostAsync<PostCommentsViewModel>(id);
+                var post = await this.postsService.GetPostAsync<PostsViewModel>(id);
                 var category = await this.categoryService.GetAllAsync<CategoryViewModel>();
 
                 var details = new PostDetailsViewModel()

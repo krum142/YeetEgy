@@ -1,9 +1,9 @@
-﻿var myPageIndex = 0;
-var noMoredata = false;
-var inProgress = false;
-var posthtml;
-var postid = $("#postId").attr('value');
-var deleteInProgress = false;
+﻿//var myPageIndex = 0;
+//var noMoredata = false;
+//var inProgress = false;
+//var posthtml;
+//var postid = $("#postId").attr('value');
+//var deleteInProgress = false;
 
 //function domOperationComments() { // ajax
 //    if (noMoredata === false && inProgress === false) {

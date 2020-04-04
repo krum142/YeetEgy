@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+@model IEnumerable<Yeetegy.Web.ViewModels.CategoryViewModel>
+<div class="row">
+
+    <partial name="_SideNavBarPartial" model="Model"></partial>
+
+    <div class="col-lg-9" style="margin-top: 60px;">
+
+        <div class="row" id="UserPostContainer">
+            <form id="voteform" method="post"></form>
+            <div class="col-lg-8 col-md-12" style="margin-bottom: 30px">
+                <div class="card h-100">
+                    <div class="card-header font-italic">
+                        <h5><b>@this.ViewData["CategoryName"]</b></h5>
+                    </div>
+                    <img id="srcP" src="@this.ViewData["CategoryUrl"]" class="card-img-top" alt="...">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

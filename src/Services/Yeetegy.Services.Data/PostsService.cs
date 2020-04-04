@@ -15,17 +15,20 @@ namespace Yeetegy.Services.Data
     {
         private readonly IDeletableEntityRepository<Post> postRepository;
         private readonly IDeletableEntityRepository<UserPostVote> postVoteRepository;
+        private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
         private readonly ICategoryService categoryService;
         private readonly ICloudinaryService cloudinary;
 
         public PostsService(
             IDeletableEntityRepository<Post> postRepository,
             IDeletableEntityRepository<UserPostVote> postVoteRepository,
+            IDeletableEntityRepository<ApplicationUser> usersRepository,
             ICategoryService categoryService,
             ICloudinaryService cloudinary)
         {
             this.postRepository = postRepository;
             this.postVoteRepository = postVoteRepository;
+            this.usersRepository = usersRepository;
             this.categoryService = categoryService;
             this.cloudinary = cloudinary;
         }
@@ -90,7 +93,7 @@ namespace Yeetegy.Services.Data
         {
             var query = this.postRepository.AllAsNoTracking();
 
-            query = query.Where(x => x.Likes >= 200).OrderByDescending(x => x.CreatedOn).ThenByDescending(x => x.CreatedOn);
+            query = query.Where(x => x.Likes >= 200).OrderByDescending(x => x.CreatedOn);
 
             return await query.Skip(skip).Take(take).To<T>().ToListAsync();
         }
@@ -102,6 +105,28 @@ namespace Yeetegy.Services.Data
             query = query.OrderByDescending(x => x.Comments.Count).ThenByDescending(x => x.CreatedOn);
 
             return await query.Skip(skip).Take(take).To<T>().ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetUserLikedAsync<T>(int skip, int take, string userId) // Test me Please
+        {
+            return await this.postRepository
+                .AllAsNoTracking()
+                .Where(x => x.UserVotes.Any(y => y.Value == "Like" && y.ApplicationUserId == userId)).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(take).To<T>().ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetUserCommentedAsync<T>(int skip, int take, string userId)
+        {
+            return await this.postRepository
+                .AllAsNoTracking()
+                .Where(x => x.Comments.Any(y => y.ApplicationUserId == userId)).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(take)
+                .To<T>().ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetUserPostsAsync<T>(int skip, int take, string userId)
+        {
+            return await this.postRepository
+                .AllAsNoTracking()
+                .Where(x => x.ApplicationUserId == userId).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(take).To<T>().ToListAsync();
         }
     }
 }
