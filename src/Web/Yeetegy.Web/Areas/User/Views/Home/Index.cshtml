@@ -2,6 +2,7 @@
     ViewData["Title"] = "Index";
 }
 
+@using Yeetegy.Common
 @model IEnumerable<Yeetegy.Web.ViewModels.CategoryViewModel>
 <div class="row">
 
@@ -14,11 +15,90 @@
             <div class="col-lg-8 col-md-12" style="margin-bottom: 30px">
                 <div class="card h-100">
                     <div class="card-header font-italic">
-                        <h5><b>@this.ViewData["CategoryName"]</b></h5>
+                        <h5><b>@this.ViewData["Username"]</b></h5>
                     </div>
-                    <img id="srcP" src="@this.ViewData["CategoryUrl"]" class="card-img-top" alt="...">
+                    <img id="srcP" src="@this.ViewData["AvatarUrl"]" class="card-img-top" alt="...">
+                    <a id="PostsButton" href="@($"/User/{this.ViewData["Username"]}/Posts")" class="btn btn-outline-success">Posts</a>
+                    <a id="CommentsButton" href="@($"/User/{this.ViewData["Username"]}/Comments")" class="btn btn-outline-success">Comments</a>
+                    @if (this.User.Identity.Name == this.ViewData["Username"].ToString())
+                    {
+                        <a id="LikedButton" href="@($"/User/{this.ViewData["Username"]}/Liked")" class="btn btn-outline-success">Liked</a>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script src="~/js/general.js" asp-append-version="true"></script>
+    <script>
+        $(window).resize(function() {
+            resizeCategory.call();
+            //console.log(Math.max(document.documentElement.clientHeight, window.innerHeight || 0));
+        });
+
+        var myPageIndex = 0;
+        var noMoredata = false;
+        var inProgress = false;
+
+        function userDomOperation() {
+            var url = location.pathname.split("/");
+            var category = "";
+            var username = "";
+
+            if (url.length === 4) {
+                category = url.pop();
+                username = url.pop();
+            } else if (url.length === 3) {
+                category = "Posts";
+                username = url.pop();
+            }
+
+            switch (category) {
+            case "Posts":
+                    $("#PostsButton").addClass("active"); break;
+            case "Comments":
+                    $("#CommentsButton").addClass("active"); break;
+            case "Liked": 
+                    $("#LikedButton").addClass("active"); break;
+
+            default: $("#PostsButton").addClass("active"); break;
+            }
+            if (noMoredata === false && inProgress === false) {
+                inProgress = true;
+                fetch("@Url.Action("GetUserPosts","UserPosts")?page=" + myPageIndex + "&category=" + category + "&username=" + username,
+                    {
+                        method: "GET",
+                    }).then(response => {
+                    if (response.status === 200) {
+                        response.text().then(html => {
+                            if (html.length < 10) {
+                                noMoredata = true;
+                            } else {
+                                document.getElementById("UserPostContainer").innerHTML += html;
+                            }
+                        });
+                        inProgress = false;
+                        myPageIndex += @GlobalConstants.LoadUserPostsCountAjax;
+                    }
+                });
+            }
+        }
+
+        function userGetPosts() {
+            var docHeight = $(document).height();
+            var winScrolled = $(window).height() + $(window).scrollTop();
+            if ((docHeight - winScrolled) < 400) { // scroll time
+                userDomOperation.call();
+            }
+        }
+
+        $(document).ready(function() {
+            userDomOperation.call();
+            resizeCategory.call();
+            $(window).on("scroll", userGetPosts);
+        });
+    </script>
+}

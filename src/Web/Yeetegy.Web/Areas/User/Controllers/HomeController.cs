@@ -12,16 +12,13 @@ namespace Yeetegy.Web.Areas.User.Controllers
     {
         private readonly ICategoryService categoryService;
         private readonly IUserService userService;
-        private readonly IPostsService postsService;
 
         public HomeController(
             ICategoryService categoryService,
-            IUserService userService,
-            IPostsService postsService)
+            IUserService userService)
         {
             this.categoryService = categoryService;
             this.userService = userService;
-            this.postsService = postsService;
         }
 
         [Route("/User/{username?}")]
@@ -34,30 +31,22 @@ namespace Yeetegy.Web.Areas.User.Controllers
 
             var typeSearch = path.Length == 4 ? path[3] : path.Length == 3 ? "Posts" : null;
 
-            if (await this.userService.ExistsAsync(username) && typeSearch != null)
+            if (!string.IsNullOrWhiteSpace(username) && await this.userService.ExistsAsync(username) && typeSearch != null)
             {
+                if (this.User.Identity.Name != username && typeSearch == "Liked")
+                {
+                    return this.NotFound();
+                }
+
+                var userContents = await this.userService.GetUserByNameAsync<UserPageContentsModel>(username);
+                this.ViewData["Username"] = userContents.Username;
+                this.ViewData["AvatarUrl"] = userContents.AvatarUrl;
+
                 var categories = await this.categoryService.GetAllAsync<CategoryViewModel>();
-                var userId = await this.userService.GetIdAsync(username);
-                var userPosts = typeSearch switch
-                {
-                    "Liked" => await this.postsService.GetUserLikedAsync<PostsViewModel>(0, 5, userId),
-                    "Comments" => await this.postsService.GetUserCommentedAsync<PostsViewModel>(0, 5, userId),
-                    "Posts" => await this.postsService.GetUserPostsAsync<PostsViewModel>(0, 5, userId),
-                    _ => await this.postsService.GetUserPostsAsync<PostsViewModel>(0, 5, userId)
-                };
-
-                var x = new UserPostsViewModel()
-                {
-                    Categorys = categories,
-                    Posts = userPosts,
-                };
-
                 return this.View(categories);
             }
-            else
-            {
-                return this.NotFound(); // 404
-            }
+
+            return this.NotFound(); // 404
         }
     }
 }

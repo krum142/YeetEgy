@@ -5,11 +5,13 @@
     <div id="CommentId_@replay.Id">
         <hr><div class="row">
             <div style="width: 14%; margin-right: 7px">
-                <img style="display: block; margin: 0 auto; border-radius: 50%;" width="40" height="40" src="@replay.ApplicationUserAvatarUrl" alt=" " />
+                <a href="/User/@replay.ApplicationUserUsername">
+                    <img style="display: block; margin: 0 auto; border-radius: 50%;" width="40" height="40" src="@replay.ApplicationUserAvatarUrl" alt=" " />
+                </a>
             </div><div style="width: 83%; float: right;">
                 <div style="width: 100%; word-wrap: break-word;" class="row">
                     <div style="width: 97%; float: left">
-                        <a style="font-weight: bold;">@replay.ApplicationUserUsername</a>
+                        <a href="/User/@replay.ApplicationUserUsername" class="text-dark" style="font-weight: bold;">@replay.ApplicationUserUsername</a>
                         <h9><span class="badge badge-light">@replay.Time</span></h9><br>
                         <a>@replay.Description</a><span>
                             <img style="width: 100%" src="@replay.ImgUrl" alt=" ">
@@ -27,8 +29,8 @@
                     </div>
                 </div>
                 <div style="margin-left: -15px">
-                    <a onclick="voteButton()" id="Comment_Like_@replay.Id" class="fa fa-thumbs-up">@replay.Likes</a>
-                    <a onclick="voteButton()" id="Comment_Dislike_@replay.Id" class="fa fa-thumbs-down">@replay.Dislikes</a>
+                    <a style="padding: 2px;font-size: 17px" onclick="voteButton()" id="Comment_Like_@replay.Id" class="fa fa-thumbs-up">@replay.Likes</a>
+                    <a style="padding: 2px;font-size: 17px" onclick="voteButton()" id="Comment_Dislike_@replay.Id" class="fa fa-thumbs-down">@replay.Dislikes</a>
                 </div>
             </div>
         </div>

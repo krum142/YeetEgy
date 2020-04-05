@@ -15,13 +15,19 @@ namespace Yeetegy.Web.Controllers
     {
         private readonly IPostsService postsService;
         private readonly ICategoryService categoryService;
+        private readonly IUserService userService;
 
-        public PostsController(IPostsService postsService, ICategoryService categoryService)
+        public PostsController(
+            IPostsService postsService,
+            ICategoryService categoryService,
+            IUserService userService)
         {
             this.postsService = postsService;
             this.categoryService = categoryService;
+            this.userService = userService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetPosts(int page, string category)
         {
             var loadPostsCount = GlobalConstants.LoadPostCountAjax;
@@ -48,6 +54,26 @@ namespace Yeetegy.Web.Controllers
 
             return this.Content(string.Empty);
         }
+
+        //[HttpGet]
+        //public async Task<IActionResult> GetUserPosts(int page, string category, string username)
+        //{
+        //    if (!string.IsNullOrWhiteSpace(username) && await this.userService.ExistsAsync(username))
+        //    {
+        //        var userId = await this.userService.GetIdAsync(username);
+        //        var userPosts = category switch
+        //        {
+        //            "Liked" => await this.postsService.GetUserLikedAsync<PostsViewModel>(page, 5, userId),
+        //            "Comments" => await this.postsService.GetUserCommentedAsync<PostsViewModel>(page, 5, userId),
+        //            "Posts" => await this.postsService.GetUserPostsAsync<PostsViewModel>(page, 5, userId),
+        //            _ => await this.postsService.GetUserPostsAsync<PostsViewModel>(page, 5, userId)
+        //        };
+
+        //        return this.PartialView("_GetPostsPartial", userPosts);
+        //    }
+
+        //    return this.NotFound();
+        //}
 
         public async Task<IActionResult> PostDetails(string id)
         {

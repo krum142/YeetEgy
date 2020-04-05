@@ -10,6 +10,8 @@ namespace Yeetegy.Common
 
         public const int LoadPostCountAjax = 5;
 
+        public const int LoadUserPostsCountAjax = 5;
+
         public const int LoadCommentsCountAjax = 10;
 
         public const string DefaltUserImg = "https://res.cloudinary.com/cloudnameiscool/image/upload/v1584633016/avatar_nq8tay.jpg"; // save it in the cloudinary

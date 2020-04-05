@@ -7,5 +7,7 @@ namespace Yeetegy.Services.Data.Interfaces
         Task<bool> ExistsAsync(string username);
 
         Task<string> GetIdAsync(string username);
+
+        Task<T> GetUserByNameAsync<T>(string username);
     }
 }

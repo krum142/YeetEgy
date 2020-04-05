@@ -22,6 +22,8 @@ namespace Yeetegy.Web.ViewModels.PostViewModels
 
         public int CommentsCount { get; set; }
 
+        public string CategoryImageUrl { get; set; }
+
         public string Time { get; set; }
 
         public void CreateMappings(IProfileExpression configuration) // this can be done at the users browser if it proves to be slow

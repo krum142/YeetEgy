@@ -5,11 +5,13 @@
     <div id="CommentId_@comment.Id">
         <div class="row">
             <div style="width: 14%;margin-right: 7px">
-                <img style="display: block; margin: 0 auto; border-radius: 50%;" width="50" height="50" src="@comment.ApplicationUserAvatarUrl" />
+                <a href="/User/@comment.ApplicationUserUsername">
+                    <img style="display: block; margin: 0 auto; border-radius: 50%;" width="50" height="50" src="@comment.ApplicationUserAvatarUrl" />
+                </a>
             </div><div style="width: 83%; float: right;">
                 <div style="width: 100%; word-wrap: break-word;" class="row">
                     <div style="width: 97%; float: left">
-                        <a style="font-weight: bold;">@comment.ApplicationUserUsername</a>
+                        <a href="/User/@comment.ApplicationUserUsername" class="text-dark" style="font-weight: bold;">@comment.ApplicationUserUsername</a>
                         <h9><span class="badge badge-light">@comment.Time</span></h9><br>
                         <a>@comment.Description</a>
                         <span><img style="width: 100%;" src="@comment.ImgUrl" alt=" "></span>
@@ -28,8 +30,8 @@
                     <a style="font-weight: bold;" onclick="loadReplayForm()" id="LoadForm_@comment.Id">Replay</a>
                     <span id="createReplayContainer_@comment.Id"></span>
                     <span style="margin-left: 7px"></span>
-                    <a onclick="voteButton()" id="Comment_Like_@comment.Id" class="fa fa-thumbs-up">@comment.Likes</a>
-                    <a onclick="voteButton()" id="Comment_Dislike_@comment.Id" class="fa fa-thumbs-down">@comment.Dislikes</a><br>
+                    <a style="font-size: 17px" onclick="voteButton()" id="Comment_Like_@comment.Id" class="fa fa-thumbs-up">@comment.Likes</a>
+                    <a style="font-size: 17px" onclick="voteButton()" id="Comment_Dislike_@comment.Id" class="fa fa-thumbs-down">@comment.Dislikes</a><br>
                     @if (comment.ReplaysCount > 0)
                     {
                         <a onclick="loadReplays()" id="LoadReplays_@comment.Id" style="font-weight: bold;">View @comment.ReplaysCount Replays</a>
