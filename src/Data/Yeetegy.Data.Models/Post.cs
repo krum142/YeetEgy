@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 using Yeetegy.Data.Common.Models;
 
 namespace Yeetegy.Data.Models
@@ -12,6 +13,7 @@ namespace Yeetegy.Data.Models
             this.Id = Guid.NewGuid().ToString();
             this.Comments = new HashSet<Comment>();
             this.UserVotes = new HashSet<UserPostVote>();
+            this.PostTags = new HashSet<PostTag>();
         }
 
         [Required]
@@ -39,5 +41,7 @@ namespace Yeetegy.Data.Models
         public ICollection<UserPostVote> UserVotes { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
+
+        public ICollection<PostTag> PostTags { get; set; }
     }
 }

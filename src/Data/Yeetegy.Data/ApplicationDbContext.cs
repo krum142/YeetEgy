@@ -31,6 +31,10 @@ namespace Yeetegy.Data
 
         public DbSet<Post> Posts { get; set; }
 
+        public DbSet<PostTag> PostTags { get; set; }
+
+        public DbSet<Tag> Tags { get; set; }
+
         public DbSet<Comment> Comments { get; set; }
 
         public DbSet<Setting> Settings { get; set; }
@@ -89,6 +93,8 @@ namespace Yeetegy.Data
             builder.Entity<UserPostVote>().HasKey(x => new { x.ApplicationUserId, x.PostId });
 
             builder.Entity<UserCommentVote>().HasKey(x => new { x.ApplicationUserId, x.CommentId });
+
+            builder.Entity<PostTag>().HasKey(x => new { x.PostId, x.TagId });
 
             builder.Entity<ApplicationUser>()
                 .HasMany(e => e.Claims)

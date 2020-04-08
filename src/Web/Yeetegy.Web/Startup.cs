@@ -75,6 +75,8 @@ namespace Yeetegy.Web
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddTransient<IReplaysService, ReplaysService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ISearchService, SearchService>();
+            services.AddTransient<ITagService,TagService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,19 @@ namespace Yeetegy.Services.Data
             var urlTest = this.cloudinary.SaveCloudinaryAsync(post.File);
 
             var url = urlTest.Result;
+
+            //ICollection<Tag> tags = new List<Tag>();
+            //if (!string.IsNullOrWhiteSpace(post.Tags))
+            //{
+            //    var matches = Regex.Matches(post.Tags, "#[A-Za-z0-9]{1,30}");
+            //    foreach (var match in matches)
+            //    {
+            //        if ()
+            //        {
+
+            //        }
+            //    }
+            //}
 
             if (url != null)
             {
@@ -111,7 +125,11 @@ namespace Yeetegy.Services.Data
         {
             return await this.postRepository
                 .AllAsNoTracking()
-                .Where(x => x.UserVotes.Any(y => y.Value == "Like" && y.ApplicationUserId == userId)).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(take).To<T>().ToListAsync();
+                .Where(x => x.UserVotes.Any(y => y.Value == "Like" && y.ApplicationUserId == userId))
+                .OrderByDescending(x => x.CreatedOn)
+                .Skip(skip).Take(take)
+                .To<T>()
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetUserCommentedAsync<T>(int skip, int take, string userId)
@@ -119,14 +137,19 @@ namespace Yeetegy.Services.Data
             return await this.postRepository
                 .AllAsNoTracking()
                 .Where(x => x.Comments.Any(y => y.ApplicationUserId == userId)).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(take)
-                .To<T>().ToListAsync();
+                .To<T>()
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetUserPostsAsync<T>(int skip, int take, string userId)
         {
             return await this.postRepository
                 .AllAsNoTracking()
-                .Where(x => x.ApplicationUserId == userId).OrderByDescending(x => x.CreatedOn).Skip(skip).Take(take).To<T>().ToListAsync();
+                .Where(x => x.ApplicationUserId == userId)
+                .OrderByDescending(x => x.CreatedOn)
+                .Skip(skip).Take(take)
+                .To<T>()
+                .ToListAsync();
         }
     }
 }

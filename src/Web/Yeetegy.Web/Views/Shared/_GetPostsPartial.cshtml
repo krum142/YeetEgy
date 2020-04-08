@@ -3,23 +3,21 @@
 @foreach (var post in @Model)
 {
     <div class="col-lg-8 col-md-12" style="margin-bottom: 30px">
-        <div>
-            <hr style="border-top: 2px solid #043927;">
-            <div class="row" style="margin-left: 1%">
-                <img style="border-radius: 20%" width="30" height="30" src="@post.CategoryImageUrl">
-                <h5><span class="badge badge-light">@post.CategoryName</span></h5>
-                <h5><span class="badge badge-light">@post.Time</span></h5>
+        <hr style="border-top: 2px solid #043927;">
+        <div class="row" style="margin-left: 1%">
+            <img style="border-radius: 20%" width="30" height="30" src="@post.CategoryImageUrl">
+            <h5><span class="badge badge-light">@post.CategoryName</span></h5>
+            <h5><span class="badge badge-light">@post.Time</span></h5>
+        </div>
+        <div class="card h-75">
+            <div class="card-header font-italic">
+                <h5><b>@post.Tittle</b></h5>
             </div>
-            <div class="card h-100">
-                <div class="card-header font-italic">
-                    <h5><b>@post.Tittle</b></h5>
-                </div>
-                <img id="1" src="@post.ImgUrl" class="card-img-top">
-                <div class="card-footer">
-                    <button type="button" onClick="voteButton()" id="Post_Like_@post.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 90px">@post.Likes</button>
-                    <button type="button" onClick="voteButton()" id="Post_Dislike_@post.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 90px">@post.Dislikes</button>
-                    <button type="button" onClick="redirect()" id="@post.Id" class="btn btn-dark fa fa-comment" style="width: 90px">@post.CommentsCount</button>
-                </div>
+            <img id="1" src="@post.ImgUrl" class="card-img-top">
+            <div class="card-footer">
+                <button type="button" onClick="voteButton()" id="Post_Like_@post.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 90px">@post.Likes</button>
+                <button type="button" onClick="voteButton()" id="Post_Dislike_@post.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 90px">@post.Dislikes</button>
+                <button type="button" onClick="redirect()" id="@post.Id" class="btn btn-dark fa fa-comment" style="width: 90px">@post.CommentsCount</button>
             </div>
         </div>
     </div>

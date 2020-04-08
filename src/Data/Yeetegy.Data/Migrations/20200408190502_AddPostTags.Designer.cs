@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Yeetegy.Data;
 
 namespace Yeetegy.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200408190502_AddPostTags")]
+    partial class AddPostTags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -388,30 +390,6 @@ namespace Yeetegy.Data.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("Yeetegy.Data.Models.PostTag", b =>
-                {
-                    b.Property<string>("PostId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TagId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("PostId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("PostTags");
-                });
-
             modelBuilder.Entity("Yeetegy.Data.Models.Setting", b =>
                 {
                     b.Property<int>("Id")
@@ -461,6 +439,10 @@ namespace Yeetegy.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(15)")
                         .HasMaxLength(15);
@@ -468,6 +450,8 @@ namespace Yeetegy.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("PostId");
 
                     b.ToTable("Tags");
                 });
@@ -628,17 +612,11 @@ namespace Yeetegy.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Yeetegy.Data.Models.PostTag", b =>
+            modelBuilder.Entity("Yeetegy.Data.Models.Tag", b =>
                 {
                     b.HasOne("Yeetegy.Data.Models.Post", "Post")
-                        .WithMany("PostTags")
+                        .WithMany("Tags")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Yeetegy.Data.Models.Tag", "Tag")
-                        .WithMany("PostTags")
-                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

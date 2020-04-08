@@ -17,6 +17,9 @@ namespace Yeetegy.Web.ViewModels.PostViewModels
         [MaxLength(200,ErrorMessage = "Tittle cannot be above 200 symbols!")]
         public string Tittle { get; set; }
 
+        //[RegularExpression("#[A-Za-z0-9]{1,30}")]
+        public string Tags { get; set; }
+
         [Required]
         public string Category { get; set; }
 

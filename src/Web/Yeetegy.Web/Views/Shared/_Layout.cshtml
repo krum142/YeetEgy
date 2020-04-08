@@ -1,10 +1,18 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Yeetegy.Common
 @using Yeetegy.Data.Models
-@using Yeetegy.Web.Controllers
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+<style>
+    .myButton {
+        color: white !important;
+    }
+
+        .myButton:hover {
+            color: gray !important;
+        }
+</style>
 
 <!DOCTYPE html>
 @*@{
@@ -32,30 +40,45 @@
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top YeetegyBackground">
             <div class="container">
                 <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index"><img width="130" height="35" src="~/YeetegyLogoSmall.png"></a>
+
+                <a class="nav-link text-white" style="margin-top: 4px" asp-area="Identity" asp-page="/Account/Register"><h5><b>Merch</b></h5></a>
+
+                @*<a class="fa fa-search searchButton" hover style="font-size: 30px;"></a>*@
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li>
-                            <a class="nav-link text-white" style="margin-top: -2px" asp-area="Identity" asp-page="/Account/Register"><b>Merch</b></a>
+                            <div class="btn-group" style="nav-right: auto;margin-top: 2px ">
+                                <a class="fa fa-search myButton" hover style="font-size: 30px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                                <div class="dropdown-menu dropdown-menu-right" style="margin-top: 20px;">
+                                    <input id="txtSearch" placeholder="Search" type="text" class="dropdown-item" style="resize: none;height: 45px">
+                                    <div class="dropdown-divider"></div>
+                                    <div id="searchResults"></div>
+                                    @*<a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                        <a class="dropdown-item" href="#">Separated link</a>*@
+                                </div>
+                            </div>
                         </li>
                         <li>
                             @if (SignInManager.IsSignedIn(User))
                             {
-                                <a class="text-white btn btn-warning fa fa-plus" style="margin-top: 5px; margin-left: 15px" href="/Posts/Add" title="Manage"><b>  Upload</b></a>
+                                <a class="text-white btn btn-warning fa fa-plus" style="margin-top: 4px; margin-left: 15px" asp-controller="Posts" asp-action="Add" title="Manage"><b> Upload</b></a>
                             }
                         </li>
                         <partial name="_LoginPartial" />
                     </ul>
                 </div>
             </div>
+
         </nav>
     </header>
 
     <div>
         <div class="container">
-
             <partial name="_CookieConsentPartial" />
             <main role="main" class="pb-3">
                 @RenderBody()
@@ -64,7 +87,7 @@
 
     </div>
     <button onclick="topFunction()" id="myBtn" title="Go to top"><b>Top</b></button>
-    <script src="~/lib/Popper/dist/popper.js"></script>
+    @*<script src="~/lib/Popper/dist/popper.js"></script>*@
 
     @*<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js"></script>*@
     <environment names="Development">
@@ -73,14 +96,57 @@
         <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
         <script src="~/js/button.js" asp-append-version="true"></script>
+        <script src="~/lib/Popper/dist/popper.js"></script>
+        <script>
+            $(document).ready(function () {
+                var textInput = document.getElementById('txtSearch');
+                var textdata = document.querySelector('searchResults');
+                // Init a timeout variable to be used below
+                var timefired = null;
+
+                // Listen for keystroke events
+                // Init a timeout variable to be used below
+                var timefired = null;// Listen for keystroke events
+                textInput.onkeyup = function (event) {
+                    clearTimeout(timefired);
+                    timefired = setTimeout(function () {
+                        var data = $("#txtSearch").val();
+                        var len = data.length;
+                        if (len > 0) {
+                            fetch("/api/Search?searchContent=" + data,
+                                {
+                                    method: 'GET'
+                                }).then(response => {
+                                    if (response.status === 200) {
+                                        response.json().then(j => {
+                                            myJson = j;
+                                            var htmlToInsert = "";
+                                            //console.log(myJson);
+                                            for (var i = 0; i < myJson.length; i++) {
+                                                //console.log(myJson[i]);
+                                                if (myJson[i].length <= 50) {
+                                                    htmlToInsert += '<a style="word-wrap: break-word;" class="dropdown-item" href="#">' + myJson[i] + '</a>';
+                                                }
+                                            }
+                                            document.getElementById("searchResults").innerHTML = htmlToInsert;
+                                        });
+                                    }
+                                });
+
+                            //senddata to search ajax
+                        }
+                    }, 500);
+                };
+            });
+        </script>
     </environment>
     <environment names="Staging,Production">
-        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
+        <script src="~/js/button.js" asp-append-version="true"></script>
+        <script src="~/lib/Popper/dist/popper.js"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)

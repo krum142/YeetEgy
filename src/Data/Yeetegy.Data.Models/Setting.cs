@@ -1,7 +1,7 @@
-﻿namespace Yeetegy.Data.Models
-{
-    using Yeetegy.Data.Common.Models;
+﻿using Yeetegy.Data.Common.Models;
 
+namespace Yeetegy.Data.Models
+{
     public class Setting : BaseDeletableModel<int>
     {
         public string Name { get; set; }

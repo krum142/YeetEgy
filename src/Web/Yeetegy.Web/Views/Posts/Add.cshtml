@@ -23,6 +23,10 @@
                             <select asp-for="Category" asp-items="Model.Categorys" class="custom-select" id="category" name="category">
                             </select>
                         </div>
+                        <div id="TagsContainer" class="container" style="margin-left: -15px">
+                            <span class="badge badge-warning">#Funny</span>
+                        </div>
+                        <input id="TagInput" type="text" asp-for="Tags" class="form-control" placeholder="#TagOne #TagTwo #TagThree...." style="margin-bottom: 15px;resize: none">
                         <div class="container" style="margin-left: -15px">
                             <span class="badge badge-pill badge-danger" asp-validation-for="File"></span>
                         </div>
@@ -47,11 +51,27 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
     <script type="text/javascript">
-        $(document).on('change', ':file', function () {
-            var input = $(this)
-            var label = $('#BrowseInput').val(input.val().replace(/\\/g, '/').replace(/.*\//, ''));
+        $(document).on('change',
+            ':file',
+            function() {
+                var input = $(this);
+                var label = $('#BrowseInput').val(input.val().replace(/\\/g, '/').replace(/.*\//, ''));
+            });
+
+        $(document).ready(function () {
+            $("#TagInput").keyup(function () {
+
+                var data = $("#TagInput").val();
+                var myRe = /#[A-Za-z0-9]{1,30}/g;
+                var matches = data.match(myRe);
+                var tags = "";
+                for (var i = 0; i < matches.length; i++) {
+                    tags += '<span class="badge badge-warning">' + matches[i] + '</span>';
+                }
+                document.getElementById("TagsContainer").innerHTML = tags;
+            });
         });
     </script>
 }
