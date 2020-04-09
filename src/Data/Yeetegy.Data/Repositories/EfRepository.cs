@@ -1,4 +1,6 @@
-﻿namespace Yeetegy.Data.Repositories
+﻿using System.Collections.Generic;
+
+namespace Yeetegy.Data.Repositories
 {
     using System;
     using System.Linq;
@@ -26,6 +28,8 @@
         public virtual IQueryable<TEntity> AllAsNoTracking() => DbSet.AsNoTracking();
 
         public virtual Task AddAsync(TEntity entity) => DbSet.AddAsync(entity).AsTask();
+
+        public virtual Task AddRangeAsync(IEnumerable<TEntity> entities) => DbSet.AddRangeAsync(entities);
 
         public virtual void Update(TEntity entity)
         {

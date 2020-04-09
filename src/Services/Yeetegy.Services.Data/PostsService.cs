@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -16,22 +17,25 @@ namespace Yeetegy.Services.Data
     {
         private readonly IDeletableEntityRepository<Post> postRepository;
         private readonly IDeletableEntityRepository<UserPostVote> postVoteRepository;
-        private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
+        private readonly IRepository<PostTag> postTagRepository;
         private readonly ICategoryService categoryService;
         private readonly ICloudinaryService cloudinary;
+        private readonly ITagService tagService;
 
         public PostsService(
             IDeletableEntityRepository<Post> postRepository,
             IDeletableEntityRepository<UserPostVote> postVoteRepository,
-            IDeletableEntityRepository<ApplicationUser> usersRepository,
+            IRepository<PostTag> postTagRepository,
             ICategoryService categoryService,
-            ICloudinaryService cloudinary)
+            ICloudinaryService cloudinary,
+            ITagService tagService)
         {
             this.postRepository = postRepository;
             this.postVoteRepository = postVoteRepository;
-            this.usersRepository = usersRepository;
+            this.postTagRepository = postTagRepository;
             this.categoryService = categoryService;
             this.cloudinary = cloudinary;
+            this.tagService = tagService;
         }
 
         public async Task CreatePostAsync(AddPostsModel post, string userId)
@@ -39,19 +43,6 @@ namespace Yeetegy.Services.Data
             var urlTest = this.cloudinary.SaveCloudinaryAsync(post.File);
 
             var url = urlTest.Result;
-
-            //ICollection<Tag> tags = new List<Tag>();
-            //if (!string.IsNullOrWhiteSpace(post.Tags))
-            //{
-            //    var matches = Regex.Matches(post.Tags, "#[A-Za-z0-9]{1,30}");
-            //    foreach (var match in matches)
-            //    {
-            //        if ()
-            //        {
-
-            //        }
-            //    }
-            //}
 
             if (url != null)
             {
@@ -63,8 +54,32 @@ namespace Yeetegy.Services.Data
                     CategoryId = await this.categoryService.GetIdAsync(post.Category),
                 };
 
+                var tagIds = new List<string>();
+                if (!string.IsNullOrWhiteSpace(post.Tags))
+                {
+                    var matches = Regex.Matches(post.Tags, "#[A-Za-z0-9]{1,30}");
+                    foreach (Match match in matches)
+                    {
+                        var tag = match.Groups[0].Value;
+                        if (await this.tagService.ExistsAsync(tag))
+                        {
+                            tagIds.Add(await this.tagService.GetId(tag));
+                        }
+                        else
+                        {
+                            var tagId = await this.tagService.CreateAsync(tag);
+                            tagIds.Add(tagId);
+                        }
+                    }
+                }
+
+                var postTags = tagIds.Select(tag => new PostTag() { PostId = newPost.Id, TagId = tag, }).ToList();
+
                 await this.postRepository.AddAsync(newPost);
+                await this.postTagRepository.AddRangeAsync(postTags);
+
                 await this.postRepository.SaveChangesAsync();
+                await this.postTagRepository.SaveChangesAsync();
             }
         }
 

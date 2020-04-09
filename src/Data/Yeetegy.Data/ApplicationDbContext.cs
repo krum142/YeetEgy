@@ -94,6 +94,8 @@ namespace Yeetegy.Data
 
             builder.Entity<UserCommentVote>().HasKey(x => new { x.ApplicationUserId, x.CommentId });
 
+            builder.Entity<Tag>().HasIndex(x => x.Value).IsUnique();
+
             builder.Entity<PostTag>().HasKey(x => new { x.PostId, x.TagId });
 
             builder.Entity<ApplicationUser>()

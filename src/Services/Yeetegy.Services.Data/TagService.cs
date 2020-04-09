@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using Yeetegy.Data.Common.Repositories;
@@ -31,7 +32,18 @@ namespace Yeetegy.Services.Data
 
         public async Task<bool> ExistsAsync(string tagValue)
         {
-            return await this.tagRepository.AllAsNoTracking().AnyAsync(x => x.Value == tagValue);
+            return await this.tagRepository
+                .AllAsNoTracking()
+                .AnyAsync(x => x.Value.ToLower() == tagValue.ToLower());
+        }
+
+        public async Task<string> GetId(string tagValue)
+        {
+            return await this.tagRepository
+                .AllAsNoTracking()
+                .Where(x => x.Value.ToLower() == tagValue.ToLower())
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
         }
     }
 }
