@@ -18,6 +18,7 @@ namespace Yeetegy.Web.ViewModels.PostViewModels
         public string Tittle { get; set; }
 
         //[RegularExpression("#[A-Za-z0-9]{1,30}")]
+        [TagsValidation]
         public string Tags { get; set; }
 
         [Required]

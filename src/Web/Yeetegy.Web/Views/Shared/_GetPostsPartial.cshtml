@@ -8,6 +8,10 @@
             <img style="border-radius: 20%" width="30" height="30" src="@post.CategoryImageUrl">
             <h5><span class="badge badge-light">@post.CategoryName</span></h5>
             <h5><span class="badge badge-light">@post.Time</span></h5>
+            @foreach (var tag in post.PostTags)
+            {
+                <h5><span class="badge badge-warning" style="margin-left: 4px">@tag.TagValue</span></h5>
+            }
         </div>
         <div class="card">
             <div class="card-header font-italic">

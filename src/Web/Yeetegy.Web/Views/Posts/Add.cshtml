@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+@using Yeetegy.Common
 @model Yeetegy.Web.ViewModels.PostViewModels.AddPostsModel
 
 <div class="modal-dialog">
@@ -24,7 +25,7 @@
                             </select>
                         </div>
                         <div id="TagsContainer" class="container" style="margin-left: -15px">
-                            @*<span class="badge badge-warning"></span>*@
+                            <span class="badge badge-danger" asp-validation-for="Tags"></span>
                         </div>
                         <input id="TagInput" type="text" asp-for="Tags" class="form-control" placeholder="#TagOne #TagTwo #TagThree...." style="margin-bottom: 15px;resize: none">
                         <div class="container" style="margin-left: -15px">
@@ -62,13 +63,25 @@
 
         $(document).ready(function () {
             $("#TagInput").keyup(function () {
-
-                var data = $("#TagInput").val();
-                var myRe = /#[A-Za-z0-9]{1,30}/g;
-                var matches = data.match(myRe);
+                var text = $("#TagInput").val();
+                var myRe = /@GlobalConstants.TagValidationRegex/g;
+                var matches = text.match(myRe);
                 var tags = "";
-                for (var i = 0; i < matches.length; i++) {
-                    tags += '<span class="badge badge-warning">' + matches[i] + '</span>';
+                var leftTags = 6 - matches.length;
+
+                if (leftTags < 0) {
+                    $("#TagInput").attr("maxlength", text.length);
+                    leftTags = "Too many tags.";
+                }
+                else if (leftTags > 0) {
+                    $("#TagInput").removeAttr("maxlength");
+                }
+
+                tags += '<span style="float: right;" class="badge badge-light">left Tags:' + (leftTags) + '</span>';
+                if (matches.length <= 6) {
+                    for (var i = 0; i < matches.length; i++) {
+                        tags += '<span class="badge badge-warning">' + matches[i] + '</span>';
+                    }
                 }
                 document.getElementById("TagsContainer").innerHTML = tags;
             });

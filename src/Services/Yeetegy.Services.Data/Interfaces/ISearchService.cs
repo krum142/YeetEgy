@@ -5,6 +5,6 @@ namespace Yeetegy.Services.Data.Interfaces
 {
     public interface ISearchService
     {
-        Task<IEnumerable<string>> GetSearchResultsAsync(string queryToSearch);
+        Task<IEnumerable<T>> GetSearchResultsAsync<T>(string queryToSearch);
     }
 }

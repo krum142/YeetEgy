@@ -24,6 +24,7 @@
     <ProjectReference Include="..\..\Data\Yeetegy.Data.Common\Yeetegy.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\Yeetegy.Data.Models\Yeetegy.Data.Models.csproj" />
     <ProjectReference Include="..\..\Web\Yeetegy.Web.ViewModels\Yeetegy.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\..\Yeetegy.Common\Yeetegy.Common.csproj" />
     <ProjectReference Include="..\Yeetegy.Services.Mapping\Yeetegy.Services.Mapping.csproj" />
   </ItemGroup>
 

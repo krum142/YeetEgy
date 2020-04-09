@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Yeetegy.Services.Data.Interfaces;
+using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Web.Controllers
 {
@@ -19,7 +20,7 @@ namespace Yeetegy.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> SearchResults(string searchContent) // use in memory cashe to make less calls to db
         {
-            var result = await this.searchService.GetSearchResultsAsync(searchContent);
+            var result = await this.searchService.GetSearchResultsAsync<SearchResponseModel>(searchContent);
 
             return this.Json(result);
         }

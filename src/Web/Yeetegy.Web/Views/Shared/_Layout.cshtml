@@ -124,8 +124,8 @@
                                             //console.log(myJson);
                                             for (var i = 0; i < myJson.length; i++) {
                                                 //console.log(myJson[i]);
-                                                if (myJson[i].length <= 50) {
-                                                    htmlToInsert += '<a style="word-wrap: break-word;" class="dropdown-item" href="#">' + myJson[i] + '</a>';
+                                                if (myJson[i].value.length <= 50) {
+                                                    htmlToInsert += '<a style="word-wrap: break-word;" class="dropdown-item" href="#">' + myJson[i].value + myJson[i].count + '</a>';
                                                 }
                                             }
                                             document.getElementById("searchResults").innerHTML = htmlToInsert;

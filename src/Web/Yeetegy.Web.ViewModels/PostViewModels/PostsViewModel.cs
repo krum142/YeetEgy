@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Yeetegy.Data.Models;
 using Yeetegy.Services.Mapping;
@@ -23,6 +24,8 @@ namespace Yeetegy.Web.ViewModels.PostViewModels
         public int CommentsCount { get; set; }
 
         public string CategoryImageUrl { get; set; }
+
+        public ICollection<TagViewModel> PostTags { get; set; }
 
         public string Time { get; set; }
 

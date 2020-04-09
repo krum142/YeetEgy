@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Yeetegy.Common;
 using Yeetegy.Data.Common.Repositories;
 using Yeetegy.Data.Models;
 using Yeetegy.Services.Data.Interfaces;
@@ -57,10 +58,10 @@ namespace Yeetegy.Services.Data
                 var tagIds = new List<string>();
                 if (!string.IsNullOrWhiteSpace(post.Tags))
                 {
-                    var matches = Regex.Matches(post.Tags, "#[A-Za-z0-9]{1,30}");
+                    var matches = Regex.Matches(post.Tags, GlobalConstants.TagValidationRegex);
                     foreach (Match match in matches)
                     {
-                        var tag = match.Groups[0].Value;
+                        var tag = match.Groups[0].Value.TrimStart('#');
                         if (await this.tagService.ExistsAsync(tag))
                         {
                             tagIds.Add(await this.tagService.GetId(tag));

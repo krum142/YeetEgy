@@ -94,6 +94,20 @@ namespace Yeetegy.Web.Controllers
             return this.NotFound();
         }
 
+        //public async Task<IActionResult> Search(string searchQuery)
+        //{
+        //    var post = await this.postsService.GetPostAsync<PostsViewModel>(id);
+        //    var category = await this.categoryService.GetAllAsync<CategoryViewModel>();
+
+        //    var details = new PostDetailsViewModel()
+        //    {
+        //        PostViewModel = post,
+        //        CategoryViewModel = category,
+        //    };
+
+        //    return this.View(details);
+        //}
+
         [Authorize]
         public async Task<IActionResult> Add()
         {

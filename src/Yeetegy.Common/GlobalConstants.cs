@@ -14,6 +14,8 @@ namespace Yeetegy.Common
 
         public const int LoadCommentsCountAjax = 10;
 
+        public const string TagValidationRegex = "#[A-Za-z0-9]{1,30}";
+
         public const string DefaltUserImg = "https://res.cloudinary.com/cloudnameiscool/image/upload/v1584633016/avatar_nq8tay.jpg"; // save it in the cloudinary
 
         public static Dictionary<string, string> ConstantCategories = new Dictionary<string, string>()
