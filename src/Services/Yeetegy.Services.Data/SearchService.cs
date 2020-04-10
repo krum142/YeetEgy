@@ -13,12 +13,10 @@ namespace Yeetegy.Services.Data
     public class SearchService : ISearchService
     {
         private readonly IDeletableEntityRepository<Tag> tagRepository;
-        private readonly IDeletableEntityRepository<Post> postRepository;
 
-        public SearchService(IDeletableEntityRepository<Tag> tagRepository, IDeletableEntityRepository<Post> postRepository)
+        public SearchService(IDeletableEntityRepository<Tag> tagRepository)
         {
             this.tagRepository = tagRepository;
-            this.postRepository = postRepository;
         }
 
         public async Task<IEnumerable<T>> GetSearchResultsAsync<T>(string queryToSearch)

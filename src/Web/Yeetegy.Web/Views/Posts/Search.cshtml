@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Search";
+}
+
+@using Yeetegy.Common
+@model IEnumerable<CategoryViewModel>
+<div class="row">
+
+    <partial name="_SideNavBarPartial" model="Model"></partial>
+
+    <div class="col-lg-9" style="margin-top: 60px;">
+
+        <div class="row" id="PostsSearchContainer">
+            <form id="voteform" method="post"></form>
+            <div class="col-lg-8 col-md-12" style="margin-bottom: 30px">
+                <div class="">
+                    <div class="font-italic">
+                        <h3><b>@this.ViewData["Search"]</b></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/general.js" asp-append-version="true"></script>
+    <script>
+        $(window).resize(function() {
+            resizeCategory.call();
+            //console.log(Math.max(document.documentElement.clientHeight, window.innerHeight || 0));
+        });
+
+        var myPageIndex = 0;
+        var noMoredata = false;
+        var inProgress = false;
+
+        function SearchDomOperation() {
+            if (noMoredata === false && inProgress === false) {
+                inProgress = true;
+                fetch('@Url.Action("SearchPosts","Search")?page=' + myPageIndex + "&searchContent=" +
+                    location.search.split("=").pop(),
+                    {
+                        method: "GET",
+                    }).then(response => {
+                    if (response.status === 200) {
+                        response.text().then(html => {
+                            if (html.length < 10) {
+                                noMoredata = true;
+                            } else {
+                                document.getElementById("PostsSearchContainer").innerHTML += html;
+
+                            }
+                        });
+                        inProgress = false;
+                        myPageIndex += 5;
+                    }
+                });
+            }
+        }
+
+        function getSearchPosts() {
+            var docHeight = $(document).height();
+            var winScrolled = $(window).height() + $(window).scrollTop();
+            if ((docHeight - winScrolled) < 400) { // scroll time
+                SearchDomOperation.call();
+            }
+        }
+
+        $(document).ready(function() {
+            SearchDomOperation.call();
+            resizeCategory.call();
+            $(window).on("scroll", getSearchPosts);
+        });
+    </script>
+}

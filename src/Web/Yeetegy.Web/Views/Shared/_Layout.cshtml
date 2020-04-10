@@ -113,7 +113,7 @@
                         var data = $("#txtSearch").val();
                         var len = data.length;
                         if (len > 0) {
-                            fetch("/api/Search?searchContent=" + data,
+                            fetch("/api/Search/SearchResults?searchContent=" + data,
                                 {
                                     method: 'GET'
                                 }).then(response => {
@@ -125,7 +125,7 @@
                                             for (var i = 0; i < myJson.length; i++) {
                                                 //console.log(myJson[i]);
                                                 if (myJson[i].value.length <= 50) {
-                                                    htmlToInsert += '<a style="word-wrap: break-word;" class="dropdown-item" href="#">' + myJson[i].value + myJson[i].count + '</a>';
+                                                    htmlToInsert += '<a style="word-wrap: break-word;" class="dropdown-item" href="@Url.Action("Search","Posts")?s='+  myJson[i].value +'">' + myJson[i].value +'   <b>'+ myJson[i].count + '</b></a>';
                                                 }
                                             }
                                             document.getElementById("searchResults").innerHTML = htmlToInsert;

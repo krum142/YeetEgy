@@ -167,5 +167,15 @@ namespace Yeetegy.Services.Data
                 .To<T>()
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<T>> GetAllByTagAsync<T>(int skip, int take, string tag)
+        {
+            return await this.postRepository.AllAsNoTracking()
+                .Where(x => x.PostTags.Any(y => y.Tag.Value.Contains(tag)))
+                .OrderByDescending(x => x.CreatedOn)
+                .Skip(skip).Take(take)
+                .To<T>()
+                .ToListAsync();
+        }
     }
 }

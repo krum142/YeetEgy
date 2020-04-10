@@ -27,5 +27,7 @@ namespace Yeetegy.Services.Data.Interfaces
         Task<IEnumerable<T>> GetUserCommentedAsync<T>(int skip, int take, string userId);
 
         Task<IEnumerable<T>> GetUserPostsAsync<T>(int skip, int take, string userId);
+
+        Task<IEnumerable<T>> GetAllByTagAsync<T>(int skip, int take, string tag);
     }
 }

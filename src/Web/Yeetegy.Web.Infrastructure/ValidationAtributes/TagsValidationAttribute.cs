@@ -16,14 +16,22 @@ namespace Yeetegy.Web.Infrastructure.ValidationAtributes
                 return ValidationResult.Success;
             }
 
-            var matches = Regex.Matches(tags, GlobalConstants.TagValidationRegex).Count;
+            var matches = Regex.Matches(tags, GlobalConstants.TagValidationRegex);
 
-            if (matches <= 6)
+            for (int i = 0; i < matches.Count; i++)
             {
-                return ValidationResult.Success;
+                if (matches[i].Value.Length > 15)
+                {
+                    return new ValidationResult("Tag too long");
+                }
             }
 
-            return new ValidationResult("Too Many Tags");
+            if (matches.Count > 6)
+            {
+                return new ValidationResult("Too Many Tags");
+            }
+
+            return ValidationResult.Success;
         }
     }
 }
