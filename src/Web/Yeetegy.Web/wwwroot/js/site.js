@@ -40,4 +40,3 @@
 //$(document).ready(function () {
 //    $(window).on("scroll", getPosts);
 //});
-

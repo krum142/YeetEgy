@@ -4,7 +4,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<style>
+@*<style>
     .myButton {
         color: white !important;
     }
@@ -12,7 +12,7 @@
         .myButton:hover {
             color: gray !important;
         }
-</style>
+</style>*@
 
 <!DOCTYPE html>
 @*@{
@@ -97,48 +97,7 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
         <script src="~/js/button.js" asp-append-version="true"></script>
         <script src="~/lib/Popper/dist/popper.js"></script>
-        <script>
-            $(document).ready(function () {
-                var textInput = document.getElementById('txtSearch');
-                var textdata = document.querySelector('searchResults');
-                // Init a timeout variable to be used below
-                var timefired = null;
 
-                // Listen for keystroke events
-                // Init a timeout variable to be used below
-                var timefired = null;// Listen for keystroke events
-                textInput.onkeyup = function (event) {
-                    clearTimeout(timefired);
-                    timefired = setTimeout(function () {
-                        var data = $("#txtSearch").val();
-                        var len = data.length;
-                        if (len > 0) {
-                            fetch("/api/Search/SearchResults?searchContent=" + data,
-                                {
-                                    method: 'GET'
-                                }).then(response => {
-                                    if (response.status === 200) {
-                                        response.json().then(j => {
-                                            myJson = j;
-                                            var htmlToInsert = "";
-                                            //console.log(myJson);
-                                            for (var i = 0; i < myJson.length; i++) {
-                                                //console.log(myJson[i]);
-                                                if (myJson[i].value.length <= 50) {
-                                                    htmlToInsert += '<a style="word-wrap: break-word;" class="dropdown-item" href="@Url.Action("Search","Posts")?s='+  myJson[i].value +'">' + myJson[i].value +'   <b>'+ myJson[i].count + '</b></a>';
-                                                }
-                                            }
-                                            document.getElementById("searchResults").innerHTML = htmlToInsert;
-                                        });
-                                    }
-                                });
-
-                            //senddata to search ajax
-                        }
-                    }, 500);
-                };
-            });
-        </script>
     </environment>
     <environment names="Staging,Production">
         <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
@@ -148,6 +107,47 @@
         <script src="~/js/button.js" asp-append-version="true"></script>
         <script src="~/lib/Popper/dist/popper.js"></script>
     </environment>
+    <script>
+    $(document).ready(function () {
+        var textInput = document.getElementById('txtSearch');
+        var textdata = document.querySelector('searchResults');
+        // Init a timeout variable to be used below
+        var timefired = null;
+
+        // Listen for keystroke events
+        // Init a timeout variable to be used below
+        var timefired = null;// Listen for keystroke events
+        textInput.onkeyup = function (event) {
+            clearTimeout(timefired);
+            timefired = setTimeout(function () {
+                var data = $("#txtSearch").val();
+                var len = data.length;
+                if (len > 0) {
+                    fetch("/api/Search/SearchResults?searchContent=" + data,
+                        {
+                            method: 'GET'
+                        }).then(response => {
+                        if (response.status === 200) {
+                            response.json().then(j => {
+                                myJson = j;
+                                var htmlToInsert = "";
+                                //console.log(myJson);
+                                for (var i = 0; i < myJson.length; i++) {
+                                    //console.log(myJson[i]);
+                                    if (myJson[i].value.length <= 50) {
+                                        htmlToInsert += '<a style="word-wrap: break-word;" class="dropdown-item" href="@Url.Action("Search","Posts")?s='+  myJson[i].value +'">' + myJson[i].value +'   <b>'+ myJson[i].count + '</b></a>';
+                                    }
+                                }
+                                document.getElementById("searchResults").innerHTML = htmlToInsert;
+                            });
+                        }
+                    });
+                    //senddata to search ajax
+                }
+            }, 500);
+        };
+    });
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>
