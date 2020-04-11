@@ -33,8 +33,19 @@
                     </div>
                     <img id="srcP" src="@Model.PostViewModel.ImgUrl" class="card-img-top" alt="image">
                     <div class="card-footer">
-                        <button type="button" onClick="voteButton()" id="Post_Like_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 150px">@Model.PostViewModel.Likes</button>
-                        <button type="button" onClick="voteButton()" id="Post_Dislike_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 150px">@Model.PostViewModel.Dislikes</button>
+                        <div class="row">
+                            <button type="button" onClick="voteButton()" id="Post_Like_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 150px;margin-right: 3px">@Model.PostViewModel.Likes</button>
+                            <button type="button" onClick="voteButton()" id="Post_Dislike_@Model.PostViewModel.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 150px;margin-right: 3px">@Model.PostViewModel.Dislikes</button>
+                            <button type="button" class="btn btn-dark fa fa-align-justify" data-toggle="dropdown" aria-expanded="false">
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="@Model.PostViewModel.ImgUrl" download>Download</a>
+                                @if (this.User.Identity.Name == Model.PostViewModel.ApplicationUserUserName || this.User.IsInRole("Administrator"))
+                                {
+                                    <a class="dropdown-item" onclick="deletePost()" id="@Model.PostViewModel.Id">Delete</a>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr style="border-top: 2px solid #043927;">
@@ -62,73 +73,73 @@
                 <hr style="border-top: 2px solid #043927; margin-top: 13px">
                 <div id="Comment-Container">
                     @*<div class="row">
-                <div style="width: 14%;margin-right: 7px">
-                    <img style="display: block; margin: 0 auto; border-radius: 50%;" width="50" height="50" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fc2.staticflickr.com%2F2%2F1386%2F791791681_ecc5efac79_b.jpg&f=1&nofb=1" />
-                </div>
-                <div style="width: 83%; float: right;">
-                    <div style="width: 100%; word-wrap: break-word;" class="row">
-                        <div style="width: 97%; float: left">
-                            <a style="font-weight: bold;">Username</a>
-                            <h9><span class="badge badge-light">5h</span></h9><br>
-                            <a>testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest</a>
-                            <span>
-                                <img style="width: 100%" src="https://media.giphy.com/media/8Z30gVRYNEeEUQf8z7/giphy.gif" alt=" ">
-                            </span>
-                        </div>
-                        <div class="dropdown" style="width: 3%;">
-                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
+                            <div style="width: 14%;margin-right: 7px">
+                                <img style="display: block; margin: 0 auto; border-radius: 50%;" width="50" height="50" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fc2.staticflickr.com%2F2%2F1386%2F791791681_ecc5efac79_b.jpg&f=1&nofb=1" />
                             </div>
-                        </div>
-                    </div>
-                    <div style="margin-left: -15px">
-                        <a onclick="testfun()"><b>Replay</b></a>
-                        <span style="margin-left: 7px"></span>
-                        <a onclick="testfun()" class="fa fa-thumbs-up">10</a>
-                        <span style="margin-left: 7px"></span>
-                        <a onclick="testfun()" class="fa fa-thumbs-down">10</a><br>
-                        <a style="font-weight: bold;">View 5 Replays</a>
-                        <div id="Replay-Container">
-                            <hr>
-                            <div class="row">
-                                <div style="width: 14%; margin-right: 7px">
-                                    <img style="display: block; margin: 0 auto; border-radius: 50%;" width="40" height="40" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fc2.staticflickr.com%2F2%2F1386%2F791791681_ecc5efac79_b.jpg&f=1&nofb=1" />
-                                </div>
-                                <div style="width: 83%; float: right;">
-                                    <div style="width: 100%; word-wrap: break-word;" class="row">
-                                        <div style="width: 97%; float: left">
-                                            <a style="font-weight: bold;">Username</a>
-                                            <h9><span class="badge badge-light">5h</span></h9><br>
-                                            <a>tttesttesttesttesttesttest</a>
-                                            <span>
-                                                <img style="width: 100%" src="https://media.giphy.com/media/8Z30gVRYNEeEUQf8z7/giphy.gif" alt=" ">
-                                            </span>
+                            <div style="width: 83%; float: right;">
+                                <div style="width: 100%; word-wrap: break-word;" class="row">
+                                    <div style="width: 97%; float: left">
+                                        <a style="font-weight: bold;">Username</a>
+                                        <h9><span class="badge badge-light">5h</span></h9><br>
+                                        <a>testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest</a>
+                                        <span>
+                                            <img style="width: 100%" src="https://media.giphy.com/media/8Z30gVRYNEeEUQf8z7/giphy.gif" alt=" ">
+                                        </span>
+                                    </div>
+                                    <div class="dropdown" style="width: 3%;">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <a class="dropdown-item" href="#">Something else here</a>
                                         </div>
-                                        <div class="dropdown" style="width: 3%;">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="#">Action</a>
-                                                <a class="dropdown-item" href="#">Another action</a>
-                                                <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+                                <div style="margin-left: -15px">
+                                    <a onclick="testfun()"><b>Replay</b></a>
+                                    <span style="margin-left: 7px"></span>
+                                    <a onclick="testfun()" class="fa fa-thumbs-up">10</a>
+                                    <span style="margin-left: 7px"></span>
+                                    <a onclick="testfun()" class="fa fa-thumbs-down">10</a><br>
+                                    <a style="font-weight: bold;">View 5 Replays</a>
+                                    <div id="Replay-Container">
+                                        <hr>
+                                        <div class="row">
+                                            <div style="width: 14%; margin-right: 7px">
+                                                <img style="display: block; margin: 0 auto; border-radius: 50%;" width="40" height="40" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fc2.staticflickr.com%2F2%2F1386%2F791791681_ecc5efac79_b.jpg&f=1&nofb=1" />
+                                            </div>
+                                            <div style="width: 83%; float: right;">
+                                                <div style="width: 100%; word-wrap: break-word;" class="row">
+                                                    <div style="width: 97%; float: left">
+                                                        <a style="font-weight: bold;">Username</a>
+                                                        <h9><span class="badge badge-light">5h</span></h9><br>
+                                                        <a>tttesttesttesttesttesttest</a>
+                                                        <span>
+                                                            <img style="width: 100%" src="https://media.giphy.com/media/8Z30gVRYNEeEUQf8z7/giphy.gif" alt=" ">
+                                                        </span>
+                                                    </div>
+                                                    <div class="dropdown" style="width: 3%;">
+                                                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        </a>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                            <a class="dropdown-item" href="#">Action</a>
+                                                            <a class="dropdown-item" href="#">Another action</a>
+                                                            <a class="dropdown-item" href="#">Something else here</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-left: -15px">
+                                                    <a onclick="testfun()" class="fa fa-thumbs-up">10</a>
+                                                    <span style="margin-left: 7px"></span>
+                                                    <a onclick="testfun()" class="fa fa-thumbs-down">10</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div style="margin-left: -15px">
-                                        <a onclick="testfun()" class="fa fa-thumbs-up">10</a>
-                                        <span style="margin-left: 7px"></span>
-                                        <a onclick="testfun()" class="fa fa-thumbs-down">10</a>
-                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
+                        </div>*@
                     <hr>
                 </div>
             </div>
@@ -141,6 +152,7 @@
 @section Scripts {
     <script src="~/js/general.js" asp-append-version="true"></script>
     <script src="~/js/comments.js"></script>
+    <script src="~/js/site.js"></script>
     <script>
 
         var deleteInProgress = false;
@@ -167,7 +179,7 @@
                     deleteInProgress = false;
                 });
             }
-    
+
         }
 
         function loadReplays() { // ajax
@@ -215,7 +227,7 @@
         function loadComments() {
             var docHeight = $(document).height();
             var winScrolled = $(window).height() + $(window).scrollTop();
-            if ((docHeight - winScrolled) < 200) { // scroll time 
+            if ((docHeight - winScrolled) < 200) { // scroll time
                 domOperationComments.call();
             }
         }

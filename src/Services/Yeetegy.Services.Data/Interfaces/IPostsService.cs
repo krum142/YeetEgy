@@ -19,6 +19,10 @@ namespace Yeetegy.Services.Data.Interfaces
 
         Task<bool> DoesPostExistAsync(string postId);
 
+        Task<string> TakeAuthorIdAsync(string postId);
+
+        Task<string> DeletePostAsync(string postId);
+
         Task<T> GetPostAsync<T>(string postId);
 
         Task<IEnumerable<T>> GetUserLikedAsync<T>(int skip, int take, string username);

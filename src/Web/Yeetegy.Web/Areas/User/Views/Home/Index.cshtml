@@ -33,6 +33,7 @@
 @section Scripts
 {
     <script src="~/js/general.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
         $(window).resize(function() {
             resizeCategory.call();
@@ -61,7 +62,7 @@
                     $("#PostsButton").addClass("active"); break;
             case "Comments":
                     $("#CommentsButton").addClass("active"); break;
-            case "Liked": 
+            case "Liked":
                     $("#LikedButton").addClass("active"); break;
 
             default: $("#PostsButton").addClass("active"); break;

@@ -103,6 +103,24 @@ namespace Yeetegy.Web.Controllers
             return this.View(category);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Delete([FromForm]DeletePostInputModel data)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var postUserId = await this.postsService.TakeAuthorIdAsync(data.Id);
+
+            var postUserIsCurrentUser = this.User.Identity.IsAuthenticated && userId == postUserId;
+
+            if (postUserIsCurrentUser || this.User.IsInRole("Administrator"))
+            {
+                await this.postsService.DeletePostAsync(data.Id);
+
+                return this.Ok(data.Id);
+            }
+
+            return this.Unauthorized();
+        }
+
         [Authorize]
         public async Task<IActionResult> Add()
         {

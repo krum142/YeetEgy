@@ -2,7 +2,7 @@
 
 @foreach (var post in Model)
 {
-    <div class="col-lg-8 col-md-12" style="margin-bottom: 30px">
+    <div id="Post_@post.Id" class="col-lg-8 col-md-12" style="margin-bottom: 30px">
         <hr style="border-top: 2px solid #043927;">
         <div class="row" style="margin-left: 1%">
             <img style="border-radius: 20%" width="30" height="30" src="@post.CategoryImageUrl">
@@ -19,10 +19,22 @@
             </div>
             <img id="1" src="@post.ImgUrl" class="card-img-top">
             <div class="card-footer">
-                <button type="button" onClick="voteButton()" id="Post_Like_@post.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 90px">@post.Likes</button>
-                <button type="button" onClick="voteButton()" id="Post_Dislike_@post.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 90px">@post.Dislikes</button>
-                <button type="button" onClick="redirect()" id="@post.Id" class="btn btn-dark fa fa-comment" style="width: 90px">@post.CommentsCount</button>
+                <div class="row">
+                    <button type="button" onClick="voteButton()" id="Post_Like_@post.Id" class="btn btn-dark fa fa-thumbs-up" style="width: 90px;margin-right: 3px">@post.Likes</button>
+                    <button type="button" onClick="voteButton()" id="Post_Dislike_@post.Id" class="btn btn-dark fa fa-thumbs-down" style="width: 90px;margin-right: 3px">@post.Dislikes</button>
+                    <button type="button" onClick="redirect()" id="@post.Id" class="btn btn-dark fa fa-comment" style="width: 90px;margin-right: 3px">@post.CommentsCount</button>
+                    <button type="button" class="btn btn-dark fa fa-align-justify" data-toggle="dropdown" aria-expanded="false">
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="@post.ImgUrl" download>Download</a>
+                        @if (this.User.Identity.Name == post.ApplicationUserUserName || this.User.IsInRole("Administrator"))
+                        {
+                            <a class="dropdown-item" onclick="deletePost()" id="@post.Id">Delete</a>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 }
+

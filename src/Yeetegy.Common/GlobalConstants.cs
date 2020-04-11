@@ -8,6 +8,8 @@ namespace Yeetegy.Common
 
         public const string AdministratorRoleName = "Administrator";
 
+        public const string UserRoleName = "User";
+
         public const int LoadPostCountAjax = 5;
 
         public const int LoadUserPostsCountAjax = 5;

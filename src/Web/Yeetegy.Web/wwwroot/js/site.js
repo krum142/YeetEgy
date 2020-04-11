@@ -40,3 +40,31 @@
 //$(document).ready(function () {
 //    $(window).on("scroll", getPosts);
 //});
+
+var deleteInProgress = false;
+function deletePost() { // ajax
+    var postId = event.target.getAttribute("id");
+    var token = $("#voteform input[name=__RequestVerificationToken]").val();
+    var deleteUrl = "/Posts/Delete";
+
+    var obj = new FormData();
+    obj.set("id", postId);
+    if (deleteInProgress === false) {
+        deleteInProgress = true;
+        fetch(deleteUrl,
+            {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                body: obj
+            }).then(response => {
+            var x = response.url;
+                if (response.status === 200 && !response.url.includes("statusCode=404")) {
+                $("#Post_" + postId).remove();
+            }
+            deleteInProgress = false;
+        });
+    }
+
+}

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+
 using AutoMapper;
 using Yeetegy.Data.Models;
 using Yeetegy.Services.Mapping;
@@ -10,6 +10,8 @@ namespace Yeetegy.Web.ViewModels.PostViewModels
     public class PostsViewModel : IMapFrom<Post>, IHaveCustomMappings
     {
         public string Id { get; set; }
+
+        public string ApplicationUserUserName { get; set; }
 
         public string Tittle { get; set; }
 

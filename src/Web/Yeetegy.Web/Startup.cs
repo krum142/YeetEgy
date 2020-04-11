@@ -76,7 +76,7 @@ namespace Yeetegy.Web
             services.AddTransient<IReplaysService, ReplaysService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ISearchService, SearchService>();
-            services.AddTransient<ITagService,TagService>();
+            services.AddTransient<ITagService, TagService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,10 +94,13 @@ namespace Yeetegy.Web
                 //    Name = "User",
                 //    NormalizedName = "USER",
                 // });
+
                 if (env.IsDevelopment())
                 {
                     dbContext.Database.Migrate();
                 }
+
+                dbContext.Database.Migrate();
 
                 new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }

@@ -84,6 +84,13 @@ namespace Yeetegy.Services.Data
             }
         }
 
+        public async Task<string> TakeAuthorIdAsync(string postId) // Gets the comments Author Id
+        {
+            return await this.postRepository.AllAsNoTracking().Where(x => x.Id == postId)
+                .Select(x => x.ApplicationUserId)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<string> GetPostVoteValueAsync(string postId, string userId)
         {
             if (await this.postVoteRepository.AllAsNoTracking()
@@ -94,6 +101,18 @@ namespace Yeetegy.Services.Data
             }
 
             return null;
+        }
+
+        public async Task<string> DeletePostAsync(string postId)
+        {
+            var post = await this.postRepository
+                .AllAsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == postId);
+
+            this.postRepository.Delete(post);
+            await this.postRepository.SaveChangesAsync();
+
+            return post.Id;
         }
 
         public async Task<bool> DoesPostExistAsync(string postId)
