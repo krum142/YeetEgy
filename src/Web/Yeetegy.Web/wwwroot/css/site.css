@@ -18,9 +18,9 @@ for details on configuring this project to bundle and minify static web assets. 
     border-radius: 4px;
 }
 
-#myBtn:hover {
-    background-color: #555;
-}
+    #myBtn:hover {
+        background-color: #ffc107;
+    }
 
 .YeetegyBackground {
     background: #043927
@@ -44,6 +44,10 @@ for details on configuring this project to bundle and minify static web assets. 
     width: 50px;
     border-radius: 50%;
 }
+
+    .chip:hover {
+        background-color: #ffc107;
+    }
 
 .myButton {
     color: white !important;

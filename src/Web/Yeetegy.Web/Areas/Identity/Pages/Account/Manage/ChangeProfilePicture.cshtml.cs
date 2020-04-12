@@ -53,15 +53,16 @@ namespace Yeetegy.Web.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!this.ModelState.IsValid)
-            {
-                await this.OnGetAsync();
-            }
-
             var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
                 return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                await this.LoadAsync(user);
+                return this.Page();
             }
 
             var userUsername = this.User.Identity.Name;
@@ -71,7 +72,7 @@ namespace Yeetegy.Web.Areas.Identity.Pages.Account.Manage
 
             this.AvatarUrl = newAvatarUrl;
 
-            return this.Page();
+            return this.RedirectToPage();
         }
     }
 }

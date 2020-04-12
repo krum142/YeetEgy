@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Yeetegy.Web.ViewModels.ReplayModels.ReplayViewModel>
+﻿@using Yeetegy.Common
+@model IEnumerable<Yeetegy.Web.ViewModels.ReplayModels.ReplayViewModel>
 
 @foreach (var replay in Model)
 {
@@ -21,7 +22,7 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         </a><div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#">Action</a>
-                            @if (User.Identity.Name == replay.ApplicationUserUsername)
+                            @if (User.Identity.Name == replay.ApplicationUserUsername || User.IsInRole(GlobalConstants.AdministratorRoleName))
                             {
                                 <a class="dropdown-item" onclick="deleteComment()" id="@replay.Id">Delete</a>
                             }

@@ -55,7 +55,8 @@ namespace Yeetegy.Web.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var commentUserId = await this.commentsService.TakeAuthorIdAsync(data.Id);
 
-            if (this.User.Identity.IsAuthenticated && userId == commentUserId)
+            var commentUserIsCurrentUser = this.User.Identity.IsAuthenticated && userId == commentUserId;
+            if (commentUserIsCurrentUser || this.User.IsInRole(GlobalConstants.AdministratorRoleName))
             {
                 await this.commentsService.DeleteCommentAsync(data.Id);
 

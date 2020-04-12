@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Yeetegy.Web.ViewModels.CommentModels.CommentsViewModel>
+﻿@using Yeetegy.Common
+@model IEnumerable<Yeetegy.Web.ViewModels.CommentModels.CommentsViewModel>
 
 @foreach (var comment in Model)
 {
@@ -19,7 +20,7 @@
                         <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#">Action</a>
-                            @if (User.Identity.Name == comment.ApplicationUserUsername)
+                            @if (User.Identity.Name == comment.ApplicationUserUsername || User.IsInRole(GlobalConstants.AdministratorRoleName))
                             {
                                 <a class="dropdown-item" onclick="deleteComment()" id="@comment.Id">Delete</a>
                             }

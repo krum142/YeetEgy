@@ -55,26 +55,6 @@ namespace Yeetegy.Web.Controllers
             return this.Content(string.Empty);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetUserPosts(int page, string category, string username)
-        //{
-        //    if (!string.IsNullOrWhiteSpace(username) && await this.userService.ExistsAsync(username))
-        //    {
-        //        var userId = await this.userService.GetIdAsync(username);
-        //        var userPosts = category switch
-        //        {
-        //            "Liked" => await this.postsService.GetUserLikedAsync<PostsViewModel>(page, 5, userId),
-        //            "Comments" => await this.postsService.GetUserCommentedAsync<PostsViewModel>(page, 5, userId),
-        //            "Posts" => await this.postsService.GetUserPostsAsync<PostsViewModel>(page, 5, userId),
-        //            _ => await this.postsService.GetUserPostsAsync<PostsViewModel>(page, 5, userId)
-        //        };
-
-        //        return this.PartialView("_GetPostsPartial", userPosts);
-        //    }
-
-        //    return this.NotFound();
-        //}
-
         public async Task<IActionResult> PostDetails(string id)
         {
             if (await this.postsService.DoesPostExistAsync(id))
@@ -111,7 +91,7 @@ namespace Yeetegy.Web.Controllers
 
             var postUserIsCurrentUser = this.User.Identity.IsAuthenticated && userId == postUserId;
 
-            if (postUserIsCurrentUser || this.User.IsInRole("Administrator"))
+            if (postUserIsCurrentUser || this.User.IsInRole(GlobalConstants.AdministratorRoleName))
             {
                 await this.postsService.DeletePostAsync(data.Id);
 
