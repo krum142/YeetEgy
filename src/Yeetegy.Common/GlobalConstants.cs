@@ -18,7 +18,7 @@ namespace Yeetegy.Common
 
         public const string TagValidationRegex = "#[A-Za-z0-9]{1,30}";
 
-        public const string DefaltUserImg = "https://res.cloudinary.com/cloudnameiscool/image/upload/v1584633016/avatar_nq8tay.jpg"; // save it in the cloudinary
+        public const string DefaultUserImg = "https://res.cloudinary.com/cloudnameiscool/image/upload/v1586729131/YeetegyDefaultAvatar_c0pefi.jpg"; // save it in the cloudinary
 
         public static Dictionary<string, string> ConstantCategories = new Dictionary<string, string>()
         {

@@ -22,14 +22,26 @@ namespace Yeetegy.Services.Data
         {
             var settings = this.configuration["CloudSettings"].Split("$");
             var cloudName = settings[0];
-            var apikey = settings[1];
+            var apiKey = settings[1];
             var apiSec = settings[2];
             var fileName = Guid.NewGuid().ToString();
 
-            var account = new Account(cloudName, apikey, apiSec);
+            var account = new Account(cloudName, apiKey, apiSec);
             var cloud = new Cloudinary(account);
 
             return await ApplicationCloudinary.UploadImage(cloud, image, fileName);
+        }
+
+        public void DeleteCloudinaryAsync(string id)
+        {
+            var settings = this.configuration["CloudSettings"].Split("$");
+            var cloudName = settings[0];
+            var apiKey = settings[1];
+            var apiSec = settings[2];
+            var account = new Account(cloudName, apiKey, apiSec);
+            var cloud = new Cloudinary(account);
+
+            ApplicationCloudinary.DeleteImage(cloud, id);
         }
     }
 }

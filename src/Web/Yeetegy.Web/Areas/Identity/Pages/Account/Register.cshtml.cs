@@ -89,7 +89,7 @@ namespace Yeetegy.Web.Areas.Identity.Pages.Account
                 ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
                 if (ModelState.IsValid)
                 {
-                    var user = new ApplicationUser { UserName = Input.Username, Email = Input.Email, AvatarUrl = GlobalConstants.DefaltUserImg };
+                    var user = new ApplicationUser { UserName = Input.Username, Email = Input.Email, AvatarUrl = GlobalConstants.DefaultUserImg };
                     var result = await _userManager.CreateAsync(user, Input.Password);
                     if (result.Succeeded)
                     {

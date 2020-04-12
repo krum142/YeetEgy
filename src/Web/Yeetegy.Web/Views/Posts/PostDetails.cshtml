@@ -9,7 +9,7 @@
     var avatar = this.UserManager.Users.Where(x => x.UserName == User.Identity.Name).Select(x => x.AvatarUrl).FirstOrDefault();
     if (avatar == null)
     {
-        avatar = GlobalConstants.DefaltUserImg;
+        avatar = GlobalConstants.DefaultUserImg;
     }
 }
 @model Yeetegy.Web.ViewModels.PostViewModels.PostDetailsViewModel

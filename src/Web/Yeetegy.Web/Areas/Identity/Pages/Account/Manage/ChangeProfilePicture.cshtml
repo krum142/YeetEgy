@@ -1,0 +1,46 @@
+﻿@page
+@model ChangeProfilePicture
+@{
+    ViewData["Title"] = "ChangeProfilePicture";
+}
+
+<h4><b>@ViewData["Title"]</b></h4>
+
+<div class="row">
+    <div class="col-md-6">
+        <form id="profile-form" enctype="multipart/form-data" method="post">
+
+            <div class="form-group">
+                <label><b>Current Profile Picture</b></label>
+                <div>
+                    <img width="300" height="300" src="@Model.AvatarUrl" alt=" ">
+                </div>
+            </div>
+            <div id="TagsContainer" class="container" style="margin-left: -15px">
+                <span class="badge badge-danger" asp-validation-for="NewProfilePicture"></span>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <button type="submit" class="input-group-text" id="inputGroupFileAddon01">Upload</button>
+                </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" asp-for="NewProfilePicture" aria-describedby="inputGroupFileAddon01">
+                    <label class="custom-file-label" asp-for="NewProfilePicture" id="BrowseInput">Choose file</label>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).on('change',
+            ':file',
+            function () {
+                var input = $(this);
+
+                var label = $('#BrowseInput').html(input.val().replace(/\\/g, '/').replace(/.*\//, ''));
+            });
+    </script>
+}
