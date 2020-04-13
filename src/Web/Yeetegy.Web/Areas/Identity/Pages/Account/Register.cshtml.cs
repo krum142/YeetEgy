@@ -71,7 +71,6 @@ namespace Yeetegy.Web.Areas.Identity.Pages.Account
         {
             if (!this.User.Identity.IsAuthenticated)
             {
-
                 ReturnUrl = returnUrl;
                 ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             }

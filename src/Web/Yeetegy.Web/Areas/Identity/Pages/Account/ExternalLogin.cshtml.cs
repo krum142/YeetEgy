@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Yeetegy.Common;
 using Yeetegy.Data.Models;
 
 namespace Yeetegy.Web.Areas.Identity.Pages.Account
@@ -46,6 +47,9 @@ namespace Yeetegy.Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Required]
+            public string Username { get; set; }
+
             [Required]
             [EmailAddress]
             public string Email { get; set; }
@@ -119,7 +123,7 @@ namespace Yeetegy.Web.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.Username, Email = Input.Email, AvatarUrl = GlobalConstants.DefaultUserImg };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

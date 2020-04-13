@@ -61,6 +61,11 @@ namespace Yeetegy.Web
             services.AddSingleton(this.configuration);
 
             // Data repositories
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = this.configuration["FacebookId"];
+                facebookOptions.AppSecret = this.configuration["FacebookSecret"];
+            });
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +58,20 @@ namespace Yeetegy.Services.Data
             await this.userRepository.SaveChangesAsync();
 
             return newImageLink;
+        }
+
+        public async Task<bool> MarkAsDeleted(ApplicationUser user)
+        {
+            try
+            {
+                this.userRepository.Delete(user);
+                var x = await this.userRepository.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         public async Task<string> GetIdAsync(string username)

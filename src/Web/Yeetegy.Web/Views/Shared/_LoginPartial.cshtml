@@ -12,12 +12,12 @@
                 <img style="border-radius: 50%; margin-top: 3px" width="33" height="33" src="@this.UserManager.Users.Where(x => x.UserName == User.Identity.Name).Select(x => x.AvatarUrl).FirstOrDefault()" />
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a>
                 @if (User.IsInRole(GlobalConstants.AdministratorRoleName))
                 {
                     <a class="dropdown-item" asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a>
                 }
                 <a class="dropdown-item" href="@("/User/" + User.Identity.Name)">MyProfile</a>
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a>
                 <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = string.Empty })">
                     <button type="submit" class="dropdown-item">Logout</button>
                 </form>
