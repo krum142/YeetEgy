@@ -44,7 +44,7 @@ namespace Yeetegy.Services.Data
             if (oldPictureLink != GlobalConstants.DefaultUserImg)
             {
                 var oldPictureId = oldPictureLink.Split("/").LastOrDefault()?.Split('.').FirstOrDefault();
-                this.cloudinaryService.DeleteCloudinaryAsync(oldPictureId);
+                this.cloudinaryService.DeleteCloudinary(oldPictureId);
             }
 
             var newImageLink = await this.cloudinaryService.SaveCloudinaryAsync(newPicture);

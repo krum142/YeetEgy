@@ -1,23 +1,20 @@
-﻿namespace Yeetegy.Services.Data.Tests
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Microsoft.EntityFrameworkCore;
+using Moq;
+using NUnit.Framework;
+using Yeetegy.Data;
+using Yeetegy.Data.Common.Repositories;
+using Yeetegy.Data.Models;
+using Yeetegy.Data.Repositories;
+
+namespace Yeetegy.Services.Data.Tests
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using Yeetegy.Data;
-    using Yeetegy.Data.Common.Repositories;
-    using Yeetegy.Data.Models;
-    using Yeetegy.Data.Repositories;
-
-    using Microsoft.EntityFrameworkCore;
-
-    using Moq;
-
-    using Xunit;
-
     public class SettingsServiceTests
     {
-        [Fact]
+        [Test]
         public void GetCountShouldReturnCorrectNumber()
         {
             var repository = new Mock<IDeletableEntityRepository<Setting>>();
@@ -28,11 +25,11 @@
                                                             new Setting(),
                                                         }.AsQueryable());
             var service = new SettingsService(repository.Object);
-            Assert.Equal(3, service.GetCount());
+            Assert.AreEqual(3, service.GetCount());
             repository.Verify(x => x.All(), Times.Once);
         }
 
-        [Fact]
+        [Test]
         public async Task GetCountShouldReturnCorrectNumberUsingDbContext()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -45,7 +42,7 @@
 
             var repository = new EfDeletableEntityRepository<Setting>(dbContext);
             var service = new SettingsService(repository);
-            Assert.Equal(3, service.GetCount());
+            Assert.AreEqual(3, service.GetCount());
         }
     }
 }

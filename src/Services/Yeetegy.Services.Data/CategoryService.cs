@@ -25,11 +25,21 @@ namespace Yeetegy.Services.Data
 
         public async Task CreateAsync(string name, IFormFile image)
         {
-            var imgUrl = this.cloudinaryService.SaveCloudinaryAsync(image);
+            string imgUrl;
+
+            if (image == null)
+            {
+                imgUrl = null;
+            }
+            else
+            {
+                var x = await this.cloudinaryService.SaveCloudinaryAsync(image);
+                imgUrl = x;
+            }
 
             var category = new Category()
             {
-                ImageUrl = imgUrl.Result,
+                ImageUrl = imgUrl,
                 Name = name,
             };
 
@@ -39,9 +49,11 @@ namespace Yeetegy.Services.Data
 
         public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            return await this.categoryRepository
+            var result =  await this.categoryRepository
                 .AllAsNoTracking()
                 .To<T>().ToListAsync();
+
+            return result;
         }
 
         public async Task<IEnumerable<SelectListItem>> GetAllListItemsAsync()

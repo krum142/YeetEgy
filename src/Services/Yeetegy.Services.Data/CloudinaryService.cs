@@ -32,7 +32,7 @@ namespace Yeetegy.Services.Data
             return await ApplicationCloudinary.UploadImage(cloud, image, fileName);
         }
 
-        public void DeleteCloudinaryAsync(string id)
+        public void DeleteCloudinary(string id)
         {
             var settings = this.configuration["CloudSettings"].Split("$");
             var cloudName = settings[0];
