@@ -10,7 +10,7 @@ namespace Yeetegy.Services.Data.Tests
     {
         public async Task<string> SaveCloudinaryAsync(IFormFile image)
         {
-            return "1";
+            return "FakeCloudinaryUrl";
         }
 
         public void DeleteCloudinary(string id)

@@ -113,6 +113,7 @@ namespace Yeetegy.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Add(AddPostsModel post)
         {
             if (post.File != null && post.Tittle != null)

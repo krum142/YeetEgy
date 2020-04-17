@@ -13,6 +13,7 @@ using NUnit.Framework;
 using Yeetegy.Data;
 using Yeetegy.Data.Models;
 using Yeetegy.Data.Repositories;
+using Yeetegy.Services.Data.Interfaces;
 using Yeetegy.Services.Mapping;
 using Yeetegy.Web.ViewModels;
 
@@ -20,34 +21,39 @@ namespace Yeetegy.Services.Data.Tests
 {
     public class CategoryServiceTests
     {
-        private CategoryService categoryService;
+        private ICategoryService categoryService;
         private ApplicationDbContext dbContext;
 
         [SetUp]
-        public void setUp()
+        public void SetUp()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(databaseName: "CategoryTestDb").Options;
 
             this.dbContext = new ApplicationDbContext(options);
             this.dbContext.Database.EnsureCreated();
+
             var categoryRepo = new EfDeletableEntityRepository<Category>(this.dbContext);
             var fakeCloudinary = new FakeCloudinary();
             this.categoryService = new CategoryService(categoryRepo, fakeCloudinary);
             AutoMapperConfig.RegisterMappings(typeof(CategoryViewModel).Assembly);
         }
 
-        public async Task AddTwoCategorysAsync()
+        private async Task AddTwoCategorysAsync()
         {
             var categories = new List<Category>()
             {
                 new Category()
                 {
+                    Id = "1",
                     Name = "Funny",
+                    ImageUrl = "Funny.Url",
                 },
                 new Category()
                 {
+                    Id = "2",
                     Name = "Cool",
+                    ImageUrl = "Cool.Url",
                 },
             };
 
@@ -63,7 +69,7 @@ namespace Yeetegy.Services.Data.Tests
             var expected = new Category()
             {
                 Name = "Funny",
-                ImageUrl = "1",
+                ImageUrl = "FakeCloudinaryUrl",
             };
 
             await this.categoryService.CreateAsync(newCategoryName, file);
@@ -207,6 +213,71 @@ namespace Yeetegy.Services.Data.Tests
             await this.AddTwoCategorysAsync();
 
             Assert.IsFalse(await this.categoryService.IsThereAnyAsync("Pesho"));
+        }
+
+        [Test]
+        public async Task TestGetIdWithValidInput()
+        {
+            await this.AddTwoCategorysAsync();
+
+            var actualId = await this.categoryService.GetIdAsync("Funny");
+            var expectedId = "1";
+
+            Assert.AreEqual(expectedId, actualId);
+        }
+
+        [Test]
+        public async Task TestGetIdWithEmptyDb()
+        {
+            var actualId = await this.categoryService.GetIdAsync("Funny");
+
+            string expectedId = null;
+
+            Assert.AreEqual(expectedId, actualId);
+        }
+
+        [Test]
+        public async Task TestGetIdWithNoneExistingElement()
+        {
+            await this.AddTwoCategorysAsync();
+
+            var actualId = await this.categoryService.GetIdAsync("Banana");
+
+            string expectedId = null;
+
+            Assert.AreEqual(expectedId, actualId);
+        }
+
+        [Test]
+        public async Task TestGetImgWithExistingImage()
+        {
+            await this.AddTwoCategorysAsync();
+
+            var actualUrl = await this.categoryService.GetImgAsync("Funny");
+            var expectedUrl = "Funny.Url";
+
+            Assert.AreEqual(expectedUrl, actualUrl);
+        }
+
+        [Test]
+        public async Task TestGetImgWithEmptyDb()
+        {
+
+            var actualUrl = await this.categoryService.GetImgAsync("Funny");
+            string expectedUrl = null;
+
+            Assert.AreEqual(expectedUrl, actualUrl);
+        }
+
+        [Test]
+        public async Task TestGetImgWithNoneExistantCategory()
+        {
+            await this.AddTwoCategorysAsync();
+
+            var actualUrl = await this.categoryService.GetImgAsync("Banana");
+            string expectedUrl = null;
+
+            Assert.AreEqual(expectedUrl, actualUrl);
         }
 
         [TearDown]

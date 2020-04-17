@@ -37,7 +37,7 @@ namespace Yeetegy.Services.Data
                 .AnyAsync(x => x.Value.ToLower() == tagValue.ToLower());
         }
 
-        public async Task<string> GetId(string tagValue)
+        public async Task<string> GetIdAsync(string tagValue)
         {
             return await this.tagRepository
                 .AllAsNoTracking()

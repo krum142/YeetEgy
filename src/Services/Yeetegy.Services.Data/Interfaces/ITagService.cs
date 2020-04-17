@@ -8,6 +8,6 @@ namespace Yeetegy.Services.Data.Interfaces
 
         Task<bool> ExistsAsync(string tagValue);
 
-        Task<string> GetId(string tagValue);
+        Task<string> GetIdAsync(string tagValue);
     }
 }

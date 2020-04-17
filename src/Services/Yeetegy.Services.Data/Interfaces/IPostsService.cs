@@ -15,8 +15,6 @@ namespace Yeetegy.Services.Data.Interfaces
 
         Task<IEnumerable<T>> GetPostsTrendingAsync<T>(int skip, int take);
 
-        Task<string> GetPostVoteValueAsync(string postId, string userId);
-
         Task<bool> DoesPostExistAsync(string postId);
 
         Task<string> TakeAuthorIdAsync(string postId);

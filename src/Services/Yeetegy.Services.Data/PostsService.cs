@@ -64,7 +64,7 @@ namespace Yeetegy.Services.Data
                         var tag = match.Groups[0].Value.TrimStart('#');
                         if (await this.tagService.ExistsAsync(tag))
                         {
-                            tagIds.Add(await this.tagService.GetId(tag));
+                            tagIds.Add(await this.tagService.GetIdAsync(tag));
                         }
                         else
                         {
@@ -91,22 +91,10 @@ namespace Yeetegy.Services.Data
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<string> GetPostVoteValueAsync(string postId, string userId)
-        {
-            if (await this.postVoteRepository.AllAsNoTracking()
-                .AnyAsync(x => x.PostId == postId && x.ApplicationUserId == userId))
-            {
-                return await this.postVoteRepository.AllAsNoTracking()
-                    .Where(x => x.PostId == postId && x.ApplicationUserId == userId).Select(x => x.Value).FirstOrDefaultAsync();
-            }
-
-            return null;
-        }
-
         public async Task<string> DeletePostAsync(string postId)
         {
             var post = await this.postRepository
-                .AllAsNoTracking()
+                .All()
                 .FirstOrDefaultAsync(x => x.Id == postId);
 
             this.postRepository.Delete(post);
@@ -122,7 +110,8 @@ namespace Yeetegy.Services.Data
 
         public async Task<T> GetPostAsync<T>(string postId)
         {
-            return await this.postRepository.AllAsNoTracking().Where(x => x.Id == postId).To<T>().FirstOrDefaultAsync();
+            return await this.postRepository
+                .AllAsNoTracking().Where(x => x.Id == postId).To<T>().FirstOrDefaultAsync();
         }
 
         // you can use enums to make ifs with categorys (down there)
