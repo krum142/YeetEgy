@@ -26,7 +26,6 @@ namespace Yeetegy.Services.Data.Tests
         {
             //AutoMapperConfig.RegisterMappings(typeof(TestPostClass).Assembly);
 
-
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(databaseName: "PostsTestDb").Options;
 
@@ -150,14 +149,14 @@ namespace Yeetegy.Services.Data.Tests
             Assert.AreEqual(expected, actual.Count());
         }
 
-        [Test]
-        public async Task TestGetPostsTrendingWithExistingPosts()// here we expect
-
+        // here we expect
         // that the first post
         // will be the one with the most comments
+        [Test]
+        public async Task TestGetPostsTrendingWithExistingPosts()
         {
             await this.AddTwoPostsAsync();
-            //await this.AddTwoCommentsToPost("postId2", "userId2");
+            await this.AddTwoCommentsToPost("postId2", "userId2");
 
             var actual = await this.postsService
                 .GetPostsTrendingAsync<TestPostClass>(0, 5);
@@ -178,7 +177,7 @@ namespace Yeetegy.Services.Data.Tests
         }
 
         [Test]
-        public async Task TestGetUserLikedWith()
+        public async Task TestGetUserLikedWithTwoCommentsThatUserLiked()
         {
             await this.AddTwoPostsAsync();
             await this.UserLikeTwoPosts("userId2", "postId1", "postId2");
@@ -188,11 +187,94 @@ namespace Yeetegy.Services.Data.Tests
         }
 
         [Test]
+        public async Task TestGetUserLikedWithoutUserLikedPosts()
+        {
+            var actual = await this.postsService.GetUserLikedAsync<TestPostClass>(0, 5, "userId2");
+
+            var expected = 0;
+
+            Assert.AreEqual(expected, actual.Count());
+        }
+
+        [Test]
+        public async Task TestGetUserCommentedWithUserCommentedOnPost()
+        {
+            await this.AddTwoPostsAsync();
+            await this.AddTwoCommentsToPost("postId1", "userId2");
+
+            var actual = await this.postsService.GetUserCommentedAsync<TestPostClass>(0, 5, "userId2");
+
+            var expected = 1;
+
+            Assert.AreEqual(expected, actual.Count());
+        }
+
+        [Test]
+        public async Task TestGetUserCommentedWithNoCemments()
+        {
+            await this.AddTwoPostsAsync();
+
+            var actual = await this.postsService.GetUserCommentedAsync<TestPostClass>(0, 5, "userId2");
+
+            var expected = 0;
+
+            Assert.AreEqual(expected, actual.Count());
+        }
+
+        [Test]
+        public async Task TestGetUserPostsWithUserThatPostedOnePost()
+        {
+            await this.AddTwoPostsAsync();
+
+            var acutual = await this.postsService.GetUserPostsAsync<TestPostClass>(0, 5, "userId1");
+
+            var expected = 1;
+
+            Assert.AreEqual(expected, acutual.Count());
+        }
+
+        [Test]
+        public async Task TestGetUserPostsWithUserWhihoutUserPosts()
+        {
+            var acutual = await this.postsService.GetUserPostsAsync<TestPostClass>(0, 5, "userId1");
+
+            var expected = 0;
+
+            Assert.AreEqual(expected, acutual.Count());
+        }
+
+        [Test]
+        public async Task TestGetAllByTagWithExistingPostsWithTags()
+        {
+            await this.AddTwoPostsAsync();
+            await this.AddTwoTagsToPostAsync("postId1");
+
+            var actual = await this.postsService.GetAllByTagAsync<TestPostClass>(0, 5, "tagValue1");
+
+            var expected = 1;
+
+            Assert.AreEqual(expected, actual.Count());
+        }
+
+        [Test]
+        public async Task TestGetAllByTagWithNoPostsThatHaveTags()
+        {
+            await this.AddTwoPostsAsync();
+
+            var actual = await this.postsService.GetAllByTagAsync<TestPostClass>(0, 5, "tagValue1");
+
+            var expected = 0;
+
+            Assert.AreEqual(expected, actual.Count());
+        }
+
+        [Test]
         public async Task CreatePostWithValidInputTest()
         {
             await this.AddTwoCategorysAsync();
 
-            IFormFile file = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("This is a dummy file")), 0, 0, "Data", "dummy.png");
+            var fileName = "Img";
+            IFormFile file = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("This is a dummy file")), 0, 0, fileName, "dummy.png");
 
             var postViewModel = new AddPostsModel()
             {
@@ -206,9 +288,11 @@ namespace Yeetegy.Services.Data.Tests
             var actual = await this.dbContext.Posts.FirstOrDefaultAsync(x => x.Tittle == "Pesho");
             var expectedTittle = "Pesho";
             var expectedCategory = "Funny";
-            var expectedUrl = "FakeCloudinaryUrl";
+            var expectedUrl = fileName;
 
-            Assert.IsTrue(expectedTittle == actual.Tittle && expectedCategory == actual.Category.Name && expectedUrl == actual.ImgUrl);
+            Assert.IsTrue(expectedTittle == actual.Tittle &&
+                          expectedCategory == actual.Category.Name &&
+                          expectedUrl == actual.ImgUrl);
         }
 
         [Test]
@@ -216,7 +300,8 @@ namespace Yeetegy.Services.Data.Tests
         {
             await this.AddTwoCategorysAsync();
 
-            IFormFile file = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("This is a dummy file")), 0, 0, "Data", "dummy.png");
+            var fileName = "Img";
+            IFormFile file = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("This is a dummy file")), 0, 0, fileName, "dummy.png");
 
             var postViewModel = new AddPostsModel()
             {
@@ -231,7 +316,7 @@ namespace Yeetegy.Services.Data.Tests
             var actual = await this.dbContext.Posts.FirstOrDefaultAsync(x => x.Tittle == "Pesho");
             var expectedTittle = "Pesho";
             var expectedCategory = "Funny";
-            var expectedUrl = "FakeCloudinaryUrl";
+            var expectedUrl = fileName;
             var expectedTag = "SoFunny";
 
             Assert.IsTrue(expectedTittle == actual.Tittle &&
@@ -334,6 +419,41 @@ namespace Yeetegy.Services.Data.Tests
             await this.dbContext.Database.EnsureDeletedAsync();
         }
 
+        private async Task AddTwoTagsToPostAsync(string postId)
+        {
+            var tags = new List<Tag>()
+            {
+                new Tag()
+                {
+                    Id = "tagId1",
+                    Value = "tagValue1",
+                },
+                new Tag()
+                {
+                    Id = "tagId2",
+                    Value = "tagValue2",
+                },
+            };
+
+            var postTags = new List<PostTag>()
+            {
+                new PostTag()
+                {
+                    PostId = postId,
+                    TagId = "tagId1",
+                },
+                new PostTag()
+                {
+                    PostId = postId,
+                    TagId = "tagId2",
+                },
+            };
+
+            await this.dbContext.Tags.AddRangeAsync(tags);
+            await this.dbContext.PostTags.AddRangeAsync(postTags);
+            await this.dbContext.SaveChangesAsync();
+        }
+
         private async Task AddTwoCategorysAsync()
         {
             var cateogrys = new List<Category>()
@@ -427,8 +547,6 @@ namespace Yeetegy.Services.Data.Tests
                     Likes = 5,
                 },
             };
-
-            await this.AddTwoCommentsToPost("postId2", "userId2");
 
             await this.dbContext.Posts.AddRangeAsync(posts);
             await this.dbContext.SaveChangesAsync();

@@ -76,7 +76,7 @@ namespace Yeetegy.Web
             services.AddTransient<IPostsService, PostsService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
-            services.AddTransient<IVotesService, PostVotesService>();
+            services.AddTransient<IVotesService, VotesService>();
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddTransient<IReplaysService, ReplaysService>();
             services.AddTransient<IUserService, UserService>();

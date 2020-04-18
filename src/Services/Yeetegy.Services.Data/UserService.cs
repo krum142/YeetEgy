@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Yeetegy.Common;
@@ -34,7 +35,7 @@ namespace Yeetegy.Services.Data
                 .AnyAsync(x => x.NormalizedUserName == username.ToUpper());
         }
 
-        public async Task<string> ChangeAvatarPicture(string username, IFormFile newPicture, string oldPictureLink)
+        public async Task<string> ChangeAvatarPictureAsync(string username, IFormFile newPicture, string oldPictureLink)
         {
             if (oldPictureLink == null || !await this.ExistsAsync(username))
             {
@@ -60,7 +61,7 @@ namespace Yeetegy.Services.Data
             return newImageLink;
         }
 
-        public async Task<bool> MarkAsDeleted(ApplicationUser user)
+        public async Task<bool> MarkAsDeletedAsync(ApplicationUser user)
         {
             try
             {

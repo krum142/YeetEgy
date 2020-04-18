@@ -147,8 +147,12 @@ namespace Yeetegy.Services.Data
         public async Task<string> DeleteCommentAsync(string commentId)
         {
             var comment = await this.commentsRepository
-                .AllAsNoTracking()
+                .All()
                 .FirstOrDefaultAsync(x => x.Id == commentId);
+            if (comment == null)
+            {
+                return null;
+            }
 
             this.commentsRepository.Delete(comment);
             await this.commentsRepository.SaveChangesAsync();
@@ -156,7 +160,7 @@ namespace Yeetegy.Services.Data
             return comment.Id;
         }
 
-        public async Task<IEnumerable<T>> GetCommentsAsync<T>(string postId, int skip, int take)
+        public async Task<IEnumerable<T>> GetCommentsAsync<T>(int skip, int take, string postId)
         {
             var query = this.commentsRepository.AllAsNoTracking();
 

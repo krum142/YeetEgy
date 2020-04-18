@@ -23,6 +23,6 @@ namespace Yeetegy.Services.Data.Tests.TestModels
 
         public string CategoryImageUrl { get; set; }
 
-        //public ICollection<TagViewModel> PostTags { get; set; }
+        // public ICollection<TagViewModel> PostTags { get; set; }
     }
 }

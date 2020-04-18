@@ -71,7 +71,7 @@ namespace Yeetegy.Web.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            var result = await userService.MarkAsDeleted(user);
+            var result = await userService.MarkAsDeletedAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);
             if (!result)
             {

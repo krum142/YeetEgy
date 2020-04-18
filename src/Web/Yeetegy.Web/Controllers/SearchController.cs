@@ -14,7 +14,7 @@ namespace Yeetegy.Web.Controllers
         private readonly ISearchService searchService;
         private readonly IPostsService postsService;
 
-        public SearchController(ISearchService searchService,IPostsService postsService)
+        public SearchController(ISearchService searchService, IPostsService postsService)
         {
             this.searchService = searchService;
             this.postsService = postsService;

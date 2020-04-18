@@ -14,7 +14,7 @@ namespace Yeetegy.Services.Data.Interfaces
 
         Task<string> CommentVoteAsync(string commentId, string userId, bool isUpVote);
 
-        Task<IEnumerable<T>> GetCommentsAsync<T>(string postId, int skip, int take);
+        Task<IEnumerable<T>> GetCommentsAsync<T>(int skip, int take, string postId);
 
         Task<string> TakeAuthorIdAsync(string commentId);
 

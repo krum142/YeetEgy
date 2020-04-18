@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,8 +13,6 @@ using Yeetegy.Data;
 using Yeetegy.Data.Models;
 using Yeetegy.Data.Repositories;
 using Yeetegy.Services.Data.Interfaces;
-using Yeetegy.Services.Data.Tests.TestModels;
-using Yeetegy.Services.Mapping;
 using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Services.Data.Tests
@@ -32,53 +29,30 @@ namespace Yeetegy.Services.Data.Tests
                 .UseInMemoryDatabase(databaseName: "CategoryTestDb").Options;
 
             this.dbContext = new ApplicationDbContext(options);
-            await this.dbContext.Database.EnsureDeletedAsync();
+            await this.dbContext.Database.EnsureCreatedAsync();
 
             var categoryRepo = new EfDeletableEntityRepository<Category>(this.dbContext);
             var fakeCloudinary = new FakeCloudinary();
             this.categoryService = new CategoryService(categoryRepo, fakeCloudinary);
-
-           
-        }
-
-        private async Task AddTwoCategorysAsync()
-        {
-            var categories = new List<Category>()
-            {
-                new Category()
-                {
-                    Id = "1",
-                    Name = "Funny",
-                    ImageUrl = "Funny.Url",
-                },
-                new Category()
-                {
-                    Id = "2",
-                    Name = "Cool",
-                    ImageUrl = "Cool.Url",
-                },
-            };
-
-            await this.dbContext.Categories.AddRangeAsync(categories);
-            await this.dbContext.SaveChangesAsync();
         }
 
         [Test]
         public async Task TestCreateCategoryWithValidInput()
         {
             var newCategoryName = "Funny";
-            IFormFile file = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("This is a dummy file")), 0, 0, "Data", "dummy.png");
+            var fileName = "Img";
+            IFormFile file = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("This is a dummy file")), 0, 0, fileName, "dummy.png");
             var expected = new Category()
             {
                 Name = "Funny",
-                ImageUrl = "FakeCloudinaryUrl",
+                ImageUrl = fileName,
             };
 
             await this.categoryService.CreateAsync(newCategoryName, file);
 
             var actual = await this.dbContext.Categories.FirstOrDefaultAsync(x => x.Name == newCategoryName);
 
-            Assert.True(actual.Name == expected.Name && actual.ImageUrl == expected.ImageUrl); ;
+            Assert.True(actual.Name == expected.Name && actual.ImageUrl == expected.ImageUrl);
         }
 
         [Test]
@@ -118,21 +92,21 @@ namespace Yeetegy.Services.Data.Tests
 
             var actualActual = actual.ToList();
 
-            var AreSame = true;
+            var areSame = true;
 
             for (int i = 0; i < expected.Count(); i++)
             {
                 if (actualActual[i].Name != expected[i].Name &&
                     actualActual[i].ImageUrl == expected[i].ImageUrl)
                 {
-                    AreSame = false;
+                    areSame = false;
                     break;
                 }
             }
 
-            var x = AreSame;
+            var x = areSame;
 
-            Assert.IsTrue(AreSame);
+            Assert.IsTrue(areSame);
         }
 
         [Test]
@@ -164,20 +138,20 @@ namespace Yeetegy.Services.Data.Tests
 
             var actualActual = actual.ToList();
 
-            var AreSame = true;
+            var areSame = true;
 
             for (int i = 0; i < expected.Count(); i++)
             {
                 if (actualActual[i].Value != expected[i].Value)
                 {
-                    AreSame = false;
+                    areSame = false;
                     break;
                 }
             }
 
-            var x = AreSame;
+            var x = areSame;
 
-            Assert.IsTrue(AreSame);
+            Assert.IsTrue(areSame);
         }
 
         [Test]
@@ -233,9 +207,7 @@ namespace Yeetegy.Services.Data.Tests
         {
             var actualId = await this.categoryService.GetIdAsync("Funny");
 
-            string expectedId = null;
-
-            Assert.AreEqual(expectedId, actualId);
+            Assert.IsNull(actualId);
         }
 
         [Test]
@@ -245,9 +217,7 @@ namespace Yeetegy.Services.Data.Tests
 
             var actualId = await this.categoryService.GetIdAsync("Banana");
 
-            string expectedId = null;
-
-            Assert.AreEqual(expectedId, actualId);
+            Assert.IsNull(actualId);
         }
 
         [Test]
@@ -264,11 +234,9 @@ namespace Yeetegy.Services.Data.Tests
         [Test]
         public async Task TestGetImgWithEmptyDb()
         {
-
             var actualUrl = await this.categoryService.GetImgAsync("Funny");
-            string expectedUrl = null;
 
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.IsNull(actualUrl);
         }
 
         [Test]
@@ -277,15 +245,36 @@ namespace Yeetegy.Services.Data.Tests
             await this.AddTwoCategorysAsync();
 
             var actualUrl = await this.categoryService.GetImgAsync("Banana");
-            string expectedUrl = null;
 
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.IsNull(actualUrl);
         }
 
         [TearDown]
         public void TearDown()
         {
             this.dbContext.Database.EnsureDeleted();
+        }
+
+        private async Task AddTwoCategorysAsync()
+        {
+            var categories = new List<Category>()
+            {
+                new Category()
+                {
+                    Id = "1",
+                    Name = "Funny",
+                    ImageUrl = "Funny.Url",
+                },
+                new Category()
+                {
+                    Id = "2",
+                    Name = "Cool",
+                    ImageUrl = "Cool.Url",
+                },
+            };
+
+            await this.dbContext.Categories.AddRangeAsync(categories);
+            await this.dbContext.SaveChangesAsync();
         }
     }
 }

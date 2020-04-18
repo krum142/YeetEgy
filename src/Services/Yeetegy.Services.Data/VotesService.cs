@@ -8,12 +8,12 @@ using Yeetegy.Services.Data.Interfaces;
 
 namespace Yeetegy.Services.Data
 {
-    public class PostVotesService : IVotesService
+    public class VotesService : IVotesService
     {
         private readonly IDeletableEntityRepository<UserPostVote> postVoteRepository;
         private readonly IDeletableEntityRepository<Post> postRepository;
 
-        public PostVotesService(
+        public VotesService(
             IDeletableEntityRepository<UserPostVote> postVoteRepository,
             IDeletableEntityRepository<Post> postRepository)
         {

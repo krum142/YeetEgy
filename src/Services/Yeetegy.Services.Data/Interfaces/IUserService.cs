@@ -12,8 +12,8 @@ namespace Yeetegy.Services.Data.Interfaces
 
         Task<T> GetUserByNameAsync<T>(string username);
 
-        Task<string> ChangeAvatarPicture(string username, IFormFile newPicture, string oldPictureLink);
+        Task<string> ChangeAvatarPictureAsync(string username, IFormFile newPicture, string oldPictureLink);
 
-        Task<bool> MarkAsDeleted(ApplicationUser user);
+        Task<bool> MarkAsDeletedAsync(ApplicationUser user);
     }
 }

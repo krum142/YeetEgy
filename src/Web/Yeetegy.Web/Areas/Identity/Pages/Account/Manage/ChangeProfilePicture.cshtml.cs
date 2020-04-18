@@ -68,7 +68,7 @@ namespace Yeetegy.Web.Areas.Identity.Pages.Account.Manage
             var userUsername = this.User.Identity.Name;
             var oldPictureUrl = this.userManager.Users.Where(x => x.UserName == userUsername)
                 .Select(x => x.AvatarUrl).FirstOrDefault();
-            var newAvatarUrl = await this.userService.ChangeAvatarPicture(userUsername, this.NewProfilePicture, oldPictureUrl);
+            var newAvatarUrl = await this.userService.ChangeAvatarPictureAsync(userUsername, this.NewProfilePicture, oldPictureUrl);
 
             this.AvatarUrl = newAvatarUrl;
 

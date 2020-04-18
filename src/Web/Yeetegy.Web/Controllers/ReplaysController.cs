@@ -41,7 +41,7 @@ namespace Yeetegy.Web.Controllers
             if (this.User.Identity.IsAuthenticated)
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                await this.replaysService.CreateCommentAsync(data, userId);
+                await this.replaysService.CreateReplayAsync(data, userId);
 
                 return new ResponseAddComment() { Status = "Created" };
             }

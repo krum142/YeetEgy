@@ -24,7 +24,7 @@ namespace Yeetegy.Services.Data
             this.cloudinaryService = cloudinaryService;
         }
 
-        public async Task CreateCommentAsync(AddReplayModel input, string userId)
+        public async Task CreateReplayAsync(AddReplayModel input, string userId)
         {
             string url = null;
 

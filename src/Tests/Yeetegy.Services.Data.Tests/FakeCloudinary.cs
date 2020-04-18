@@ -8,9 +8,16 @@ namespace Yeetegy.Services.Data.Tests
 {
     public class FakeCloudinary : ICloudinaryService
     {
+        public bool ReturnNullOnCreate { get; set; } = false;
+
         public async Task<string> SaveCloudinaryAsync(IFormFile image)
         {
-            return "FakeCloudinaryUrl";
+            if (this.ReturnNullOnCreate)
+            {
+                return null;
+            }
+
+            return image.Name;
         }
 
         public void DeleteCloudinary(string id)

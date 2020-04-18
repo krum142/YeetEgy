@@ -29,26 +29,6 @@ namespace Yeetegy.Services.Data.Tests
             this.tagService = new TagService(tagRepository);
         }
 
-        private async Task AddTwoTags()
-        {
-            var tags = new List<Tag>()
-            {
-                new Tag()
-                {
-                    Id = "1",
-                    Value = "Funny",
-                },
-                new Tag()
-                {
-                    Id = "2",
-                    Value = "Cool",
-                },
-            };
-
-            await this.dbContext.Tags.AddRangeAsync(tags);
-            await this.dbContext.SaveChangesAsync();
-        }
-
         [Test]
         public async Task TestCreateTagWithValidValue()
         {
@@ -115,6 +95,26 @@ namespace Yeetegy.Services.Data.Tests
         public void TearDown()
         {
             this.dbContext.Database.EnsureDeleted();
+        }
+
+        private async Task AddTwoTags()
+        {
+            var tags = new List<Tag>()
+            {
+                new Tag()
+                {
+                    Id = "1",
+                    Value = "Funny",
+                },
+                new Tag()
+                {
+                    Id = "2",
+                    Value = "Cool",
+                },
+            };
+
+            await this.dbContext.Tags.AddRangeAsync(tags);
+            await this.dbContext.SaveChangesAsync();
         }
     }
 }
