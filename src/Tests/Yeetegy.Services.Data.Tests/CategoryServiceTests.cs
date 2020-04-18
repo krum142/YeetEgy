@@ -14,29 +14,31 @@ using Yeetegy.Data;
 using Yeetegy.Data.Models;
 using Yeetegy.Data.Repositories;
 using Yeetegy.Services.Data.Interfaces;
+using Yeetegy.Services.Data.Tests.TestModels;
 using Yeetegy.Services.Mapping;
 using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Services.Data.Tests
 {
-    public class CategoryServiceTests
+    public class CategoryServiceTests : BaseServiceTests
     {
         private ICategoryService categoryService;
         private ApplicationDbContext dbContext;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(databaseName: "CategoryTestDb").Options;
 
             this.dbContext = new ApplicationDbContext(options);
-            this.dbContext.Database.EnsureCreated();
+            await this.dbContext.Database.EnsureDeletedAsync();
 
             var categoryRepo = new EfDeletableEntityRepository<Category>(this.dbContext);
             var fakeCloudinary = new FakeCloudinary();
             this.categoryService = new CategoryService(categoryRepo, fakeCloudinary);
-            AutoMapperConfig.RegisterMappings(typeof(CategoryViewModel).Assembly);
+
+           
         }
 
         private async Task AddTwoCategorysAsync()

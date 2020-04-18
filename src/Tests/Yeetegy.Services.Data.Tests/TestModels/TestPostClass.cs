@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using Yeetegy.Data.Models;
+﻿using Yeetegy.Data.Models;
 using Yeetegy.Services.Mapping;
-using Yeetegy.Web.ViewModels;
 
 namespace Yeetegy.Services.Data.Tests.TestModels
 {

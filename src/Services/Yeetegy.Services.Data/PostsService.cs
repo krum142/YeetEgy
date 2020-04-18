@@ -131,7 +131,7 @@ namespace Yeetegy.Services.Data
         {
             var query = this.postRepository.AllAsNoTracking();
 
-            query = query.Where(x => x.Likes >= 200).OrderByDescending(x => x.CreatedOn);
+            query = query.Where(x => x.Likes >= GlobalConstants.HowManyLikesToAppearInPopular).OrderByDescending(x => x.CreatedOn);
 
             return await query.Skip(skip).Take(take).To<T>().ToListAsync();
         }
