@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ namespace Yeetegy.Services.Data.Tests
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(databaseName: "commentsTestDb").Options;
             this.dbContext = new ApplicationDbContext(options);
-            await this.dbContext.Database.EnsureDeletedAsync();
+            await this.dbContext.Database.EnsureCreatedAsync();
 
             var commentRepository = new EfDeletableEntityRepository<Comment>(this.dbContext);
             var userCommentVoteRepository = new EfDeletableEntityRepository<UserCommentVote>(this.dbContext);
@@ -102,7 +103,6 @@ namespace Yeetegy.Services.Data.Tests
             await this.AddTwoPostsAsync();
             await this.AddTwoCommentsToPostAsync("postId1", "userId1");
 
-
             var expectedCommentLikes = 1;
             var expectedCommentDislikes = 0;
             var expectedUserCommentVote = "Like";
@@ -127,7 +127,6 @@ namespace Yeetegy.Services.Data.Tests
             await this.AddTwoUsersAsync();
             await this.AddTwoPostsAsync();
             await this.AddTwoCommentsToPostAsync("postId1", "userId1");
-
 
             var expectedCommentLikes = 0;
             var expectedCommentDislikes = 1;
