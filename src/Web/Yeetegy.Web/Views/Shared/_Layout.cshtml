@@ -56,7 +56,7 @@
                         <li>
                             @if (SignInManager.IsSignedIn(User))
                             {
-                                <a class="text-white btn btn-warning fa fa-plus" style="margin-top: 4px; margin-left: 15px" asp-controller="Posts" asp-action="Add" title="Manage"><b> Upload</b></a>
+                                <a class="text-white btn btn-warning fa fa-plus" style="margin-top: 4px; margin-left: 15px" asp-area="" asp-controller="Posts" asp-action="Add" title="Manage"><b> Upload</b></a>
                             }
                         </li>
                         <partial name="_LoginPartial" />

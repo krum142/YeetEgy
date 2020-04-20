@@ -20,7 +20,6 @@ namespace Yeetegy.Services.Data.Tests
         [SetUp]
         public async Task SetUp()
         {
-
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(databaseName: "commentsTestDb").Options;
             this.dbContext = new ApplicationDbContext(options);
