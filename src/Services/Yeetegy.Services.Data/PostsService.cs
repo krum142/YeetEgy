@@ -54,7 +54,7 @@ namespace Yeetegy.Services.Data
                     CategoryId = await this.categoryService.GetIdAsync(post.Category),
                 };
 
-                var tagIds = new List<string>();
+                var tagIds = new HashSet<string>();
                 if (!string.IsNullOrWhiteSpace(post.Tags))
                 {
                     var matches = Regex.Matches(post.Tags, GlobalConstants.TagValidationRegex);
