@@ -40,8 +40,13 @@
         function DomOperation() {
             if (noMoredata === false && inProgress === false) {
                 inProgress = true;
+                let mylocation = location.pathname.split("/").pop();
+                
+                if (mylocation.toLowerCase() === "home") {
+                    mylocation = "newest";
+                }
                 fetch('@Url.Action("GetPosts","Posts")?page=' + myPageIndex + "&category=" +
-                    location.pathname.split("/").pop(),
+                    mylocation,
                     {
                         method: "GET",
                     }).then(response => {

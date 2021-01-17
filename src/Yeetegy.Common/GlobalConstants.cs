@@ -20,7 +20,7 @@ namespace Yeetegy.Common
 
         public const int HowManyLikesToAppearInPopular = 20;
 
-        public const string DefaultUserImg = "https://res.cloudinary.com/cloudnameiscool/image/upload/v1586729131/YeetegyDefaultAvatar_c0pefi.jpg"; // save it in the cloudinary
+        public const string DefaultUserImg = "https://res.cloudinary.com/cloudnameiscool/image/upload/v1610913006/bde1951c-b9e3-45d8-9ca9-c58b94483548.jpg"; // save it in the cloudinary
 
         public static Dictionary<string, string> ConstantCategories = new Dictionary<string, string>()
         {

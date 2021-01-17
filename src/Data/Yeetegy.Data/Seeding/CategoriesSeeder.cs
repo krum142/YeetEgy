@@ -18,7 +18,7 @@ namespace Yeetegy.Data.Seeding
 
             var categories = new List<(string Name, string ImageUrl)>
             {
-                ("Funny", "http://www.movin925.com/wp-content/uploads/2017/03/bigstock-Laughing-out-loud-young-man-fa-108266420.jpg"),
+                ("Funny", "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.images.express.co.uk%2Fimg%2Fdynamic%2F10%2F285x214%2F70400_1.jpg&f=1&nofb=1"),
                 ("Coronavirus", "https://cdn.wccftech.com/wp-content/uploads/2020/01/https___cdn.cnn_.com_cnnnext_dam_assets_200108214800-coronavirus.jpg"),
                 ("WTF", "https://skybambi.files.wordpress.com/2011/01/wtf-1920x1200-01v01.jpg"),
                 ("Cool", "http://img.dreamdealer.nl/dd/cool/001.jpg"),
