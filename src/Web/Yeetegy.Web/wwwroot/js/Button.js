@@ -19,13 +19,14 @@ function topFunction() {
 }
 
 function voteButton() {
-    var x = event.target.getAttribute("id").split("_");
-    var typeVote = x[0];
-    var vote = x[1] === "Like" ? true : false;
-    var id = x[2];
-    var token = $("#voteform input[name=__RequestVerificationToken]").val();
+    var postsId = event.target.getAttribute("id").split("_");
+    var typeVote = postsId[0]; /*types Of Votes - Post, Comment, Replay. Example - if you wanna upvote a comment the typeVote will be comment*/
+    var vote = postsId[1] === "Like" ? true : false; /*vote type dislike or like*/
+    var id = postsId[2]; /*the id of the post/comment/replay */
+    /*gets a secret token generated in a  invisible from so aspnet knows the request is valid*/
+    var token = $("#voteform input[name=__RequestVerificationToken]").val(); 
 
-    var voteUrl = "/api/Votes/" + typeVote;
+    var voteUrl = "/api/Votes/" + typeVote; /*request is made to this address*/
 
     var keyid = typeVote.toLowerCase() + "Id";
     var json = { isUpVote: vote }

@@ -1,59 +1,4 @@
-﻿//var myPageIndex = 0;
-//var noMoredata = false;
-//var inProgress = false;
-//var posthtml;
-//var postid = $("#postId").attr('value');
-//var deleteInProgress = false;
-
-//function domOperationComments() { // ajax
-//    if (noMoredata === false && inProgress === false) {
-//        inProgress = true;
-//        fetch('/api/Comments/?postId=' + postid + '&offset=' + myPageIndex,
-//            {
-//                method: "GET",
-//            }).then(response => {
-//                if (response.status === 200) {
-//                    response.text().then(html => {
-//                        if (html.length < 10) {
-//                            noMoredata = true;
-//                        } else {
-//                            document.getElementById("Comment-Container").innerHTML += html;
-//                        }
-//                    });
-//                    inProgress = false;
-//                    myPageIndex += 10;
-//                }
-//            });
-//    }
-//}
-
-
-
-//function loadComments() {
-//    var docHeight = $(document).height();
-//    var winScrolled = $(window).height() + $(window).scrollTop();
-//    if ((docHeight - winScrolled) < 200) { // scroll time 
-//        domOperationComments.call();
-//    }
-//}
-
-//function loadReplays() { // ajax
-//    var commentId = event.target.getAttribute("id").split('_')[1];
-//    $("#LoadReplays_" + commentId).remove();
-//    fetch("/api/Replays?commentId=" + commentId,
-//        {
-//            method: "GET"
-//        }).then(response => {
-//            if (response.status === 200) {
-//                response.text().then(html => {
-//                    //$("#Comment_" + commentId).remove();
-//                    $("#Replay-Container_" + commentId).append(html);
-//                });
-//            }
-//        });
-//}
-
-function loadReplayForm() {
+﻿function loadReplayForm() { /*Loads the Form into the html when the replay button is clicked*/
     var commentId = event.target.getAttribute("id").split('_')[1];
     $("#LoadForm_" + commentId).attr("hidden", true);
     var avatarUrl = $("#avatarUrl").attr("src");
@@ -203,32 +148,6 @@ function clearComment() {
     text.val('');
     control.replaceWith(control.val('').clone(true));
 }
-
-//function deleteComment() { // ajax
-//    var commentId = event.target.getAttribute("id");
-//    var token = $("#voteform input[name=__RequestVerificationToken]").val();
-//    var deleteUrl = "/api/Comments";
-
-//    var obj = new FormData();
-//    obj.set("id",commentId);
-//    if (deleteInProgress === false) {
-//        deleteInProgress = true;
-//        fetch(deleteUrl,
-//            {
-//                method: 'DELETE',
-//                headers: {
-//                    'X-CSRF-TOKEN': token
-//                },
-//                body: obj
-//            }).then(response => {
-//                if (response.status === 200) {
-//                    $("#CommentId_" + commentId).remove();
-//                }
-//                deleteInProgress = false;
-//        });
-//    }
-    
-//}
 
 /**
   * Checks the string if undefined, null, not typeof string, empty or space(s)

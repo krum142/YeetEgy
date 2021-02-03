@@ -5,9 +5,6 @@
 @inject SignInManager<ApplicationUser> SignInManager
 
 <!DOCTYPE html>
-@*@{
-        var action = (string)this.Url.ActionContext.RouteData.Values.FirstOrDefault(x => x.Key == "action").Value;
-    }*@
 <html>
 <head>
     <meta charset="utf-8" />
@@ -30,11 +27,6 @@
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top YeetegyBackground">
             <div class="container">
                 <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index"><img width="130" height="35" src="~/YeetegyLogoSmall.png"></a>
-
-                @*<a class="nav-link text-white" style="margin-top: 4px" asp-area="Identity" asp-page="/Account/Register"><h5><b>Merch</b></h5></a>*@
-
-                @*<a class="fa fa-search searchButton" hover style="font-size: 30px;"></a>*@
-
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -47,9 +39,6 @@
                                     <input id="txtSearch" placeholder="Search" type="text" class="dropdown-item" style="resize: none;height: 45px">
                                     <div class="dropdown-divider"></div>
                                     <div id="searchResults"></div>
-                                    @*<a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                        <a class="dropdown-item" href="#">Separated link</a>*@
                                 </div>
                             </div>
                         </li>
@@ -121,9 +110,7 @@
                             response.json().then(j => {
                                 myJson = j;
                                 var htmlToInsert = "";
-                                //console.log(myJson);
                                 for (var i = 0; i < myJson.length; i++) {
-                                    //console.log(myJson[i]);
                                     if (myJson[i].value.length <= 50) {
                                         htmlToInsert += '<a style="word-wrap: break-word;" class="dropdown-item" href="@Url.Action("Search","Posts")?s='+  myJson[i].value +'">' + myJson[i].value +'   <b>'+ myJson[i].count + '</b></a>';
                                     }
